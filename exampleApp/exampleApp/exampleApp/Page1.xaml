@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Page1">
+
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="1"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Ellipse x:Name="m_1" Fill="black"
+       
+         StrokeThickness="4"
+         WidthRequest="150"
+         HeightRequest="150"
+        HorizontalOptions="Center" VerticalOptions="Center" ></Ellipse>
+
+            <Label Text="7"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Ellipse x:Name="m_7" Fill="black"
+        
+         StrokeThickness="4"
+         WidthRequest="150"
+         HeightRequest="150"
+        HorizontalOptions="Center" VerticalOptions="Center" ></Ellipse>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
