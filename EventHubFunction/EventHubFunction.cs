@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
 
@@ -69,7 +70,7 @@ namespace EventHubFunction
             
         }
         [FunctionName("EventHubFunction")]
-        public static async Task Run([EventHubTrigger("gymeventhub", Connection = "EventHubGym")] EventData[] events, ILogger log)
+        public static async Task Run([EventHubTrigger("gymeventhub", Connection = "EventHubGym")] EventData[] events, [SignalR(HubName = "chat")] IAsyncCollector<SignalRMessage> signalRMessages, ILogger log)
         {
             var exceptions = new List<Exception>();
             var builder = new MySqlConnectionStringBuilder
@@ -118,6 +119,18 @@ namespace EventHubFunction
                          log.LogInformation(await updateDB(id_member, id_machine, num_usage,conn));
 
                      }
+
+                    int[] msgupdate = new int[3];
+                    msgupdate[0] = id_machine;
+                    msgupdate[1] = 1 - num_usage;
+                    msgupdate[2] = id_member;
+
+                    await signalRMessages.AddAsync(
+                    new SignalRMessage
+                    {
+                        Target = "newMessage",
+                        Arguments = new[] { msgupdate }
+                    });
 
 
 
