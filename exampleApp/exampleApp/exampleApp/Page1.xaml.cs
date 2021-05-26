@@ -21,13 +21,13 @@ namespace exampleApp
     public partial class Page1 : ContentPage
     {
         public static HubConnection connection;
+        
         public Page1()
         {
             InitializeComponent();
             
             set_color();
-            
-           
+          
 
         }
         private void update_circle(int id_machine, int taken)
@@ -67,17 +67,16 @@ namespace exampleApp
                 await connection.StartAsync();
             };
 
-            connection.On<Dictionary<int, int>>("newMessage", (msgupdate) =>
+            connection.On<int[]>("newMessage", (msgupdate) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    foreach (KeyValuePair<int, int> temp in msgupdate)
-                    {
-                        int id_machine = temp.Key;
-                        int taken = temp.Value;
+                   
+                        int id_machine = msgupdate[0];
+                        int taken = msgupdate[1];
                         update_circle(id_machine, taken);
 
-                    }
+                    
 
 
                 });
@@ -112,20 +111,25 @@ namespace exampleApp
 
                         }
                     }
-                
-
-
-
+              
 
 
                 }
             }
+            await connection.StartAsync();
 
         }
         private void Button_Clicked(object sender, EventArgs e)
         {
             DisplayAlert("Title", "Hello world", "ok");
            
+        }
+        async void OnLogout_Clicked(object sender, EventArgs e)
+        {
+
+            Navigation.InsertPageBefore(new Pages.LoginPage(), this);
+            await Navigation.PopAsync();
+
         }
     }
 }

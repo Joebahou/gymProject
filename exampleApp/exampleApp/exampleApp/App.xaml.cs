@@ -17,17 +17,21 @@ namespace exampleApp
        public App()
         {
             InitializeComponent();
+            //MainPage page = new MainPage();
 
-            MainPage = new Page1();
+           MainPage = new NavigationPage(new  Pages.LoginPage());
+            //MainPage = new Page1();
         }
 
         protected override async void OnStart()
         {
-            /*string data = "5,7";
+           /* int[] data=new int[2];
+            data[0] = 5;
+            data[1] = 7;
             string messageJson = JsonConvert.SerializeObject(data);
             Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
             await Client.SendEventAsync(message);*/
-            await exampleApp.Page1.connection.StartAsync();
+            //await exampleApp.Page1.connection.StartAsync();
           
 
 
