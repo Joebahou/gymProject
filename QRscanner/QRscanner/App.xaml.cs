@@ -13,6 +13,7 @@ namespace QRscanner
         {
             InitializeComponent();
 
+           
             MainPage = new MainPage();
         }
 
