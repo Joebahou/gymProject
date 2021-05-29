@@ -3,6 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="exampleApp.App">
     <Application.Resources>
+        <Thickness x:Key="PageMargin">20</Thickness>
 
+        <!-- Colors -->
+        <Color x:Key="AppPrimaryColor">#ffcc80</Color>
+        <Color x:Key="AppBackgroundColor">AliceBlue</Color>
+        <Color x:Key="PrimaryColor">Black</Color>
+        <Color x:Key="SecondaryColor">White</Color>
+        <Color x:Key="TertiaryColor">Silver</Color>
+
+        <!-- Implicit styles -->
+        <Style TargetType="ContentPage"
+               ApplyToDerivedTypes="True">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource AppBackgroundColor}" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontSize"
+                    Value="Medium" />
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource AppPrimaryColor}" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource SecondaryColor}" />
+            <Setter Property="CornerRadius"
+                    Value="5"/>
+            <Setter Property="HorizontalOptions"
+                    Value="CenterAndExpand"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontSize"
+                    Value="Medium" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource PrimaryColor}" />
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+        </Style>
+
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{StaticResource AppPrimaryColor}" />
+            <Setter Property="BarTextColor" Value="White" />
+        </Style>
+        
     </Application.Resources>
 </Application>
