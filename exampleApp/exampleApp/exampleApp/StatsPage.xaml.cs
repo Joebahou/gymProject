@@ -130,7 +130,7 @@ namespace exampleApp
         {
             string machineName = pickerMachines.SelectedItem.ToString();
             string memberName = textboxName.Text;
-            string cmd_text = $"select speed,weight, usage_gym.start " +
+            string cmd_text = $"select weight_or_speed, usage_gym.start " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
                 $"and machines.idmachine = usage_gym.idmachine " +
@@ -146,20 +146,16 @@ namespace exampleApp
             {
                 while (rdr.Read())
                 {
-                    Console.WriteLine(rdr[2].ToString()  + " " + rdr[2].GetType() + " " + rdr[2]);
+                    Console.WriteLine(rdr[1].ToString()  + " " + rdr[1].GetType() + " " + rdr[1]);
                     long speedOrWeight = -1;
                     DateTime date = DateTime.Now;
                     if(rdr[0] != DBNull.Value)
                     {
                         speedOrWeight = rdr.GetInt32(0);
-                    }
-                    else if (rdr[1] != DBNull.Value)
+                    }          
+                    if (rdr[1] != DBNull.Value)
                     {
-                        speedOrWeight = rdr.GetInt32(1);
-                    }
-                    if (rdr[2] != DBNull.Value)
-                    {
-                        date = (DateTime)rdr[2];
+                        date = (DateTime)rdr[1];
                     }
 
 
@@ -173,7 +169,7 @@ namespace exampleApp
                     {
                         ChartEntry ce = new ChartEntry(entry.Item1)
                         {
-                            Label = entry.Item2.ToString("MM/dd"),
+                            Label = entry.Item2.ToString("d/M/yy"),
                             ValueLabel = entry.Item1.ToString(),
                             Color = SKColor.Parse("#b455b6")
                         };
