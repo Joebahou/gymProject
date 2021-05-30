@@ -13,16 +13,19 @@ namespace EventHubFunction
 {
     public static class EventHubFunction
     {
-        public static async Task<string> updateDB(int id_member,int id_machine,int usage, MySqlConnection conn)
+        public static async Task<string> updateDB(int id_member,int id_machine,int usage, int weight_or_speed, int reps, int sets, MySqlConnection conn)
         {
             if (usage == 0)
             {
                 using (var command = conn.CreateCommand())
                 {
 
-                    command.CommandText = @"INSERT INTO usage_gym (idmember,start,idmachine) VALUES (@id_member,@start, @id_machine);";
+                    command.CommandText = @"INSERT INTO usage_gym (idmember,start,idmachine,weight_or_speed,reps,sets) VALUES (@id_member,@start, @id_machine,@weight_or_speed,@reps,@sets);";
                     command.Parameters.AddWithValue("@id_member", id_member);
                     command.Parameters.AddWithValue("@id_machine", id_machine);
+                    command.Parameters.AddWithValue("@weight_or_speed", weight_or_speed);
+                    command.Parameters.AddWithValue("@reps", reps);
+                    command.Parameters.AddWithValue("@sets", sets);
                     DateTime theDate = DateTime.Now;
                     command.Parameters.AddWithValue("@start", theDate);
                     int rowCount = await command.ExecuteNonQueryAsync();
@@ -93,8 +96,9 @@ namespace EventHubFunction
                     log.LogInformation(strID[1] +" "+ strID[2]);
                     int id_member = Int32.Parse(strID[1]);
                     int id_machine = Int32.Parse(strID[2]);
-                    log.LogInformation($"id_member {id_member}");
-                    log.LogInformation($"id_machine { id_machine}");
+                    int weight_or_speed = Int32.Parse(strID[3]);
+                    int reps = Int32.Parse(strID[4]);
+                    int sets = Int32.Parse(strID[5]);
                     int num_usage = 0;
                     using (var conn = new MySqlConnection(builder.ConnectionString))
                      {
@@ -116,7 +120,7 @@ namespace EventHubFunction
                                  }
                              }
                          }
-                         log.LogInformation(await updateDB(id_member, id_machine, num_usage,conn));
+                         log.LogInformation(await updateDB(id_member, id_machine, num_usage, weight_or_speed, reps,sets,conn));
 
                      }
 
