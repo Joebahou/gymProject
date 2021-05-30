@@ -21,9 +21,9 @@ namespace QRscanner
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
         public static HubConnection connection;
         ZXingScannerPage scanPage;
-        int id_machine = 7;
-        int id_member;
-        int[] data=new int[2];
+        public static int id_machine = 7;
+        public static int id_member;
+        int[] data=new int[6];
         public MainPage()
         {
                 InitializeComponent();
@@ -65,18 +65,28 @@ namespace QRscanner
                 String res = result.Text; 
                 scanPage.IsScanning = false;
                 //Do something with result
+                id_member = int.Parse(res);
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    await Navigation.PopModalAsync();
-                    await DisplayAlert("Scanned Barcode", res, "OK");
+                    /*await Navigation.PopModalAsync();
+
+                    await DisplayAlert("Scanned Barcode", res, "OK");*/
+                    Application.Current.MainPage = new NavigationPage(new InfoUsage());
+                    await App.Current.MainPage.Navigation.PopAsync();
                 });
+
+                //need to add check if the machine is taken
+                //need to add navigation to submit button
+                //what happens when finish usage
+
                
-                id_member = int.Parse(res);
-                data[0]=id_member;
+                
+                /*data[0]=id_member;
                 data[1] = id_machine;
+                da
                 string messageJson = JsonConvert.SerializeObject(data);
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
-                await Client.SendEventAsync(message);
+                await Client.SendEventAsync(message);*/
                 
 
             };
