@@ -8,11 +8,8 @@
 
             <Frame BackgroundColor="#BF043055" HasShadow="False">
                 <StackLayout Orientation="Vertical" Spacing="10">
-                    <Entry x:Name="Weight" Text="{Binding Weight}" Placeholder="Weight"   
+                    <Entry x:Name="Weight_Or_Speed" Text="{Binding Weight_Or_Speed}" Placeholder="Weight or Speed"   
                            PlaceholderColor="White" HeightRequest="40"     
-                           TextColor="White"/>
-                    <Entry x:Name="Speed" Text="{Binding Speed}" Placeholder="Speed"   
-                           PlaceholderColor="White" HeightRequest="40"   
                            TextColor="White"/>
                     <Entry x:Name="Reps" Text="{Binding Reps}" Placeholder="Reps"   
                            PlaceholderColor="White" HeightRequest="40"   
@@ -22,7 +19,7 @@
                            TextColor="White"/>
                 </StackLayout>
             </Frame>
-            <Button Command="{Binding SubmitCommand}" Text="Submit" TextColor="White"  
+            <Button Command="{Binding SubmitCommand}" Text="Submit"  Clicked="SubmitButton_Clicked" TextColor="White"  
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                     BackgroundColor="#088da5" />
            

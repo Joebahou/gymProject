@@ -12,31 +12,22 @@ namespace QRscanner.Models
 {
     class Usage : INotifyPropertyChanged
     {
-        public int[] data = new int[6];
+        public int[] data = new int[5];
         public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
 
 
-        private string weight;
-        public string Weight
+        private string weight_or_speed;
+        public string Weight_Or_Speed
         {
-            get { return weight; }
+            get { return weight_or_speed; }
             set
             {
-                weight = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Weight"));
+                weight_or_speed = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Weight_Or_Speed"));
             }
         }
-        private string speed;
-        public string Speed
-        {
-            get { return speed; }
-            set
-            {
-                speed = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Speed"));
-            }
-        }
+        
         private string reps;
         public string Reps
         {
@@ -78,17 +69,17 @@ namespace QRscanner.Models
         public async void OnSubmit()
         {
 
-            data[0] = MainPage.id_member;
-            data[1] = MainPage.id_machine;
-            data[2] = additional_info(speed);
-            data[3] = additional_info(weight);
-            data[4] = additional_info(reps);
-            data[5] = additional_info(sets);
+            data[0] = StartScanPage.id_member;
+            data[1] = StartScanPage.id_machine;
+            data[2] = additional_info(weight_or_speed);
+            data[3] = additional_info(reps);
+            data[4] = additional_info(sets);
 
 
             string messageJson = JsonConvert.SerializeObject(data);
             Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
             await Client.SendEventAsync(message);
+            
             
 
 

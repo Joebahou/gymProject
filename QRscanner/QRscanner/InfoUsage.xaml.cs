@@ -21,7 +21,14 @@ namespace QRscanner
 
 
         }
-     
 
+        private async void SubmitButton_Clicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new NavigationPage(new MainPage());
+            await App.Current.MainPage.Navigation.PopAsync();
+
+        }
+
+       
     }
 }
