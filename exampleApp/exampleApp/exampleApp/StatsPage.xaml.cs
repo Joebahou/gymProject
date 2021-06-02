@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,11 +76,11 @@ namespace exampleApp
                     Console.WriteLine(rdr[0].ToString() + rdr.ToString());
                     machines.Add(rdr[0]);
                     
-                }
-                rdr.Close();
+                }                
                 machinesListView.ItemsSource = machines;
             }
-            
+            rdr.Close();
+
         }
 
         private void TimesUsingMachine()
@@ -102,10 +102,10 @@ namespace exampleApp
                     long machineNumUses = (long) rdr[1];
                     MachineNumUses.Add(Tuple.Create(machineName, machineNumUses));
 
-                }
-                rdr.Close();
+                }                
                 machinesListView.ItemsSource = MachineNumUses;
             }
+            rdr.Close();
             List<ChartEntry> entries = new List<ChartEntry>();
             foreach (Tuple<string, long> tuple in MachineNumUses)
             {
@@ -254,9 +254,9 @@ namespace exampleApp
                     {
                         MachineNames.Add(rdr[0].ToString());
                     }
-                }
-                rdr.Close();
+                }                
             }
+            rdr.Close();
             pickerMachines.Items.Clear();
             foreach (string name in MachineNames)
             {
