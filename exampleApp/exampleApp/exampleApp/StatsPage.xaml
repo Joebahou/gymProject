@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             x:Class="exampleApp.StatsPage"
+             Title="Statistics">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to Statistics Page"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start" />
+            <Entry Placeholder="First Enter Your Name Here"
+                   Completed="Entry_Completed"
+                   x:Name="textboxName"></Entry>
+            <Picker x:Name="pickerMachines" 
+                    Title="If You Want Machine Statistics Choose The Machine Here"
+                    IsVisible="false"
+                    SelectedIndexChanged="pickerMachines_SelectedIndexChanged"></Picker>
+            <Picker x:Name="pickerStats" Title="Choose the Statistics You Are Interested In"
+                    SelectedIndexChanged="pickerStats_SelectedIndexChanged"></Picker>
+            <microcharts:ChartView x:Name="chartViewBar" HeightRequest="300" />
+            <ListView x:Name="machinesListView"/>
+            
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

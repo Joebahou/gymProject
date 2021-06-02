@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microcharts.Forms" Version="0.9.5.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.6" />
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.31.0" />
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.25.0" />

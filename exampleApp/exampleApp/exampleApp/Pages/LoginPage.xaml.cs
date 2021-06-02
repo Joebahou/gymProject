@@ -31,5 +31,10 @@ namespace exampleApp.Pages
                 vm.SubmitCommand.Execute(null);
             };
         }
+
+        private void statisticsButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new StatsPage());
+        }
     }
 }

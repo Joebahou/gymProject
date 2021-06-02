@@ -8,6 +8,7 @@
             
             <Frame BackgroundColor="#BF043055" HasShadow="False">
                 <StackLayout Orientation="Vertical" Spacing="10">
+                    <Label Text="Welcome to Our GymApp!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
                     <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Email"   
                            PlaceholderColor="White" HeightRequest="40"   
                            Keyboard="Email"  
@@ -21,6 +22,9 @@
             <Button Command="{Binding SubmitCommand}" Text="Login" TextColor="White"  
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                     BackgroundColor="#088da5" />
+            <Button x:Name="statisticsButton"
+                    Text="Go to Statistics Page"
+                    Clicked="statisticsButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
