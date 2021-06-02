@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.homePage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Logout" Clicked="OnLogout_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text= "{Binding Name_log}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"></Label>
+            <Button x:Name="statisticsButton"
+                    Text="Go to Statistics Page"
+                    Clicked="statisticsButton_Clicked"></Button>
+            <Button x:Name="machinesButton"
+                    Text="Go to Available Machines Page"
+                    Clicked="machinesButton_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

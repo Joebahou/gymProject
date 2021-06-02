@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:exampleApp.ViewModels"
              x:Class="exampleApp.Page1">
 
     <ContentPage.ToolbarItems>
@@ -8,9 +9,14 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Availability Of Devices In real time"
+            <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Label Text= "{Binding Name_log}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand">
+          
+            </Label>
             <Label Text="1"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
@@ -30,6 +36,8 @@
          WidthRequest="150"
          HeightRequest="150"
         HorizontalOptions="Center" VerticalOptions="Center" ></Ellipse>
+
+     
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

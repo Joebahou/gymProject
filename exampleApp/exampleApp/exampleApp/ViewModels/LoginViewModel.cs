@@ -3,13 +3,30 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Runtime.CompilerServices;
 
 namespace exampleApp.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
         public Action DisplayInvalidLoginPrompt;
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged;
+        public static int id_member_login=0;
+        private  string name_login;
+
+        public  string Name_login
+        {
+            get { return name_login; }
+            set
+            {
+                name_login = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Name_login"));
+
+            }
+        }
+
+
+
         private string email;
         public string Email
         {
@@ -51,7 +68,7 @@ namespace exampleApp.ViewModels
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT email,password FROM gym_schema.members;";
+                    command.CommandText = @"SELECT email,password,idmember,name  FROM gym_schema.members;";
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -61,7 +78,11 @@ namespace exampleApp.ViewModels
                             if(email == email_DB && password == password_DB)
                             {
                                 found = true;
+                                id_member_login = reader.GetInt32(2);
+                                name_login=reader.GetString(3);
                                 //need to save info on app
+                                Models.User.Name = name_login;
+                                Models.User.Id = id_member_login;
                             }
                        
 
@@ -79,13 +100,16 @@ namespace exampleApp.ViewModels
             }
             else
             {
-                Application.Current.MainPage = new NavigationPage(new Page1());
+                Application.Current.MainPage = new NavigationPage(new Pages.homePage());
                 await App.Current.MainPage.Navigation.PopAsync();
 
                 //await App.Current.MainPage.Navigation.PushAsync(new Page1());
 
-
             }
         }
+
+     
+
+     
     }
 }

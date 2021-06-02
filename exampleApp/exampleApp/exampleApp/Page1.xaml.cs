@@ -14,6 +14,7 @@ using Color = Xamarin.Forms.Color;
 using Xamarin.Forms.Maps;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Essentials;
+using System.ComponentModel;
 
 namespace exampleApp
 {
@@ -21,10 +22,24 @@ namespace exampleApp
     public partial class Page1 : ContentPage
     {
         public static HubConnection connection;
-        
+        private string name_log;
+        public string Name_log
+        {
+            get { return name_log; }
+            set
+            {
+                name_log = value;
+               // PropertyChanged(this, new PropertyChangedEventArgs("Name_login"));
+
+            }
+        }
+
         public Page1()
         {
             InitializeComponent();
+            Name_log = Models.User.Name;
+            BindingContext = this;
+
             
             set_color();
           
