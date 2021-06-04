@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using MySqlConnector;
 
 namespace QRscanner
 {
@@ -15,15 +17,13 @@ namespace QRscanner
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new MainPage());
+
+            MainPage = new NavigationPage(new welcomePage());
         }
 
-        protected override async void OnStart()
+        protected override void OnStart()
         {
             finished = false;
-            await QRscanner.MainPage.connection.StartAsync();
-            
-
         }
 
         protected override void OnSleep()

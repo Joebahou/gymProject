@@ -21,7 +21,6 @@ namespace QRscanner
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
         public static HubConnection connection;
         ZXingScannerPage scanPage;
-        public static int id_machine = 7;
         public static int id_member;
         int[] data = new int[5];
         
@@ -37,7 +36,7 @@ namespace QRscanner
         {
             InitializeComponent();
             String caching_msg = "";
-            data[1] = id_machine;
+            data[1] = MainPage.id_machine;
             data[2] = 0;
             data[3] = 0;
             data[4] = 0;
@@ -74,7 +73,7 @@ namespace QRscanner
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             //THE MSG ISNT SHOWNG ON THE SCREEN, PLS FIX
-                            caching_msg = "id_member = " + App.member_from_table + " is using id machine " + id_machine;
+                            caching_msg = "id_member = " + App.member_from_table + " is using id machine " + MainPage.id_machine;
                             await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
                         });
                     }

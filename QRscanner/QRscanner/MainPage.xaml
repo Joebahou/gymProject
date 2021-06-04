@@ -7,7 +7,6 @@
         <Label Text="Welcome to QR scanner!"
                VerticalOptions="Center"
                HorizontalOptions="Center"/>
-        <Button x:Name="ButtonScanDefault" Text="Scan QR" IsVisible="false"/>
         <Button x:Name="scanButton" Text="Start Scan" Clicked="scanButton_Clicked"/>
 
     </StackLayout>

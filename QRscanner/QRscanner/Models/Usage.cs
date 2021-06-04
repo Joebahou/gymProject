@@ -70,7 +70,7 @@ namespace QRscanner.Models
         {
 
             data[0] = StartScanPage.id_member;
-            data[1] = StartScanPage.id_machine;
+            data[1] = MainPage.id_machine;
             data[2] = additional_info(weight_or_speed);
             data[3] = additional_info(reps);
             data[4] = additional_info(sets);
