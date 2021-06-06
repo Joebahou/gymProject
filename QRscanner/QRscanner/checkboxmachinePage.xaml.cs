@@ -62,7 +62,8 @@ namespace QRscanner
                             Orientation = StackOrientation.Horizontal,
                             Children =
                                 {
-                              button,
+                                new StackLayout { VerticalOptions = LayoutOptions.Center, Spacing = 0, Children = { button } },
+                             
 
                                     new StackLayout
                                     {
@@ -76,6 +77,8 @@ namespace QRscanner
 
                                         }
                                     }
+                                    
+
                                 }
                         }
                     };

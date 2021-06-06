@@ -27,7 +27,7 @@ namespace exampleApp.Pages
         public homePage()
         {
             InitializeComponent();
-            Name_log = Models.User.Name;
+            Name_log ="Hello "+ Models.User.Name;
             BindingContext = this;
 
         }
