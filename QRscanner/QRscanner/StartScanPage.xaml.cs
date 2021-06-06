@@ -83,9 +83,12 @@ namespace QRscanner
                     //the machine is free to use
                     Device.BeginInvokeOnMainThread(async () =>
                     {
-                  
-                        Application.Current.MainPage = new NavigationPage(new InfoUsage());
-                        await App.Current.MainPage.Navigation.PopAsync();
+
+                        await App.Current.MainPage.Navigation.PopModalAsync();
+                        //await App.Current.MainPage.Navigation.PopAsync();
+                        await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());
+                       
+
                     });
 
                 }

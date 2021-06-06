@@ -95,7 +95,7 @@ namespace QRscanner
                 }
             }
             await Navigation.PushAsync(new StartScanPage());
-            await App.Current.MainPage.Navigation.PopAsync();
+            
         }
     }
 }
