@@ -6,19 +6,21 @@
              Title="Statistics">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Statistics Page"
-                VerticalOptions="Start" 
-                HorizontalOptions="Start" />
-            <Entry Placeholder="First Enter Your Name Here"
-                   Completed="Entry_Completed"
-                   x:Name="textboxName"></Entry>
+            <Label Text="Please Select The Statistics You're interested in"
+                   TextColor="#fb8c00"                 
+                   HorizontalTextAlignment="Center"/>
             <Picker x:Name="pickerMachines" 
-                    Title="If You Want Machine Statistics Choose The Machine Here"
-                    IsVisible="false"
+                    Title="Select Machine - To see it's Statistics"                    
+                    TextColor="#fb8c00"
                     SelectedIndexChanged="pickerMachines_SelectedIndexChanged"></Picker>
-            <Picker x:Name="pickerStats" Title="Choose the Statistics You Are Interested In"
+            <Picker x:Name="pickerStats" Title="Choose the Statistics You Are Interested In"                    
+                    TextColor="#fb8c00"
                     SelectedIndexChanged="pickerStats_SelectedIndexChanged"></Picker>
             <microcharts:ChartView x:Name="chartViewBar" HeightRequest="300" />
+            <Label x:Name="explainLabel"
+                   TextColor="#fb8c00"
+                   HorizontalTextAlignment="Center"
+                   IsVisible="false"/>
             <ListView x:Name="machinesListView"/>
             
 

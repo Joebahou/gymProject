@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +22,16 @@ namespace exampleApp
         public StatsPage()
         {
             InitializeComponent();
-            Console.WriteLine("Hello-");
+            IdMember = Models.User.Id;
+            nameMember = Models.User.Name;
+            Console.WriteLine("Hello " + IdMember.ToString());
             ConnectDataBase();
-            
-        }
+            InitPickerStats();
+            pickerMachineInit();
 
+        }
+        private int IdMember;
+        private string nameMember;
         void InitPickerStats()
         {
             pickerStats.Items.Clear();
@@ -88,7 +93,7 @@ namespace exampleApp
             string cmd_text = $"select machines.name, count(*) " +
                 $"from usage_gym, machines, members " +
                 $"where machines.idmachine = usage_gym.idmachine and members.idmember = usage_gym.idmember " +
-                $"and members.name = '{textboxName.Text}' " +
+                $"and members.idmember = {IdMember} " +
                 $"group by usage_gym.idmachine order by count(*) desc ";
             List<Tuple<string, long>> MachineNumUses = new List<Tuple<string, long>>();
             MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
@@ -103,7 +108,7 @@ namespace exampleApp
                     MachineNumUses.Add(Tuple.Create(machineName, machineNumUses));
 
                 }                
-                machinesListView.ItemsSource = MachineNumUses;
+                //machinesListView.ItemsSource = MachineNumUses;
             }
             rdr.Close();
             List<ChartEntry> entries = new List<ChartEntry>();
@@ -113,7 +118,7 @@ namespace exampleApp
                 {
                     Label = tuple.Item1.ToString(),
                     ValueLabel = tuple.Item2.ToString(),
-                    Color = SKColor.Parse("#3498db")
+                    Color = SKColor.Parse("#ffca28")
                 };
                 entries.Add(ce);
             }
@@ -124,20 +129,24 @@ namespace exampleApp
                 ValueLabelOrientation = Orientation.Horizontal,
                 LabelTextSize = 40
             };
+            string explain = $"Hey {nameMember}! \n" +
+                    $" In the above graph you can see how many times you used each machine. \n" +
+                    $" So which machine is your favorite?";
+            explainLabel.Text = explain;            
+            explainLabel.IsVisible = true;
         }
 
         private void SoWperMachine()
         {
-            string machineName = pickerMachines.SelectedItem.ToString();
-            string memberName = textboxName.Text;
+            string machineName = pickerMachines.SelectedItem.ToString();            
             string cmd_text = $"select weight_or_speed, usage_gym.start " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
                 $"and machines.idmachine = usage_gym.idmachine " +
-                $"and members.name = '{memberName}' " +
+                $"and members.idmember = {IdMember} " +
                 $"and machines.name = '{machineName}' " +
                 $"limit 20";
-            Console.WriteLine("name = " + textboxName.Text + " machine= " + machineName);
+            Console.WriteLine("id = " + IdMember.ToString() + " machine= " + machineName);
             List<ChartEntry> entries = new List<ChartEntry>();
             List<Tuple<long, DateTime>> MachineNumUses = new List<Tuple<long, DateTime>>();
             MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
@@ -171,7 +180,7 @@ namespace exampleApp
                         {
                             Label = entry.Item2.ToString("d/M/yy"),
                             ValueLabel = entry.Item1.ToString(),
-                            Color = SKColor.Parse("#b455b6")
+                            Color = SKColor.Parse("#ffeb3b")
                         };
                         entries.Add(ce);
                     }                                        
@@ -183,7 +192,11 @@ namespace exampleApp
                     ValueLabelOrientation = Orientation.Horizontal,
                     LabelTextSize = 40                    
                 };
-                machinesListView.ItemsSource = MachineNumUses;
+                string explain = $"Hey {nameMember}! \n" +
+                    $" In the above graph you can see your progress with machine {machineName} over time";
+                explainLabel.Text = explain;                
+                explainLabel.IsVisible = true;
+                //machinesListView.ItemsSource = MachineNumUses;
             }
         }
 
@@ -198,51 +211,16 @@ namespace exampleApp
             pickerMachines.IsVisible = false;
             chartViewBar.Chart = null;
             machinesListView.ItemsSource = null;
+            explainLabel.IsVisible = false;
         }
-        private async void Entry_Completed(object sender, EventArgs e)
-        {
-            //fresh start
-            freshPage();
-            // checking if name is valid
-            bool valid = false;
-            string cmd_text = $"select members.idmember " +
-                $"from members " +
-                $"where members.name = '{textboxName.Text}' ";
-            MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    if (rdr[0] != DBNull.Value)
-                    {
-                        valid = true;
-                    }
-
-                }                
-            }
-            rdr.Close();
-            if (valid == true)
-            {
-                InitPickerStats();
-                pickerMachineInit(textboxName.Text);
-                pickerMachines.IsVisible = true;
-
-            }
-            else
-            {
-                //display alert
-                await DisplayAlert("Warning:", $"{textboxName.Text} Is Not A Valid Member! ", "Type Again");
-            }
-        }
-
-        private void pickerMachineInit(string memberName)
+     
+        private void pickerMachineInit()
         {
             string cmd_text = $"select distinct machines.name " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
                 $"and machines.idmachine = usage_gym.idmachine " +
-                $"and members.name = '{memberName}' ";
+                $"and members.idmember = {IdMember} ";
             List<string> MachineNames = new List<string>();
             MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
@@ -269,6 +247,7 @@ namespace exampleApp
             // fresh stats
             chartViewBar.Chart = null;
             machinesListView.ItemsSource = null;
+            explainLabel.IsVisible = false;
 
             if (pickerStats.SelectedIndex != -1)
             {
@@ -291,13 +270,10 @@ namespace exampleApp
             pickerStats.SelectedIndex = -1;            
             chartViewBar.Chart = null;
             machinesListView.ItemsSource = null;
-
-            if (!string.IsNullOrEmpty(textboxName.Text))
+            explainLabel.IsVisible = false;
+            if (!pickerStats.Items.Contains("Weight Or Speed History Per Machine"))
             {
-                if(!pickerStats.Items.Contains("Weight Or Speed History Per Machine"))
-                {
-                    pickerStats.Items.Add("Weight Or Speed History Per Machine");
-                }               
+                pickerStats.Items.Add("Weight Or Speed History Per Machine");
             }
         }
     }
