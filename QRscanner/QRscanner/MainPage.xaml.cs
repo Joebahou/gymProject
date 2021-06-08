@@ -18,10 +18,21 @@ namespace QRscanner
 {
     public partial class MainPage : ContentPage
     {
+        private string name_log;
+        public string Name_log
+        {
+            get { return name_log; }
+            set
+            {
+                name_log = value;
+
+
+            }
+        }
         public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
         public static HubConnection connection;
-        
+        public static string name_machine;
         public static int id_machine;
         public static int id_member;
         int[] data=new int[5];
@@ -35,7 +46,9 @@ namespace QRscanner
         };
         public MainPage()
         {
-                InitializeComponent();
+            InitializeComponent();
+            Name_log =name_machine;
+            BindingContext = this;
             /*if (App.finished)
             {
                 App.finished = false;

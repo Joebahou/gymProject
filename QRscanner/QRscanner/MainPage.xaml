@@ -4,9 +4,9 @@
              x:Class="QRscanner.MainPage">
 
     <StackLayout VerticalOptions="Center">
-        <Label Text="Welcome to QR scanner!"
-               VerticalOptions="Center"
-               HorizontalOptions="Center"/>
+        <Label Text= "{Binding Name_log}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"></Label>
         <Button x:Name="scanButton" Text="Start Scan" Clicked="scanButton_Clicked"/>
 
     </StackLayout>

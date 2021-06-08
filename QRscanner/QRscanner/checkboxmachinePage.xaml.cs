@@ -17,6 +17,15 @@ namespace QRscanner
         {
             String id = (sender as Button).Text;
             MainPage.id_machine = int.Parse(id);
+            foreach (Models.Machine m in machines_list)
+            {
+                if (m.Id_machine == MainPage.id_machine)
+                {
+                    MainPage.name_machine = m.Name;
+                    break;
+                }
+
+            }
             await Navigation.PushAsync(new MainPage());
         }
         public checkboxmachinePage()
