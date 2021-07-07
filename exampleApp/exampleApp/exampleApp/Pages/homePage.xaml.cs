@@ -35,7 +35,11 @@ namespace exampleApp.Pages
         {
             Navigation.PushAsync(new StatsPage());
         }
- 
+        private void scheduleButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new AllSchedule());
+        }
+
         private async void machinesButton_Clicked(object sender, EventArgs e)
         {
             UsedMachines.machines_list = new List<Models.Machine>();

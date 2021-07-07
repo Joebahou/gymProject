@@ -9,13 +9,19 @@
         <StackLayout>
             <Label Text= "{Binding Name_log}"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand"></Label>
+                HorizontalOptions="CenterAndExpand"
+                   FontSize="Large"
+                   HorizontalTextAlignment="Center"
+                   TextColor="Blue"></Label>
             <Button x:Name="statisticsButton"
                     Text="Go to Statistics Page"
                     Clicked="statisticsButton_Clicked"></Button>
             <Button x:Name="machinesButton"
                     Text="Go to Available Machines Page"
                     Clicked="machinesButton_Clicked"></Button>
+            <Button x:Name="scheduleButton"
+                    Text="See Schedule Page"
+                    Clicked="scheduleButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
