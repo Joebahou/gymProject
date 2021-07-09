@@ -22,7 +22,7 @@ namespace QRscanner
         public static HubConnection connection;
         ZXingScannerPage scanPage;
         public static int id_member;
-        int[] data = new int[5];
+        int[] dataUsage = new int[5];
         
         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
@@ -36,10 +36,10 @@ namespace QRscanner
         {
             InitializeComponent();
             String caching_msg = "";
-            data[1] = MainPage.id_machine;
-            data[2] = 0;
-            data[3] = 0;
-            data[4] = 0;
+            dataUsage[1] = MainPage.id_machine;
+            dataUsage[2] = 0;
+            dataUsage[3] = 0;
+            dataUsage[4] = 0;
             scanPage = new ZXingScannerPage();
             
             scanPage.OnScanResult += async (result) =>
@@ -53,14 +53,14 @@ namespace QRscanner
                     if (App.member_from_table == id_member)
                     {
                         //user is now finishing using the machine. do not enter the usagepage
-                        data[0] = id_member;
+                        dataUsage[0] = id_member;
                         //caching_msg = "id_member = " + id_member + " has finished using id machine " + id_machine;
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             App.finished = true;
                             await App.Current.MainPage.Navigation.PopModalAsync();
                             await Navigation.PopAsync();
-                            string messageJson = JsonConvert.SerializeObject(data);
+                            string messageJson = JsonConvert.SerializeObject(dataUsage);
                             Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                             await Client.SendEventAsync(message);
 
@@ -96,25 +96,11 @@ namespace QRscanner
 
             };
 
-                 
-                
-
+  
 
                 //need to add check if the machine is taken
                 //need to add navigation to submit button
                 //what happens when finish usage
-
-
-
-                /*data[0]=id_member;
-                data[1] = id_machine;
-                
-                string messageJson = JsonConvert.SerializeObject(data);
-                Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
-                await Client.SendEventAsync(message);*/
-                
-
-            
 
             Navigation.PushModalAsync(scanPage);
             

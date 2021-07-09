@@ -12,6 +12,7 @@ namespace exampleApp.ViewModels
         public Action DisplayInvalidLoginPrompt;
         public event PropertyChangedEventHandler PropertyChanged;
         public static int id_member_login=0;
+        public static int Ttype= 0;
         private  string name_login;
 
         public  string Name_login
@@ -68,7 +69,7 @@ namespace exampleApp.ViewModels
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT email,password,idmember,name  FROM gym_schema.members;";
+                    command.CommandText = @"SELECT email,password,idmember,name,type FROM gym_schema.members;";
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -80,9 +81,11 @@ namespace exampleApp.ViewModels
                                 found = true;
                                 id_member_login = reader.GetInt32(2);
                                 name_login=reader.GetString(3);
+                                Ttype = reader.GetInt32(4);
                                 //need to save info on app
                                 Models.User.Name = name_login;
                                 Models.User.Id = id_member_login;
+                                Models.User.Type = Ttype;
                             }
                        
 

@@ -12,7 +12,7 @@ namespace QRscanner.Models
 {
     class Usage : INotifyPropertyChanged
     {
-        public int[] data = new int[5];
+        public int[] dataUsage = new int[5];
         public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
 
@@ -69,14 +69,14 @@ namespace QRscanner.Models
         public async void OnSubmit()
         {
 
-            data[0] = StartScanPage.id_member;
-            data[1] = MainPage.id_machine;
-            data[2] = additional_info(weight_or_speed);
-            data[3] = additional_info(reps);
-            data[4] = additional_info(sets);
+            dataUsage[0] = StartScanPage.id_member;
+            dataUsage[1] = MainPage.id_machine;
+            dataUsage[2] = additional_info(weight_or_speed);
+            dataUsage[3] = additional_info(reps);
+            dataUsage[4] = additional_info(sets);
 
 
-            string messageJson = JsonConvert.SerializeObject(data);
+            string messageJson = JsonConvert.SerializeObject(dataUsage);
             Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
             await Client.SendEventAsync(message);
             

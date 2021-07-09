@@ -26,7 +26,7 @@ namespace EventHubFunction
                     command.Parameters.AddWithValue("@weight_or_speed", weight_or_speed);
                     command.Parameters.AddWithValue("@reps", reps);
                     command.Parameters.AddWithValue("@sets", sets);
-                    DateTime theDate = DateTime.Now;
+                    DateTime theDate = DateTime.Now.AddHours(3.0);
                     command.Parameters.AddWithValue("@start", theDate);
                     int rowCount = await command.ExecuteNonQueryAsync();
 
@@ -54,7 +54,7 @@ namespace EventHubFunction
                     command.CommandText = "UPDATE usage_gym SET end = @end WHERE idmember = @id_member AND idmachine = @id_machine;";
                     command.Parameters.AddWithValue("@id_member", id_member);
                     command.Parameters.AddWithValue("@id_machine", id_machine);
-                    command.Parameters.AddWithValue("@end", DateTime.Now);
+                    command.Parameters.AddWithValue("@end", DateTime.Now.AddHours(3.0));
                     int rowCount = await command.ExecuteNonQueryAsync();
                     
                 }
@@ -93,48 +93,66 @@ namespace EventHubFunction
                     string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
                     log.LogInformation($"C# Event Hub trigger function processed a message: {messageBody}");
                     string[] strID = messageBody.Split(spl);
-                    log.LogInformation(strID[1] +" "+ strID[2]);
-                    int id_member = Int32.Parse(strID[1]);
-                    int id_machine = Int32.Parse(strID[2]);
-                    int weight_or_speed = Int32.Parse(strID[3]);
-                    int reps = Int32.Parse(strID[4]);
-                    int sets = Int32.Parse(strID[5]);
-                    int num_usage = 0;
-                    using (var conn = new MySqlConnection(builder.ConnectionString))
-                     {
-
-                         await conn.OpenAsync();
-
-                         using (var command = conn.CreateCommand())
-                         {
-                             command.CommandText = "SELECT * FROM machines WHERE idmachine=@id_machine";
-                             command.Parameters.AddWithValue("@id_machine", id_machine);
-                           
-                             using (var reader = await command.ExecuteReaderAsync())
-                             {
-                                 while (await reader.ReadAsync())
-                                 {
-                                    num_usage = reader.GetInt32(2);
-                                         
-
-                                 }
-                             }
-                         }
-                         log.LogInformation(await updateDB(id_member, id_machine, num_usage, weight_or_speed, reps,sets,conn));
-
-                     }
-
-                    int[] msgupdate = new int[3];
-                    msgupdate[0] = id_machine;
-                    msgupdate[1] = 1 - num_usage;
-                    msgupdate[2] = id_member;
-
-                    await signalRMessages.AddAsync(
-                    new SignalRMessage
+                    int len = strID.Length;
+                    log.LogInformation(len.ToString());
+                    if (strID.Length < 4)
                     {
-                        Target = "newMessage",
-                        Arguments = new[] { msgupdate }
-                    });
+                        int[] help_msg = new int[1];
+                        int id_machine = Int32.Parse(strID[1]);
+                        help_msg[0] = id_machine;
+                        await signalRMessages.AddAsync(
+                        new SignalRMessage
+                        {
+                            Target = "helpMessage",
+                            Arguments = new[] { help_msg }
+                        });
+
+                    }
+                    else
+                    {
+                        log.LogInformation(strID[1] + " its an usage data not help " + strID[2]);
+                        int id_member = Int32.Parse(strID[1]);
+                        int id_machine = Int32.Parse(strID[2]);
+                        int weight_or_speed = Int32.Parse(strID[3]);
+                        int reps = Int32.Parse(strID[4]);
+                        int sets = Int32.Parse(strID[5]);
+                        int num_usage = 0;
+                        using (var conn = new MySqlConnection(builder.ConnectionString))
+                        {
+
+                            await conn.OpenAsync();
+
+                            using (var command = conn.CreateCommand())
+                            {
+                                command.CommandText = "SELECT * FROM machines WHERE idmachine=@id_machine";
+                                command.Parameters.AddWithValue("@id_machine", id_machine);
+
+                                using (var reader = await command.ExecuteReaderAsync())
+                                {
+                                    while (await reader.ReadAsync())
+                                    {
+                                        num_usage = reader.GetInt32(2);
+
+
+                                    }
+                                }
+                            }
+                            log.LogInformation(await updateDB(id_member, id_machine, num_usage, weight_or_speed, reps, sets, conn));
+
+                        }
+
+                        int[] msgupdate = new int[3];
+                        msgupdate[0] = id_machine;
+                        msgupdate[1] = 1 - num_usage;
+                        msgupdate[2] = id_member;
+
+                        await signalRMessages.AddAsync(
+                        new SignalRMessage
+                        {
+                            Target = "newMessage",
+                            Arguments = new[] { msgupdate }
+                        });
+                    }
 
 
 
