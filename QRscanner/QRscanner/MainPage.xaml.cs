@@ -106,7 +106,9 @@ namespace QRscanner
                             App.taken = reader.GetInt32(1);
                         }
                     }
+
                 }
+
                 
             }
             

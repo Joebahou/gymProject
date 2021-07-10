@@ -46,14 +46,13 @@ namespace exampleApp.Pages
             connection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
-                await connection.StartAsync();
+                
             };
 
             
             connection.On<int[]>("helpMessage", (help_msg) =>
             {
-                if (Models.User.Type == 1)
-                {
+                
                     MainThread.BeginInvokeOnMainThread(async () =>
                     {
 
@@ -63,7 +62,7 @@ namespace exampleApp.Pages
                     await App.Current.MainPage.DisplayAlert("HElP ME", resultusage, "OK");
 
                     });
-                }
+                
             });
             await connection.StartAsync();
         }

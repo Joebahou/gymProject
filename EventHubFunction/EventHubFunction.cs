@@ -61,7 +61,7 @@ namespace EventHubFunction
                 using (var command = conn.CreateCommand())
                 {
                     command.CommandText = "UPDATE machines SET taken = @taken,idmember=@id_member WHERE idmachine = @id_machine;";
-                    command.Parameters.AddWithValue("@id_member", id_member);
+                    command.Parameters.AddWithValue("@id_member", -1);
                     command.Parameters.AddWithValue("@id_machine", id_machine);
                     command.Parameters.AddWithValue("@taken", 1 - usage);
                     int rowCount = await command.ExecuteNonQueryAsync();

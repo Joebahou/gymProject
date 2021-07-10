@@ -23,7 +23,9 @@ namespace QRscanner
         ZXingScannerPage scanPage;
         public static int id_member;
         int[] dataUsage = new int[5];
-        
+        //id machine of the member who has been scanned, if none eaquals to -1
+        int id_machine_of_member=-1;
+
         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
             Server = "gymserver.mysql.database.azure.com",
@@ -40,6 +42,7 @@ namespace QRscanner
             dataUsage[2] = 0;
             dataUsage[3] = 0;
             dataUsage[4] = 0;
+           
             scanPage = new ZXingScannerPage();
             
             scanPage.OnScanResult += async (result) =>
@@ -50,6 +53,7 @@ namespace QRscanner
                 id_member = int.Parse(res);
                 if (App.taken == 1)
                 {
+                   
                     if (App.member_from_table == id_member)
                     {
                         //user is now finishing using the machine. do not enter the usagepage
@@ -80,16 +84,52 @@ namespace QRscanner
                 }
                 else
                 {
-                    //the machine is free to use
-                    Device.BeginInvokeOnMainThread(async () =>
+                    using (var conn = new MySqlConnection(builder.ConnectionString))
                     {
+                        conn.Open();
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE idmember = @id_member;";
+                            command.Parameters.AddWithValue("@id_member", id_member);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
 
-                        await App.Current.MainPage.Navigation.PopModalAsync();
+                                {
+                                    if (reader != null)
+                                        id_machine_of_member = reader.GetInt32(0);
+
+                                }
+                            }
+
+                        }
+
+                    }
+                    if (id_machine_of_member == -1)
+                    {
+                        //the machine is free to use. need to cheack that member is not using other machine at the same time
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+
+                            await App.Current.MainPage.Navigation.PopModalAsync();
                         //await App.Current.MainPage.Navigation.PopAsync();
                         await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());
-                       
 
-                    });
+
+                        });
+                    }
+                    else
+                    {
+                        //member is trying to use 2 machines at the same time
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+                            //THE MSG ISNT SHOWNG ON THE SCREEN, PLS FIX
+                            caching_msg = "you can't use more than one machine at the same time!";
+                            await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
+                            await App.Current.MainPage.Navigation.PopModalAsync();
+                            await App.Current.MainPage.Navigation.PopAsync();
+                        });
+                    }
 
                 }
 
