@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Microsoft.AspNetCore.SignalR.Client;
+using Xamarin.Essentials;
 
 namespace exampleApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class homePage : ContentPage
     {
+        public static HubConnection connection;
         private string name_log;
         public string Name_log
         {
@@ -29,7 +32,39 @@ namespace exampleApp.Pages
             InitializeComponent();
             Name_log ="Hello "+ Models.User.Name;
             BindingContext = this;
+            if (Models.User.Type == 1)
+            {
+                Set_signalR();
+            }
 
+        }
+        public async void Set_signalR()
+        {
+            connection = new HubConnectionBuilder()
+                .WithUrl("https://gymfuctions.azurewebsites.net/api")
+                .Build();
+            connection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                
+            };
+
+            
+            connection.On<int[]>("helpMessage", (help_msg) =>
+            {
+                
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+
+                    String resultusage = "";
+                    int helpM = help_msg[0];
+                    resultusage = "someone is asking for help in machine id " + helpM;
+                    await App.Current.MainPage.DisplayAlert("HElP ME", resultusage, "OK");
+
+                    });
+                
+            });
+            await connection.StartAsync();
         }
         private void statisticsButton_Clicked(object sender, EventArgs e)
         {
@@ -91,8 +126,10 @@ namespace exampleApp.Pages
 
         private async void OnLogout_Clicked(object sender, EventArgs e)
         {
+            await connection.StopAsync();
             Navigation.InsertPageBefore(new Pages.LoginPage(), this);
             await Navigation.PopAsync();
+            
         }
 
         

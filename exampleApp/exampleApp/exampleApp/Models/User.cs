@@ -29,6 +29,15 @@ namespace exampleApp.Models
                
             }
         }
-       
+        private static int type;
+        public static int Type
+        {
+            get { return type; }
+            set
+            {
+                type = value;
+
+            }
+        }
     }
 }

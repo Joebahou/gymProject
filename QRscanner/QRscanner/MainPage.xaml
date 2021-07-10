@@ -8,6 +8,7 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"></Label>
         <Button x:Name="scanButton" Text="Start Scan" Clicked="scanButton_Clicked"/>
+        <Button x:Name="helpButton" Text="Ask for help" Clicked="helpButton_Clicked"/>
 
     </StackLayout>
 

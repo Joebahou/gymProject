@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Essentials;
 using MySqlConnector;
 
+
 namespace QRscanner
 {
     public partial class MainPage : ContentPage
@@ -35,7 +36,7 @@ namespace QRscanner
         public static string name_machine;
         public static int id_machine;
         public static int id_member;
-        int[] data=new int[5];
+        int[] dataHelp=new int[1];
         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
             Server = "gymserver.mysql.database.azure.com",
@@ -88,7 +89,7 @@ namespace QRscanner
             await connection.StartAsync();
         }
 
-            private async void scanButton_Clicked(object sender, EventArgs e)
+        private async void scanButton_Clicked(object sender, EventArgs e)
         {
             using (var conn = new MySqlConnection(builder.ConnectionString))
             {
@@ -105,10 +106,27 @@ namespace QRscanner
                             App.taken = reader.GetInt32(1);
                         }
                     }
+
                 }
+
+                
             }
+            
             await Navigation.PushAsync(new StartScanPage());
             
+        }
+        public async void helpButton_Clicked(object sender, EventArgs e)
+        {
+            if (connection.State == HubConnectionState.Connected)
+            {
+                dataHelp[0] = id_machine;
+                string messageJson = JsonConvert.SerializeObject(dataHelp);
+                Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                await Client.SendEventAsync(message);
+                String resultusage = "A help message has been sent to all trainers";
+                await App.Current.MainPage.DisplayAlert("HElP ME", resultusage, "OK");
+            } 
+           
         }
     }
 }
