@@ -4,67 +4,89 @@
              x:Class="exampleApp.Pages.AllSchedule">
     <ContentPage.Content>
         <ScrollView Orientation="Horizontal">
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+            <StackLayout>
+                <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Frame BackgroundColor="Orange">
-            <Grid x:Name="scheduleTable">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                <Button x:Name="scheduleButton"
+                    Text="See Schedule Page"
+                    Clicked="scheduleButton_Clicked"></Button>
+                <Frame x:Name="frame" BackgroundColor="Orange">
+                    <Grid x:Name="scheduleTable">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
 
-                    </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0">ag</Label>
-                <Label Grid.Row="0" Grid.Column="1">bfrfr</Label>
-                <Label Grid.Row="0" Grid.Column="2">xfrf</Label>
-                <Label Grid.Row="0" Grid.Column="3">xfr</Label>
-                <Label Grid.Row="0" Grid.Column="4">xfrfrf</Label>
-                <Label Grid.Row="0" Grid.Column="5">xfrf</Label>
-                <Label Grid.Row="0" Grid.Column="6">xcdfer</Label>
-                <Label Grid.Row="0" Grid.Column="7">xregervre</Label>
-                <Label Grid.Row="0" Grid.Column="8">xgregrege</Label>
-                <Label Grid.Row="0" Grid.Column="9">xgrege</Label>
-                <Label Grid.Row="0" Grid.Column="10">grex</Label>
-                </Grid>
-            </Frame>
-                <ListView>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0">08:00-08:20</Label>
+                        <Label Grid.Row="0" Grid.Column="1">08:20-08:40</Label>
+                        <Label Grid.Row="0" Grid.Column="2">08:40-09:00</Label>
+                        <Label Grid.Row="0" Grid.Column="3">09:00-09:20</Label>
+                        <Label Grid.Row="0" Grid.Column="4">09:20-09:40</Label>
+                        <Label Grid.Row="0" Grid.Column="5">09:40-10:00</Label>
+                        <Label Grid.Row="0" Grid.Column="6">10:00-10:20</Label>
+                        <Label Grid.Row="0" Grid.Column="7">10:20-10:40</Label>
+                        <Label Grid.Row="0" Grid.Column="8">10:40-11:00</Label>
+                        <Label Grid.Row="0" Grid.Column="9">11:00-11:20</Label>
+                        <Label Grid.Row="0" Grid.Column="10">11:20-11:40</Label>
+                    </Grid>
+                </Frame>
+                <ListView x:Name="Peopleview"  ItemsSource="{Binding List_bind}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame>
+                                <ViewCell.View>
+
                                     <Grid>
-                                            <Label Grid.Row="0" Grid.Column="0"></Label>
-                                            <Label Grid.Row="0" Grid.Column="1"></Label>
-                                            <Label Grid.Row="0" Grid.Column="2"></Label>
-                                            <Label Grid.Row="0" Grid.Column="3"></Label>
-                                            <Label Grid.Row="0" Grid.Column="4"></Label>
-                                            <Label Grid.Row="0" Grid.Column="5"></Label>
-                                            <Label Grid.Row="0" Grid.Column="6"></Label>
-                                            <Label Grid.Row="0" Grid.Column="7"></Label>
-                                            <Label Grid.Row="0" Grid.Column="8"></Label>
-                                            <Label Grid.Row="0" Grid.Column="9"></Label>
-                                            <Label Grid.Row="0" Grid.Column="10"></Label>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[0]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[3]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[4]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[5]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[6]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[7]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[8]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[9]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[10]}"></Label>
                                     </Grid>
-                                </Frame>
+
+                                </ViewCell.View>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-      
-        </StackLayout>
+
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
