@@ -5,18 +5,17 @@
     <ContentPage.Content>
         <ScrollView Orientation="Horizontal">
             <StackLayout>
-                <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-                <Button x:Name="scheduleButton"
-                    Text="See Schedule Page"
-                    Clicked="scheduleButton_Clicked"></Button>
+                <Picker x:Name="pickerDate" 
+                    Title="Select Day to see it's schedule"                    
+                    TextColor="#fb8c00"
+                    SelectedIndexChanged="pickerDate_SelectedIndexChanged"></Picker>
                 <Frame x:Name="frame" BackgroundColor="Orange">
                     <Grid x:Name="scheduleTable">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="10*"></RowDefinition>
+                            <RowDefinition Height="20*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10*"></ColumnDefinition>
                             <ColumnDefinition Width="3*"></ColumnDefinition>
                             <ColumnDefinition Width="3*"></ColumnDefinition>
                             <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -30,17 +29,18 @@
                             <ColumnDefinition Width="3*"></ColumnDefinition>
 
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0">08:00-08:20</Label>
-                        <Label Grid.Row="0" Grid.Column="1">08:20-08:40</Label>
-                        <Label Grid.Row="0" Grid.Column="2">08:40-09:00</Label>
-                        <Label Grid.Row="0" Grid.Column="3">09:00-09:20</Label>
-                        <Label Grid.Row="0" Grid.Column="4">09:20-09:40</Label>
-                        <Label Grid.Row="0" Grid.Column="5">09:40-10:00</Label>
-                        <Label Grid.Row="0" Grid.Column="6">10:00-10:20</Label>
-                        <Label Grid.Row="0" Grid.Column="7">10:20-10:40</Label>
-                        <Label Grid.Row="0" Grid.Column="8">10:40-11:00</Label>
-                        <Label Grid.Row="0" Grid.Column="9">11:00-11:20</Label>
-                        <Label Grid.Row="0" Grid.Column="10">11:20-11:40</Label>
+                        <Label Grid.Row="0" Grid.Column="0" FontSize="20"> </Label>
+                        <Label Grid.Row="0" Grid.Column="1" FontSize="14">08:00</Label>
+                        <Label Grid.Row="0" Grid.Column="2" FontSize="14">08:20</Label>
+                        <Label Grid.Row="0" Grid.Column="3" FontSize="14">08:40</Label>
+                        <Label Grid.Row="0" Grid.Column="4" FontSize="14">09:00</Label>
+                        <Label Grid.Row="0" Grid.Column="5" FontSize="14">09:20</Label>
+                        <Label Grid.Row="0" Grid.Column="6" FontSize="14">09:40</Label>
+                        <Label Grid.Row="0" Grid.Column="7" FontSize="14">10:00</Label>
+                        <Label Grid.Row="0" Grid.Column="8" FontSize="14">10:20</Label>
+                        <Label Grid.Row="0" Grid.Column="9" FontSize="14">10:40</Label>
+                        <Label Grid.Row="0" Grid.Column="10" FontSize="14">11:00</Label>
+                        <Label Grid.Row="0" Grid.Column="11" FontSize="14">11:20</Label>
                     </Grid>
                 </Frame>
                 <ListView x:Name="Peopleview"  ItemsSource="{Binding List_bind}">
@@ -51,10 +51,10 @@
 
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="20*"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="10*"></ColumnDefinition>
                                             <ColumnDefinition Width="3*"></ColumnDefinition>
                                             <ColumnDefinition Width="3*"></ColumnDefinition>
                                             <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -67,7 +67,7 @@
                                             <ColumnDefinition Width="3*"></ColumnDefinition>
 
                                         </Grid.ColumnDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[0]}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="0"  BackgroundColor="Orange" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[0]} "></Label>
                                         <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
                                         <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>
                                         <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[3]}"></Label>

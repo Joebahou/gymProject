@@ -11,6 +11,7 @@ namespace exampleApp.Models
         private Color f_Color;
         private string name_;
         private int id_machine_;
+        public string[] schedule_machine;
         public event PropertyChangedEventHandler PropertyChanged;
         public Machine(string name, Color fColor, int id_machine)
         {
@@ -18,6 +19,22 @@ namespace exampleApp.Models
             f_Color = fColor;
             id_machine_ = id_machine;
 
+        }
+        public Machine(string name,  int id_machine)
+        {
+            name_ = name;
+            id_machine_ = id_machine;
+            Init_schedule();
+
+        }
+        public void Init_schedule()
+        {
+            schedule_machine= new string[38];
+            schedule_machine[0] = name_;
+            for(int i = 1; i <= 37; i++)
+            {
+                schedule_machine[i] = "";
+            }
         }
 
         public string Name {
@@ -29,8 +46,9 @@ namespace exampleApp.Models
 
             }
         }
+      
 
-     
+
         public int Id_machine {
             get { return id_machine_; }
             set
