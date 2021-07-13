@@ -28,11 +28,43 @@ namespace exampleApp.Pages
             dict_machines = new Dictionary<int, Models.Machine>();
             get_machines();
             Init_times();
+            Init_schedule_Table();
+           
 
 
 
 
 
+        }
+
+        public void Init_schedule_Table()
+        {
+            scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Star) });
+            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
+            for (int i = 1; i < 38; i++)
+            {
+                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(3, GridUnitType.Star) });
+
+            }
+            var label = new Label
+            {
+               
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                FontSize=20
+            };
+            scheduleTable.Children.Add(label, 0, 0);
+
+            foreach (string time in times.Keys){
+                label = new Label
+                {
+                    Text =time,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                    FontSize = 14
+                };
+                scheduleTable.Children.Add(label, times[time], 0);
+            }
         }
         private void Init_times()
         {

@@ -11,75 +11,102 @@
                     SelectedIndexChanged="pickerDate_SelectedIndexChanged"></Picker>
                 <Frame x:Name="frame" BackgroundColor="Orange">
                     <Grid x:Name="scheduleTable">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" FontSize="20"> </Label>
-                        <Label Grid.Row="0" Grid.Column="1" FontSize="14">08:00</Label>
-                        <Label Grid.Row="0" Grid.Column="2" FontSize="14">08:20</Label>
-                        <Label Grid.Row="0" Grid.Column="3" FontSize="14">08:40</Label>
-                        <Label Grid.Row="0" Grid.Column="4" FontSize="14">09:00</Label>
-                        <Label Grid.Row="0" Grid.Column="5" FontSize="14">09:20</Label>
-                        <Label Grid.Row="0" Grid.Column="6" FontSize="14">09:40</Label>
-                        <Label Grid.Row="0" Grid.Column="7" FontSize="14">10:00</Label>
-                        <Label Grid.Row="0" Grid.Column="8" FontSize="14">10:20</Label>
-                        <Label Grid.Row="0" Grid.Column="9" FontSize="14">10:40</Label>
-                        <Label Grid.Row="0" Grid.Column="10" FontSize="14">11:00</Label>
-                        <Label Grid.Row="0" Grid.Column="11" FontSize="14">11:20</Label>
+                     
                     </Grid>
                 </Frame>
+                
                 <ListView x:Name="Peopleview"  ItemsSource="{Binding List_bind}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
+                                
+                                        <Grid x:Name="grid_rows">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20*"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="10*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
 
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="20*"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="10*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0"  BackgroundColor="Orange" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[0]} "></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[3]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[4]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[5]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[6]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[7]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[8]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[9]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[10]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[11]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[12]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[13]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[14]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[15]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[16]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[17]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[18]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[19]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[20]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[21]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[22]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[23]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[24]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[25]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[26]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[27]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[28]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[29]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[30]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[31]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[32]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[33]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[34]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[35]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[36]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[37]}"></Label>
 
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0"  BackgroundColor="Orange" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[0]} "></Label>
-                                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[3]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[4]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[5]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[6]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[7]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[8]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[9]}"></Label>
-                                        <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[10]}"></Label>
-                                    </Grid>
-
+                                        </Grid>
+                                 
                                 </ViewCell.View>
                             </ViewCell>
                         </DataTemplate>
