@@ -29,6 +29,16 @@ namespace exampleApp.Models
                
             }
         }
+        private static List<Trainee> trainees;
+        public static List<Trainee> Trainees
+        {
+            get { return trainees; }
+            set
+            {
+               trainees = value;
+
+            }
+        }
         private static int type;
         public static int Type
         {

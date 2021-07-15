@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using MySqlConnector;
+using System.Windows.Input;
 
 namespace exampleApp.Pages
 {
@@ -13,10 +14,13 @@ namespace exampleApp.Pages
     {
         ObservableCollection<Temp> list_bind = new ObservableCollection<Temp>();
         public ObservableCollection<Temp> List_bind { get { return list_bind; } }
+        public ICommand Add_schedule_Command { get; set; }
+
         List<Models.Machine> machines;
         Dictionary<int, Models.Machine> dict_machines;
         Dictionary<string, int> times = new Dictionary<string, int>();
         MySqlConnection conn;
+        string selected_date_string;
         public  AllSchedule()
         {
             InitializeComponent();
@@ -29,21 +33,18 @@ namespace exampleApp.Pages
             get_machines();
             Init_times();
             Init_schedule_Table();
-           
-
-
-
-
-
+            
+      
         }
+        
 
         public void Init_schedule_Table()
         {
             scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Star) });
-            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
+            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30, GridUnitType.Star) });
             for (int i = 1; i < 38; i++)
             {
-                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(3, GridUnitType.Star) });
+                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(20, GridUnitType.Star) });
 
             }
             var label = new Label
@@ -175,27 +176,55 @@ namespace exampleApp.Pages
                 Console.WriteLine(ex.ToString());
             }
         }
-        private void scheduleButton_Clicked(object sender, EventArgs e)
+   
+        public void Add_schedule_button_command(object obj)
         {
-           /* list_bind = new ObservableCollection<Temp>();
-            Peopleview.ItemsSource = list_bind;
-            LString l_temp = new List<string>();
-           for(int i = 0; i <= 10; i++)
+
+        }
+        public void handle_clicked(Object sender, System.EventArgs e)
+        {
+            Button thebutton = (Button)sender;
+            int col = Grid.GetColumn(thebutton) - 1;
+            int hour=(col*20)/60 +8;
+            int minutes = (col * 20) % 60;
+            string time = "";
+            if (hour< 10)
             {
-                l_temp.Add(i.ToString());
+                if (minutes==0)
+                {
+                    time = "0" + hour + ":00";
+                }
+                else
+                {
+                    time = "0" + hour + ":" + minutes;
+                }
             }
-            list_bind.Add(new Temp { Li = l_temp });
-            list_bind.Add(new Temp { Li = l_temp });
-            frame.IsVisible = true;
-            Peopleview.IsVisible = true;*/
+            else
+            {
+                if (minutes==0)
+                {
+                    time = hour + ":00";
+                }
+                else
+                {
+                    time = hour.ToString() + ":" + minutes.ToString();
+                }
+            }
+            DateTime time_and_date = Convert.ToDateTime(selected_date_string +" "+ time);
+            Add_to_schedule.time_to_schedule = time_and_date;
+            Add_to_schedule.id_machine = (int)thebutton.CommandParameter;
+            Navigation.PushAsync(new Add_to_schedule());
+
         }
         public class Temp
         {
             public string[] Li { get; set; }
+            public bool[] button_arr { get; set; }
+            public int id_machine { get; set; }
         }
         private void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selected_date_string = pickerDate.SelectedItem.ToString();
+            selected_date_string = pickerDate.SelectedItem.ToString();
             DateTime selected_date = Convert.ToDateTime(selected_date_string);
             list_bind = new ObservableCollection<Temp>();
             Peopleview.ItemsSource = list_bind;
@@ -231,9 +260,24 @@ namespace exampleApp.Pages
 
 
             }
+           
+            
             foreach(Models.Machine machine in machines)
-            {
-                list_bind.Add(new Temp { Li = machine.schedule_machine });
+            { 
+                bool[] button_arr = new bool[38];
+                button_arr[0] = false;
+                for(int i = 1; i < 38; i++)
+                {
+                    if (machine.schedule_machine[i] != "")
+                    {
+                        button_arr[i] = false;
+                    }
+                    else
+                    {
+                        button_arr[i] = true;
+                    }
+                }
+                list_bind.Add(new Temp { Li = machine.schedule_machine,button_arr=button_arr ,id_machine=machine.Id_machine});
             }
 
 

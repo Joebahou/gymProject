@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.Add_to_schedule">
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Picker x:Name="picker_Trainee" 
+                    Title="Select trainee "                    
+                    TextColor="#fb8c00" SelectedIndexChanged="pickerDate_SelectedIndexChanged"></Picker>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
