@@ -7,7 +7,7 @@
 
             <Picker x:Name="picker_Trainee" 
                     Title="Select trainee "                    
-                    TextColor="#fb8c00" SelectedIndexChanged="pickerDate_SelectedIndexChanged"></Picker>
+                    TextColor="#fb8c00" SelectedIndexChanged="picker_Trainee_SelectedIndexChanged"></Picker>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
