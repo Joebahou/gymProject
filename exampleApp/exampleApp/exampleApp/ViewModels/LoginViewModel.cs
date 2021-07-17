@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 namespace exampleApp.ViewModels
 {
@@ -57,7 +58,7 @@ namespace exampleApp.ViewModels
         {
             var builder = new MySqlConnectionStringBuilder
             {
-                Server = "gymserver.mysql.database.azure.com",
+                Server = "gymservernew.mysql.database.azure.com",
                 Database = "gym_schema",
                 UserID = "gymAdmin",
                 Password = "gym1Admin",
@@ -88,6 +89,28 @@ namespace exampleApp.ViewModels
                                 Models.User.Type = Ttype;
                             }
                        
+
+                        }
+                    }
+
+
+
+                }
+                Models.User.Trainees = new List<Models.Trainee>();
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = @"SELECT idmember,name FROM members WHERE trainer=@id_member;";
+                    command.Parameters.AddWithValue("@id_member", Models.User.Id);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                           int id_trainee = reader.GetInt32(0);
+                           string name = reader.GetString(1);
+                           Models.Trainee temp = new Models.Trainee { Id = id_trainee, Name = name };
+                           Models.User.Trainees.Add(temp);
+
 
                         }
                     }
