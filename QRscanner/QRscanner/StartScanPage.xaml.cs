@@ -28,7 +28,7 @@ namespace QRscanner
 
         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
-            Server = "gymserver.mysql.database.azure.com",
+            Server = "gymservernew.mysql.database.azure.com",
             Database = "gym_schema",
             UserID = "gymAdmin",
             Password = "gym1Admin",
@@ -38,6 +38,8 @@ namespace QRscanner
         {
             InitializeComponent();
             String caching_msg = "";
+            DateTime scanning_time = DateTime.Now;
+
             dataUsage[1] = MainPage.id_machine;
             dataUsage[2] = 0;
             dataUsage[3] = 0;
@@ -103,11 +105,29 @@ namespace QRscanner
                             }
 
                         }
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE idmember = @id_member;";
+                            command.Parameters.AddWithValue("@id_member", id_member);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+
+                                {
+                                    if (reader != null)
+                                        id_machine_of_member = reader.GetInt32(0);
+
+                                }
+                            }
+
+                        }
 
                     }
+                    //the machine is free to use. need to cheack that member is not using other machine at the same time
                     if (id_machine_of_member == -1)
                     {
-                        //the machine is free to use. need to cheack that member is not using other machine at the same time
+                       // check if no other member has schudled the machine
+
                         Device.BeginInvokeOnMainThread(async () =>
                         {
 
@@ -118,9 +138,10 @@ namespace QRscanner
 
                         });
                     }
+                    //member is trying to use 2 machines at the same time
                     else
                     {
-                        //member is trying to use 2 machines at the same time
+                        
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             //THE MSG ISNT SHOWNG ON THE SCREEN, PLS FIX

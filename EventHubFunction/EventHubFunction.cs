@@ -78,7 +78,7 @@ namespace EventHubFunction
             var exceptions = new List<Exception>();
             var builder = new MySqlConnectionStringBuilder
             {
-                Server = "gymserver.mysql.database.azure.com",
+                Server = "gymservernew.mysql.database.azure.com",
                 Database = "gym_schema",
                 UserID = "gymAdmin",
                 Password = "gym1Admin",
