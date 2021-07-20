@@ -126,9 +126,13 @@ namespace exampleApp.Pages
 
         private async void OnLogout_Clicked(object sender, EventArgs e)
         {
-            await connection.StopAsync();
-            Navigation.InsertPageBefore(new Pages.LoginPage(), this);
-            await Navigation.PopAsync();
+            if (Models.User.Type == 1)
+            {
+                await connection.StopAsync();
+            }
+           
+            App.Current.MainPage.Navigation.InsertPageBefore(new Pages.LoginPage(), this);
+            await App.Current.MainPage.Navigation.PopAsync();
             
         }
 
