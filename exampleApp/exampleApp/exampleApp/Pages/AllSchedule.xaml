@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.AllSchedule">
+    <ContentPage.Content>
+        <ScrollView Orientation="Horizontal">
+            <StackLayout>
+                <Picker x:Name="pickerDate" 
+                    Title="Select Day to see it's schedule"                    
+                    TextColor="#fb8c00"
+                    SelectedIndexChanged="pickerDate_SelectedIndexChanged"></Picker>
+                <Frame x:Name="frame" BackgroundColor="Orange">
+                    <Grid x:Name="scheduleTable">
+                     
+                    </Grid>
+                </Frame>
+                
+                <ListView x:Name="Peopleview"  ItemsSource="{Binding List_bind}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                
+                                        <Grid x:Name="grid_rows">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20*"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+                                                <ColumnDefinition Width="20*"></ColumnDefinition>
+
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0"  BackgroundColor="Orange" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[0]} " ></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[3]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[4]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[5]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[6]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[7]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[8]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="9" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[9]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[10]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="11" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[11]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="12" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[12]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="13" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[13]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="14" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[14]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="15" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[15]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="16" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[16]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="17" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[17]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="18" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[18]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="19" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[19]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="20" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[20]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="21" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[21]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="22" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[22]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="23" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[23]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="24" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[24]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="25" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[25]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="26" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[26]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="27" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[27]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="28" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[28]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="29" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[29]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="30" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[30]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="31" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[31]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="32" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[32]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="33" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[33]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="34" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[34]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="35" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[35]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="36" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[36]}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="37" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[37]}"></Label>
+
+
+
+                                        <Button Grid.Row="0" Grid.Column="1"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[1]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="2"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[2]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}" ></Button>
+                                        <Button Grid.Row="0" Grid.Column="3"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[3]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="4"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[4]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="5"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[5]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="6" Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[6]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="7"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[7]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="8"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[8]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="9"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[9]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="10"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[10]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="11"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[11]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="12"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[12]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="13"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[13]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="14"  Text="Update"  VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[14]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="15"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[15]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="16"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[16]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="17"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[17]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="18"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[18]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="19"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[19]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="20"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[20]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="21"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[21]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="22"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[22]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="23"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[23]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="24"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[24]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="25"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[25]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="26"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[26]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="27"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[27]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="28"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[28]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="29"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[29]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="30"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[30]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="31"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[31]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="32"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[32]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="33"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[33]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="34"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[34]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="35"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[35]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="36"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[36]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        <Button Grid.Row="0" Grid.Column="37"  Text="Update" VerticalOptions="FillAndExpand" HorizontalOptions="Center" IsVisible="{Binding button_arr[37]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                    </Grid>
+                                 
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

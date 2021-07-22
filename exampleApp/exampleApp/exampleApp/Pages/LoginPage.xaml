@@ -22,9 +22,6 @@
             <Button Command="{Binding SubmitCommand}" Text="Login" TextColor="White"  
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                     BackgroundColor="#088da5" />
-            <Button x:Name="statisticsButton"
-                    Text="Go to Statistics Page"
-                    Clicked="statisticsButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.MachineStatsTrainee">
+    <ContentPage.Content>
+        <StackLayout>
+            <Picker x:Name="pickerMachines" 
+                    Title="Select Machine - To see it's Statistics"                    
+                    TextColor="Black"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    FontAttributes="Bold"                    
+                    Margin="20,10"
+                    SelectedIndexChanged="pickerMachines_SelectedIndexChanged"></Picker>
+            <Frame BackgroundColor="#f59c42" Padding="0" BorderColor="DarkSlateGray">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <BoxView WidthRequest="1" Grid.Row="0" Grid.Column="0"
+                             BackgroundColor="LightSlateGray" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand">
+
+                    </BoxView>
+                    <BoxView WidthRequest="1" Grid.Row="0" Grid.Column="1"
+                             BackgroundColor="LightSlateGray" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand">
+
+                    </BoxView>
+                    <BoxView WidthRequest="1" Grid.Row="0" Grid.Column="2"
+                             BackgroundColor="LightSlateGray" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand">
+
+                    </BoxView>
+                    <BoxView WidthRequest="1" Grid.Row="0" Grid.Column="3"
+                             BackgroundColor="LightSlateGray" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand">
+
+                    </BoxView>
+                    <BoxView WidthRequest="1" Grid.Row="0" Grid.Column="4"
+                             BackgroundColor="LightSlateGray" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand">
+
+                    </BoxView>
+                    <BoxView WidthRequest="1" Grid.Row="0" Grid.Column="5"
+                             BackgroundColor="LightSlateGray" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand">
+
+                    </BoxView>
+                    <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">Sets</Label>
+                    <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">Reps</Label>
+                    <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center">Speed/Weight</Label>
+                    <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Center">Start</Label>
+                    <Label Grid.Row="0" Grid.Column="4" HorizontalOptions="Center">Finish</Label>
+                    <Label Grid.Row="0" Grid.Column="5" HorizontalOptions="Center">Date</Label>
+                </Grid>
+            </Frame>
+            <ListView x:Name="MachineStatsListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame BorderColor="LightSlateGray" Padding="0" BackgroundColor="Transparent">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Text="{Binding Sets}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Text="{Binding Reps}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Text="{Binding WeightOrSpeed}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Center" Text="{Binding Start}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="4" HorizontalOptions="Center" Text="{Binding End}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Text="{Binding Date}"></Label>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

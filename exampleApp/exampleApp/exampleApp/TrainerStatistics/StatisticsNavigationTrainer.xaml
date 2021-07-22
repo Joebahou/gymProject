@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.TrainerStatistics.StatisticsNavigationTrainer">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Select The Statistics You Are Interested In"
+                   Margin="50,20"
+                   TextColor="Black"
+                   FontSize="Large"></Label>
+            <Button x:Name="StatsPerTrainee"
+                    Text="Check Detailed Statistics Per Trainee"
+                    Margin="10,10"
+                    Clicked="StatsPerTrainee_Clicked"></Button>
+            <Button x:Name="StatsPerGender"
+                    Text="Show Gender Statistics"
+                    Margin="10,10"
+                    Clicked="StatsPerGender_Clicked"></Button>
+            <Button x:Name="StatsPerAge"
+                    Text="Show Age Statistics"
+                    Margin="10,10"
+                    Clicked="StatsPerAge_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

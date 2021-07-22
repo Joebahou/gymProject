@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             x:Class="exampleApp.TrainerStatistics.StatsPerAge">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Here you can see the distribution of trainess you have per age"
+                   Margin="0,5" FontSize="Large" TextColor="Black"></Label>
+            <microcharts:ChartView x:Name="chartViewPie" HeightRequest="300" Margin="5,0"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
