@@ -65,6 +65,9 @@ namespace exampleApp.TrainerStatistics
             }
         }
 
+        /*This method gets the Trainees list of the specifiec trainer
+         by 4 different orderd list that contains id, name, age and gender of every trainee*/
+
         private void getTrainees()
         {
             string cmd_text = $"select idmember, name, gender, age " +

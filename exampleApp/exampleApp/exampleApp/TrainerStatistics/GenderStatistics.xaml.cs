@@ -20,6 +20,7 @@ namespace exampleApp.TrainerStatistics
             showGenderCount();
         }
 
+        /*This method uses the lists built in the statisticsNavigationTrainer*/
         private void showGenderCount()
         {
             int femaleCount = 0;

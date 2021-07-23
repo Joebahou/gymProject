@@ -55,6 +55,8 @@ namespace exampleApp.OwnerStatistics
             }
         }
 
+        /*This method gets the popularity of every hour exists in the usage database
+         and present it in the microchart*/
         private void HoursPop()
         {
             string cmd_text = $"SELECT hour(usage_gym.start) as h, count(*) " +

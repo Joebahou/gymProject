@@ -53,7 +53,8 @@ namespace exampleApp.OwnerStatistics
                 Console.WriteLine(ex.ToString());
             }
         }
-
+        /*This method gets the popularity of every machine
+         and present it in the microchart*/
         private void MachinesPop()
         {
             string cmd_text = $"select machines.name, count(*) " +

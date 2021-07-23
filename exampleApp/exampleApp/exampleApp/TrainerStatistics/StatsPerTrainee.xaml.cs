@@ -20,7 +20,7 @@ namespace exampleApp.TrainerStatistics
             idTrainee = -1;
             pickerTrainees.ItemsSource = StatisticsNavigationTrainer.TraineesListNames;
         }
-
+        /*This method uses the lists built in the statisticsNavigationTrainer*/
         private void pickerTrainees_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = pickerTrainees.SelectedIndex;

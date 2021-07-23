@@ -18,6 +18,8 @@ namespace exampleApp.TrainerStatistics
             InitializeComponent();
             showAgeCount();
         }
+
+        /*This method uses the lists built in the statisticsNavigationTrainer*/
         private void showAgeCount()
         {
             int Count1625 = 0;

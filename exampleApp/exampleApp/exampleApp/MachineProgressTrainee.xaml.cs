@@ -107,6 +107,7 @@ namespace exampleApp
 
         }
 
+        /*this method load the machine progress to microchart*/
         private void MachineUploadProgress(string machineName)
         {
             string cmd_text = $"select weight_or_speed, usage_gym.start " +
@@ -194,7 +195,8 @@ namespace exampleApp
         {
             DateEnd = DatePickerEnd.Date;
         }
-
+        
+        /*check if the user selected the required fields*/
         private bool CheckAllSelected()
         {
             if (pickerMachines.SelectedIndex == -1)
