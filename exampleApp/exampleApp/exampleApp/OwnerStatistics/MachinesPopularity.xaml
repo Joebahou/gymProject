@@ -5,9 +5,21 @@
              x:Class="exampleApp.OwnerStatistics.MachinesPopularity">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Here you can see the number of uses per machine"
-                   Margin="0,5" FontSize="Large" TextColor="Black"></Label>
-            <microcharts:ChartView x:Name="chartViewBar" HeightRequest="380" Margin="0,20"/>
+            <ScrollView>
+                <StackLayout>
+                    <Label Text="Here you can see the number of uses per machine"
+                           Margin="0,5" FontSize="Large" TextColor="Black"></Label>
+                    <Label Text="Select Start Date" HorizontalOptions="Center" TextColor="Black" Margin="0"></Label>
+                    <DatePicker x:Name="DatePickerStart" HorizontalOptions="Center" Margin="0"
+                                DateSelected="DatePickerStart_DateSelected"></DatePicker>
+                    <Label Text="Select End Date" HorizontalOptions="Center" TextColor="Black" Margin="0"></Label>
+                    <DatePicker x:Name="DatePickerEnd" HorizontalOptions="Center" Margin="0"
+                                DateSelected="DatePickerEnd_DateSelected"></DatePicker>
+                    <Button x:Name="ButtonShowPop"  HorizontalOptions="Center" Text="Show Machine Popularity" 
+                            Clicked="ButtonShowPop_Clicked" Margin="0"></Button>
+                    <microcharts:ChartView x:Name="chartViewBar" HeightRequest="380" Margin="0"/>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

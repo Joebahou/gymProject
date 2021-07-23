@@ -9,7 +9,7 @@
                 <StackLayout>
                     <Label Text="Here you can see which are the busiest hours of the day (1-24)"
                            Margin="0,5" FontSize="Large" TextColor="Black"></Label>
-                    <microcharts:ChartView x:Name="chartViewPie" HeightRequest="300"/>
+                    <microcharts:ChartView x:Name="chartViewPie" HeightRequest="280"/>
                 </StackLayout>
             </ScrollView>
         </StackLayout>

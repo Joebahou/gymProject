@@ -22,9 +22,13 @@ namespace exampleApp.OwnerStatistics
         public MachinesPopularity()
         {
             InitializeComponent();
-            ConnectDataBase();
-            MachinesPop();
+            ConnectDataBase();            
         }
+
+        private DateTime DateStart = DateTime.Now;
+        private DateTime DateEnd = DateTime.Now;
+
+        /*connect to dataBase*/
         private MySqlConnection conn;
         private void ConnectDataBase()
         {
@@ -57,11 +61,15 @@ namespace exampleApp.OwnerStatistics
          and present it in the microchart*/
         private void MachinesPop()
         {
+            string start_date = DateStart.ToString("yyyy-MM-dd");
+            string end_date = DateEnd.ToString("yyyy-MM-dd");
             string cmd_text = $"select machines.name, count(*) " +
                 $"from usage_gym, machines " +
                 $"where machines.idmachine = usage_gym.idmachine " +
+                $"and date(usage_gym.start) >= '{start_date}' " +
+                $"and date(usage_gym.start) <= '{end_date}' " +
                 $"group by usage_gym.idmachine order by count(*) desc ";
-            List<Tuple<string, long>> MachineNumUses = new List<Tuple<string, long>>();
+            List<Tuple<string, long>> MachineNumUses = new List<Tuple<string, long>>();            
             MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.HasRows)
@@ -71,14 +79,14 @@ namespace exampleApp.OwnerStatistics
                     string machineName = (string)rdr[0];
                     Console.WriteLine(machineName);
                     long machineNumUses = (long)rdr[1];
-                    MachineNumUses.Add(Tuple.Create(machineName, machineNumUses));
-
+                    MachineNumUses.Add(Tuple.Create(machineName, machineNumUses));                    
                 }                
             }
             rdr.Close();
+            int count = 0;
             List<ChartEntry> entries = new List<ChartEntry>();
             foreach (Tuple<string, long> tuple in MachineNumUses)
-            {
+            {                
                 string machine_name = tuple.Item1.ToString();
                 string new_name = machine_name.Replace('_', ' ');
                 ChartEntry ce = new ChartEntry(tuple.Item2)
@@ -98,6 +106,21 @@ namespace exampleApp.OwnerStatistics
                 LabelTextSize = 40,                
                 BackgroundColor = SKColor.Parse("#00ffffff")
             };            
+        }
+
+        private void DatePickerStart_DateSelected(object sender, DateChangedEventArgs e)
+        {
+            DateStart = DatePickerStart.Date;
+        }
+
+        private void DatePickerEnd_DateSelected(object sender, DateChangedEventArgs e)
+        {
+            DateEnd = DatePickerEnd.Date;
+        }
+
+        private void ButtonShowPop_Clicked(object sender, EventArgs e)
+        {
+            MachinesPop();
         }
     }
 }

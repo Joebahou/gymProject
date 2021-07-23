@@ -50,6 +50,7 @@ namespace exampleApp
             public string End { get; set; }
             public string Date { get; set; }
         }
+
         /*connect to data base*/
         MySqlConnection conn;
         private void ConnectDataBase()

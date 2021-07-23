@@ -106,8 +106,8 @@ namespace exampleApp.OwnerStatistics
             chartViewPie.Chart = new RadarChart
             {
                 Entries = entries,              
-                LabelTextSize = 38,
-                PointSize = 25,
+                LabelTextSize = 30,
+                PointSize = 20,
                 PointMode = PointMode.Circle,
                 BackgroundColor = SKColor.Parse("#00ffffff")
             };
