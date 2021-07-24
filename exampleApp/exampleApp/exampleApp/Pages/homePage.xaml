@@ -28,6 +28,9 @@
                    
             </Button>
             
+            <Button x:Name="scheduleForTrainerButton"
+                    Text="See Schedule of yours trainees Page"
+                    Clicked="schedule_for_trainerButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
