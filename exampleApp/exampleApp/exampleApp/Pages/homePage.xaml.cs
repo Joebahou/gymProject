@@ -78,6 +78,10 @@ namespace exampleApp.Pages
         {
             Navigation.PushAsync(new AllSchedule());
         }
+        private void schedule_for_trainerButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new Schedule_for_trainer());
+        }
 
         private async void machinesButton_Clicked(object sender, EventArgs e)
         {

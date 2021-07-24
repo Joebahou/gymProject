@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.Schedule_for_trainer">
+    <ContentPage.Content> 
+        <ScrollView Orientation="Horizontal">
+            <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <StackLayout>
+
+                    <Grid x:Name="grid_rows">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*" ></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
+                            <ColumnDefinition Width="300*"></ColumnDefinition>
+                            <ColumnDefinition Width="350*"></ColumnDefinition>
+                            <ColumnDefinition Width="250*"></ColumnDefinition>
+                            <ColumnDefinition Width="350*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <BoxView Grid.Row="0" Grid.Column="0" Color="Purple" Grid.ColumnSpan="4"></BoxView>
+
+                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id</Label>
+                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name</Label>
+                        <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
+                        <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">date time</Label>
+                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">edit</Label>
+                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center">delete</Label>
+                    </Grid>
+                    <ListView x:Name="Schedule_view" ItemsSource="{Binding List_bind}" RowHeight="100" >
+                        <ListView.ItemTemplate >
+                            <DataTemplate >
+                                <ViewCell  >
+                                    <ViewCell.View>
+                                        <Grid Padding="10" >
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="200*" ></RowDefinition>
+
+
+
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200*"></ColumnDefinition>
+                                                <ColumnDefinition Width="200*"></ColumnDefinition>
+                                                <ColumnDefinition Width="300*"></ColumnDefinition>
+                                                <ColumnDefinition Width="350*"></ColumnDefinition>
+                                                <ColumnDefinition Width="250*"></ColumnDefinition>
+                                                <ColumnDefinition Width="350*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+
+                                            <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="6" ></BoxView>
+                                            <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="6" ></BoxView>
+                                            <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_trainee}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_trainee}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding date_time_string}"></Label>
+                                            <Button Grid.Row="0" Grid.Column="4" Text="edit"  Clicked="edit_clicked" ></Button>
+                                            <Button Grid.Row="0" Grid.Column="5" Text="delete" Clicked="delete_clicked" ></Button>
+
+
+                                        </Grid>
+
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </StackLayout>
+                <ContentView x:Name="popupEdit" IsVisible="false" BackgroundColor="#C0808080"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All" >
+                    <StackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         WidthRequest="200"
+                         HeightRequest="200" BackgroundColor="White" >
+
+                        <Picker x:Name="picker_Trainee" Margin="20, 0,20 ,0"  SelectedItem="{Binding Selected_trainee,Mode=TwoWay}" ItemsSource="{Binding List_trainee_bind}">
+                 
+                        </Picker>
+                        <StackLayout Orientation="Horizontal">
+                            <Button Text="cancel" Clicked="click_button_cancel"></Button>
+                        <Button Text="save" Clicked="click_button_save"></Button>
+                        </StackLayout>
+                        
+                    </StackLayout>
+
+
+                </ContentView>
+            </AbsoluteLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
