@@ -24,10 +24,9 @@
                     Value="Medium" />
             <Setter Property="FontAttributes"
                     Value="Bold" />
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource AppPrimaryColor}" />
+            
             <Setter Property="TextColor"
-                    Value="{StaticResource SecondaryColor}" />
+                    Value="OrangeRed" />
             <Setter Property="CornerRadius"
                     Value="5"/>
             <Setter Property="HorizontalOptions"

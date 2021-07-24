@@ -27,18 +27,25 @@ namespace exampleApp.Pages
 
             }
         }
+        public Boolean IsOwner { get; set; }
         public homePage()
         {
             InitializeComponent();
             Name_log ="Hello "+ Models.User.Name;
-            BindingContext = this;
+            
             if (Models.User.Type == 1)
             {
-                Set_signalR();
+                Set_signalR_to_trainer();
             }
-
+            if (Models.User.Type == 2)
+            {
+                Set_signalR_to_owner();
+                IsOwner = true;
+                
+            }
+            BindingContext = this;
         }
-        public async void Set_signalR()
+        public async void Set_signalR_to_trainer()
         {
             this.connection = new HubConnectionBuilder()
                 .WithUrl("https://gymfuctions.azurewebsites.net/api")
@@ -70,6 +77,38 @@ namespace exampleApp.Pages
             });
             await this.connection.StartAsync();
         }
+        public async void Set_signalR_to_owner()
+        {
+            this.connection = new HubConnectionBuilder()
+                .WithUrl("https://gymfuctions.azurewebsites.net/api")
+                .Build();
+            this.connection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+
+            };
+
+
+            this.connection.On<int[]>("BrokenMachine", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+                    if (Models.User.Type == 2)
+                    {
+                        String resultusage = "";
+                        
+                        resultusage = "id machine "+ broken_msg[0]+" isn't working";
+                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                    }
+
+
+                });
+
+            });
+            await this.connection.StartAsync();
+        }
         private void statisticsButton_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new StatsPage());
@@ -97,7 +136,7 @@ namespace exampleApp.Pages
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT idmachine,taken,name FROM gym_schema.machines;";
+                    command.CommandText = @"SELECT idmachine,taken,name,working FROM gym_schema.machines;";
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -105,18 +144,26 @@ namespace exampleApp.Pages
                             int id_machine = reader.GetInt32(0);
                             int taken = reader.GetInt32(1);
                             string name = reader.GetString(2);
+                            int available= reader.GetInt32(3);
                             Models.Machine temp;
-                            if (taken == 0)
+                            if (available == 1)
                             {
-                                temp = new Models.Machine(name, Color.Green, id_machine);
+                                if (taken == 0)
+                                {
+                                    temp = new Models.Machine(name, Color.Green, id_machine);
 
+                                }
+                                else
+                                {
+                                    temp = new Models.Machine(name, Color.Red, id_machine);
+                                }
+                                
                             }
                             else
                             {
-                                temp = new Models.Machine(name, Color.Red, id_machine);
+                                temp = new Models.Machine(name, Color.Yellow, id_machine);
                             }
                             UsedMachines.machines_list.Add(temp);
-
 
                         }
                     }
@@ -130,7 +177,7 @@ namespace exampleApp.Pages
 
         private async void OnLogout_Clicked(object sender, EventArgs e)
         {
-            if (Models.User.Type == 1 && connection.State==HubConnectionState.Connected)
+            if (Models.User.Type > 0 && connection.State==HubConnectionState.Connected)
             {
                 await this.connection.StopAsync();
             }
@@ -143,7 +190,46 @@ namespace exampleApp.Pages
             await App.Current.MainPage.Navigation.PopAsync();
             
         }
+        private async void editMachineButton_Clicked(object sender, EventArgs e)
+        {
+            availableMachines_owner.machines_list = new List<Models.Machine>();
 
-        
+            var builder = new MySqlConnectionStringBuilder
+            {
+                Server = "gymservernew.mysql.database.azure.com",
+                Database = "gym_schema",
+                UserID = "gymAdmin",
+                Password = "gym1Admin",
+                SslMode = MySqlSslMode.Required,
+            };
+
+            using (var conn = new MySqlConnection(builder.ConnectionString))
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = @"SELECT idmachine,name,working FROM gym_schema.machines;";
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            int id_machine = reader.GetInt32(0);
+                            string name = reader.GetString(1);
+                            int available = reader.GetInt32(2);
+                            Models.Machine temp = new Models.Machine(id_machine,name,available);
+                            availableMachines_owner.machines_list.Add(temp);
+                        }
+                    }
+
+
+                }
+            }
+            // need to push a new page for the owner only
+            //await Navigation.PushAsync(new UsedMachines());
+        }
+
+
     }
+
+    
 }

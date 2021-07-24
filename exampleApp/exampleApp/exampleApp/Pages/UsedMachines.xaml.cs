@@ -70,17 +70,20 @@ namespace exampleApp.Pages
             InitializeComponent();
             Label header = new Label
             {
-                Text = "Avilable Machines",
+                Text = "Gym Machines",
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 HorizontalOptions = LayoutOptions.Center
             };
 
-           
-            
+
+
 
             // Create the ListView.
             ListView listView = new ListView
             {
+                RowHeight=60,
+                HeightRequest = 60,
+                
                 // Source of data items.
                 ItemsSource = machines_list,
                 // Define template for displaying each item.
@@ -91,20 +94,26 @@ namespace exampleApp.Pages
                     // Create views with bindings for displaying each property.
                     Label nameLabel = new Label();
                     nameLabel.SetBinding(Label.TextProperty, "Name");
-
-                  
-
+                    
                     BoxView boxView = new BoxView();
                     boxView.SetBinding(BoxView.ColorProperty, "FColor");
-
-
+                    boxView.HeightRequest = 60;
+                    boxView.WidthRequest = 60;
+                    
                     // Return an assembled ViewCell.
                     return new ViewCell
                     {
+                       
+                        Height = 60,
                         View = new StackLayout
+
                         {
+                            
+                            VerticalOptions=LayoutOptions.FillAndExpand,
+                            HorizontalOptions=LayoutOptions.FillAndExpand,
                             Padding = new Thickness(0, 5),
                             Orientation = StackOrientation.Horizontal,
+                            HeightRequest = 60,
                             Children =
                                 {
                                boxView,

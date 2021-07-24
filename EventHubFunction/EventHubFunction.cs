@@ -110,48 +110,64 @@ namespace EventHubFunction
                     }
                     else
                     {
-                        log.LogInformation(strID[1] + " its an usage data not help " + strID[2]);
-                        int id_member = Int32.Parse(strID[1]);
-                        int id_machine = Int32.Parse(strID[2]);
-                        int weight_or_speed = Int32.Parse(strID[3]);
-                        int reps = Int32.Parse(strID[4]);
-                        int sets = Int32.Parse(strID[5]);
-                        int num_usage = 0;
-                        using (var conn = new MySqlConnection(builder.ConnectionString))
+                        if (strID.Length <= 6)
                         {
-
-                            await conn.OpenAsync();
-
-                            using (var command = conn.CreateCommand())
+                            int[] broken_msg = new int[1];
+                            int id_machine = Int32.Parse(strID[1]);
+                            broken_msg[0] = id_machine;
+                            await signalRMessages.AddAsync(
+                            new SignalRMessage
                             {
-                                command.CommandText = "SELECT * FROM machines WHERE idmachine=@id_machine";
-                                command.Parameters.AddWithValue("@id_machine", id_machine);
-
-                                using (var reader = await command.ExecuteReaderAsync())
-                                {
-                                    while (await reader.ReadAsync())
-                                    {
-                                        num_usage = reader.GetInt32(2);
-
-
-                                    }
-                                }
-                            }
-                            log.LogInformation(await updateDB(id_member, id_machine, num_usage, weight_or_speed, reps, sets, conn));
+                                Target = "BrokenMachine",
+                                Arguments = new[] { broken_msg }
+                            });
 
                         }
-
-                        int[] msgupdate = new int[3];
-                        msgupdate[0] = id_machine;
-                        msgupdate[1] = 1 - num_usage;
-                        msgupdate[2] = id_member;
-
-                        await signalRMessages.AddAsync(
-                        new SignalRMessage
+                        else
                         {
-                            Target = "newMessage",
-                            Arguments = new[] { msgupdate }
-                        });
+                            log.LogInformation(strID[1] + " its an usage data not help " + strID[2]);
+                            int id_member = Int32.Parse(strID[1]);
+                            int id_machine = Int32.Parse(strID[2]);
+                            int weight_or_speed = Int32.Parse(strID[3]);
+                            int reps = Int32.Parse(strID[4]);
+                            int sets = Int32.Parse(strID[5]);
+                            int num_usage = 0;
+                            using (var conn = new MySqlConnection(builder.ConnectionString))
+                            {
+
+                                await conn.OpenAsync();
+
+                                using (var command = conn.CreateCommand())
+                                {
+                                    command.CommandText = "SELECT * FROM machines WHERE idmachine=@id_machine";
+                                    command.Parameters.AddWithValue("@id_machine", id_machine);
+
+                                    using (var reader = await command.ExecuteReaderAsync())
+                                    {
+                                        while (await reader.ReadAsync())
+                                        {
+                                            num_usage = reader.GetInt32(2);
+
+
+                                        }
+                                    }
+                                }
+                                log.LogInformation(await updateDB(id_member, id_machine, num_usage, weight_or_speed, reps, sets, conn));
+
+                            }
+
+                            int[] msgupdate = new int[3];
+                            msgupdate[0] = id_machine;
+                            msgupdate[1] = 1 - num_usage;
+                            msgupdate[2] = id_member;
+
+                            await signalRMessages.AddAsync(
+                            new SignalRMessage
+                            {
+                                Target = "newMessage",
+                                Arguments = new[] { msgupdate }
+                            });
+                        }
                     }
 
 

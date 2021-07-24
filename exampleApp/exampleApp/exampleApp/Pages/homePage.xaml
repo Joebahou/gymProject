@@ -12,16 +12,22 @@
                 HorizontalOptions="CenterAndExpand"
                    FontSize="Large"
                    HorizontalTextAlignment="Center"
-                   TextColor="Blue"></Label>
+                   TextColor="OrangeRed"></Label>
             <Button x:Name="statisticsButton"
                     Text="Go to Statistics Page"
                     Clicked="statisticsButton_Clicked"></Button>
             <Button x:Name="machinesButton"
-                    Text="Go to Available Machines Page"
+                    Text="See real time Machine usage"
                     Clicked="machinesButton_Clicked"></Button>
             <Button x:Name="scheduleButton"
                     Text="See Schedule Page"
                     Clicked="scheduleButton_Clicked"></Button>
+            <Button x:Name="addMachineButton"
+                    Text="Go to Available Machines Page "
+                    Clicked="addMachineButton_Clicked"  IsVisible="{Binding IsOwner}">
+                   
+            </Button>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
