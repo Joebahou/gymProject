@@ -22,10 +22,9 @@
             <Button x:Name="scheduleButton"
                     Text="See Schedule Page"
                     Clicked="scheduleButton_Clicked"></Button>
-            <Button x:Name="addMachineButton"
+            <Button x:Name="editMachineButton"
                     Text="Go to Available Machines Page "
-                    Clicked="addMachineButton_Clicked"  IsVisible="{Binding IsOwner}">
-                   
+                    Clicked="editMachineButton_Clicked"  IsVisible="{Binding IsOwner}">
             </Button>
             
             <Button x:Name="scheduleForTrainerButton"

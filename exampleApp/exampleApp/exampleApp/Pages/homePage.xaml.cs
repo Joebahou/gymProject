@@ -228,8 +228,8 @@ namespace exampleApp.Pages
 
                 }
             }
-            // need to push a new page for the owner only
-            //await Navigation.PushAsync(new UsedMachines());
+            
+            await Navigation.PushAsync(new availableMachines_owner());
         }
 
 
