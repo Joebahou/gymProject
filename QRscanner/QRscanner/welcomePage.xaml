@@ -6,10 +6,19 @@
         <StackLayout>
             <Label Text="Welcome to the machine app!"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                HorizontalOptions="CenterAndExpand"
+                FontSize="40"
+                HorizontalTextAlignment="Center"/>
+
+            <ActivityIndicator x:Name="activityIndicator"  Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="50" HeightRequest="50" ></ActivityIndicator>
+            <Label  x:Name="activityIndicatorLabel" Text="Loading data, please wait..." HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" IsVisible="false"/>
+
             <Button x:Name="statisticsButton"
                     Text="see available machines"
+                    VerticalOptions="CenterAndExpand"
+                    HeightRequest="80"
                     Clicked="availablemachinesButton_Clicked"></Button>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -2,27 +2,31 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QRscanner.InfoUsage">
-    <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Padding="30" Spacing="40">
-            <BoxView HeightRequest="10"/>
+   
+        <ContentPage.Content>
+            <StackLayout Orientation="Vertical" Padding="30" Spacing="40">
+                <BoxView HeightRequest="10"/>
 
-            <Frame BackgroundColor="#BF043055" HasShadow="False">
-                <StackLayout Orientation="Vertical" Spacing="10">
-                    <Entry x:Name="Weight_Or_Speed" Text="{Binding Weight_Or_Speed}" Placeholder="Weight or Speed"   
-                           PlaceholderColor="White" HeightRequest="40"     
-                           TextColor="White"/>
-                    <Entry x:Name="Reps" Text="{Binding Reps}" Placeholder="Reps"   
-                           PlaceholderColor="White" HeightRequest="40"   
-                           TextColor="White"/>
-                    <Entry x:Name="Sets" Text="{Binding Sets}" Placeholder="Sets"   
-                           PlaceholderColor="White" HeightRequest="40"   
-                           TextColor="White"/>
-                </StackLayout>
-            </Frame>
-            <Button Command="{Binding SubmitCommand}" Text="Submit"  Clicked="SubmitButton_Clicked" TextColor="White"  
-                    FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
-                    BackgroundColor="#088da5" />
-           
-        </StackLayout>
-    </ContentPage.Content>
+                <Frame BackgroundColor="#BF043055" HasShadow="False">
+                    <StackLayout Orientation="Vertical" Spacing="10">
+                        <Entry x:Name="Weight_Or_Speed" Text="{Binding Weight_Or_Speed}" Placeholder="Weight or Speed"   
+                               PlaceholderColor="White" HeightRequest="40"     
+                               TextColor="White"/>
+                        <Entry x:Name="Reps" Text="{Binding Reps}" Placeholder="Reps"   
+                               PlaceholderColor="White" HeightRequest="40"   
+                               TextColor="White"/>
+                        <Entry x:Name="Sets" Text="{Binding Sets}" Placeholder="Sets"   
+                               PlaceholderColor="White" HeightRequest="40"   
+                               TextColor="White"/>
+                    </StackLayout>
+                </Frame>
+                <Button Command="{Binding SubmitCommand}" Text="Submit"  Clicked="SubmitButton_Clicked" TextColor="White"  
+                        FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
+                        BackgroundColor="#088da5" />
+                <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
+
+             </StackLayout>
+            
+        </ContentPage.Content>
+    
 </ContentPage>

@@ -37,6 +37,7 @@ namespace QRscanner
         public static int id_machine;
         public static int id_member;
         int[] dataHelp=new int[1];
+        int[] dataBrokenMachine = new int[2];
         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
             Server = "gymservernew.mysql.database.azure.com",
@@ -124,9 +125,23 @@ namespace QRscanner
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                 await Client.SendEventAsync(message);
                 String resultusage = "A help message has been sent to all trainers";
-                await App.Current.MainPage.DisplayAlert("HElP ME", resultusage, "OK");
+                await App.Current.MainPage.DisplayAlert("HELP ME", resultusage, "OK");
             } 
            
+        }
+        public async void broken_machine_Button_Clicked(object sender, EventArgs e)
+        {
+            if (connection.State == HubConnectionState.Connected)
+            {
+                dataBrokenMachine[0] = id_machine;
+                dataBrokenMachine[1] = 2;
+                string messageJson = JsonConvert.SerializeObject(dataBrokenMachine);
+                Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                await Client.SendEventAsync(message);
+                String resultusage = "An alert has been sent to the owner";
+                await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+            }
+
         }
     }
 }

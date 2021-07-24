@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Essentials;
 using MySqlConnector;
+using ZXing.Mobile;
+
 namespace QRscanner
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -22,9 +24,15 @@ namespace QRscanner
         public static HubConnection connection;
         ZXingScannerPage scanPage;
         public static int id_member;
+        DateTime scanning_time;
+        DateTime nearest_schedule = new DateTime(2021, 7, 19, 0, 0, 0);
+        private int id_member_of_the_nearest_schedule=-1;
         int[] dataUsage = new int[5];
+        TimeSpan time_has_passed;
+        
+        TimeSpan five_min = new TimeSpan(0, 5, 0);
         //id machine of the member who has been scanned, if none eaquals to -1
-        int id_machine_of_member=-1;
+        int id_machine_of_member_fromDB=-1;
 
         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
@@ -38,14 +46,14 @@ namespace QRscanner
         {
             InitializeComponent();
             String caching_msg = "";
-            DateTime scanning_time = DateTime.Now;
-
+            scanning_time = DateTime.Now;
             dataUsage[1] = MainPage.id_machine;
             dataUsage[2] = 0;
             dataUsage[3] = 0;
             dataUsage[4] = 0;
-           
-            scanPage = new ZXingScannerPage();
+            MobileBarcodeScanningOptions options = new MobileBarcodeScanningOptions();
+            options.DelayBetweenContinuousScans = 5000;
+            scanPage = new ZXingScannerPage(options);
             
             scanPage.OnScanResult += async (result) =>
             {
@@ -64,11 +72,15 @@ namespace QRscanner
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             App.finished = true;
-                            await App.Current.MainPage.Navigation.PopModalAsync();
-                            await Navigation.PopAsync();
                             string messageJson = JsonConvert.SerializeObject(dataUsage);
                             Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                             await Client.SendEventAsync(message);
+                            await App.Current.MainPage.Navigation.PopModalAsync();
+                            activityIndicator.IsVisible = true;
+                            await Task.Delay(2000);
+                            activityIndicator.IsVisible = false;
+                            await Navigation.PopAsync();
+
 
                         });
 
@@ -78,7 +90,7 @@ namespace QRscanner
                         //somebody alse is using the machine,mabey pop a msg 
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            //THE MSG ISNT SHOWNG ON THE SCREEN, PLS FIX
+                            
                             caching_msg = "id_member = " + App.member_from_table + " is using id machine " + MainPage.id_machine;
                             await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
                         });
@@ -99,7 +111,26 @@ namespace QRscanner
 
                                 {
                                     if (reader != null)
-                                        id_machine_of_member = reader.GetInt32(0);
+                                        id_machine_of_member_fromDB = reader.GetInt32(0);
+
+                                }
+                            }
+
+                        }
+                        
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"select MAX(start_time) as nearestSchedule from gym_schema.future_schedule_machines where start_time< @scanning_time and id_machine=@id_machine;";
+                            command.Parameters.AddWithValue("@id_machine",MainPage.id_machine);
+                            command.Parameters.AddWithValue("@scanning_time", scanning_time);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+
+                                {
+                                    if (!reader.IsDBNull(0))
+                                        
+                                        nearest_schedule = reader.GetDateTime(0);
 
                                 }
                             }
@@ -107,36 +138,72 @@ namespace QRscanner
                         }
                         using (var command = conn.CreateCommand())
                         {
-                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE idmember = @id_member;";
-                            command.Parameters.AddWithValue("@id_member", id_member);
+                            command.CommandText = @"select id_member from gym_schema.future_schedule_machines where start_time=@nearest_schedule and id_machine=@id_machine;";
+                            command.Parameters.AddWithValue("@id_machine", MainPage.id_machine);
+                            command.Parameters.AddWithValue("@nearest_schedule", nearest_schedule);
                             using (var reader = await command.ExecuteReaderAsync())
                             {
                                 while (await reader.ReadAsync())
 
                                 {
                                     if (reader != null)
-                                        id_machine_of_member = reader.GetInt32(0);
+                                        id_member_of_the_nearest_schedule = reader.GetInt32(0);
 
                                 }
                             }
 
                         }
 
-                    }
-                    //the machine is free to use. need to cheack that member is not using other machine at the same time
-                    if (id_machine_of_member == -1)
-                    {
-                       // check if no other member has schudled the machine
 
-                        Device.BeginInvokeOnMainThread(async () =>
+                    }
+                    time_has_passed = scanning_time - nearest_schedule;
+                    Console.WriteLine(time_has_passed.ToString());
+                    Console.WriteLine(nearest_schedule.ToString());
+                    Console.WriteLine(five_min.ToString());
+                    //the machine is free to use. need to cheack that member is not using other machine at the same time
+                    if (id_machine_of_member_fromDB == -1)
+                    {
+                        // check if the same meber scheduled the machine and it's still relevent
+                        if (id_member_of_the_nearest_schedule == id_member)
                         {
 
-                            await App.Current.MainPage.Navigation.PopModalAsync();
-                        //await App.Current.MainPage.Navigation.PopAsync();
-                        await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+
+                                await App.Current.MainPage.Navigation.PopModalAsync();
+                            
+                                await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());
 
 
-                        });
+                            });
+                        }
+                        else
+                        {
+                            // schedule isnt relevent enymore
+                            if(time_has_passed > five_min)
+                            {
+                                Device.BeginInvokeOnMainThread(async () =>
+                                {
+
+                                    await App.Current.MainPage.Navigation.PopModalAsync();
+                                    
+                                    await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());
+
+
+                                });
+                            }
+                            else
+                            {
+                                Device.BeginInvokeOnMainThread(async () =>
+                                {
+
+                                    caching_msg = "this machine has been scheduled by onther trainer at this time. If he will not come in "+(five_min-time_has_passed).Minutes+" minutes, you can scan again and use the machine";
+                                    await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
+                                    await App.Current.MainPage.Navigation.PopModalAsync();
+                                    await App.Current.MainPage.Navigation.PopAsync();
+                                });
+                            }
+                        }
                     }
                     //member is trying to use 2 machines at the same time
                     else
@@ -144,7 +211,7 @@ namespace QRscanner
                         
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            //THE MSG ISNT SHOWNG ON THE SCREEN, PLS FIX
+                            
                             caching_msg = "you can't use more than one machine at the same time!";
                             await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
                             await App.Current.MainPage.Navigation.PopModalAsync();
@@ -157,13 +224,13 @@ namespace QRscanner
 
             };
 
-  
 
-                //need to add check if the machine is taken
-                //need to add navigation to submit button
-                //what happens when finish usage
 
-            Navigation.PushModalAsync(scanPage);
+            //need to add check if the machine is taken
+            //need to add navigation to submit button
+            //what happens when finish usage
+
+           App.Current.MainPage.Navigation.PushModalAsync(scanPage);
             
 
         }
