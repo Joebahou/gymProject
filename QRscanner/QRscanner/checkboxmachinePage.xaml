@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QRscanner.checkboxmachinePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout >
+
+            <ActivityIndicator x:Name="activityIndicator"  Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding LoadingVisbile}" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
+            <Label Text="Loading data, please wait..." HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" IsVisible="{Binding LoadingVisbile}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

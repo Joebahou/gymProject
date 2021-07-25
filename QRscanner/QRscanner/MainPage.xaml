@@ -3,12 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QRscanner.MainPage">
 
-    <StackLayout VerticalOptions="Center">
+    <StackLayout Spacing="40" >
         <Label Text= "{Binding Name_log}"
-                VerticalOptions="CenterAndExpand" 
+                VerticalOptions="Start" 
+                FontSize="60"
                 HorizontalOptions="CenterAndExpand"></Label>
-        <Button x:Name="scanButton" Text="Start Scan" Clicked="scanButton_Clicked"/>
-        <Button x:Name="helpButton" Text="Ask for help" Clicked="helpButton_Clicked"/>
+        <Button x:Name="scanButton" Text="Start Scan" FontSize="30" HorizontalOptions="CenterAndExpand" 
+                 VerticalOptions="Fill" HeightRequest="80" WidthRequest="300" Clicked="scanButton_Clicked"/>
+        <Button x:Name="helpButton" Text="Ask for help" FontSize="30" HorizontalOptions="CenterAndExpand" 
+                  VerticalOptions="Fill" HeightRequest="80" WidthRequest="300" Clicked="helpButton_Clicked"/>
+        <Button x:Name="broken_machine_Button" Text="Alert that the machine is not working" FontSize="26" HorizontalOptions="Center" 
+                 VerticalOptions="Fill" HeightRequest="120" WidthRequest="300" Clicked="broken_machine_Button_Clicked"/>
 
     </StackLayout>
 

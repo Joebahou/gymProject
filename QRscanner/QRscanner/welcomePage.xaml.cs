@@ -13,12 +13,19 @@ namespace QRscanner
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class welcomePage : ContentPage
     {
+       
+        
+        
         public welcomePage()
         {
-            InitializeComponent();
-        }
 
-        private async void availablemachinesButton_Clicked(object sender, EventArgs e)
+            
+            InitializeComponent();
+           
+            //initwelcome();
+        }
+       
+        /* private  void initwelcome()
         {
             checkboxmachinePage.machines_list = new List<Models.Machine>();
             var builder = new MySqlConnectionStringBuilder
@@ -30,21 +37,60 @@ namespace QRscanner
                 SslMode = MySqlSslMode.Required,
             };
 
-            using (var conn = new MySqlConnection(builder.ConnectionString))
+            using (MySqlConnection conn = new MySqlConnection(builder.ConnectionString))
             {
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT idmachine,taken,name FROM gym_schema.machines;";
-                    using (var reader = await command.ExecuteReaderAsync())
+                    command.CommandText = @"SELECT idmachine,working,name FROM gym_schema.machines;";
+                    using (var reader = command.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             int id_machine = reader.GetInt32(0);
-                            int taken = reader.GetInt32(1);
+                            int available = reader.GetInt32(1);
                             string name = reader.GetString(2);
                             Models.Machine temp;
-                            temp = new Models.Machine(name, id_machine);
+                            temp = new Models.Machine(name, id_machine,available);
+                            checkboxmachinePage.machines_list.Add(temp);
+                            
+
+                        }
+                    }
+
+                }
+            }
+        }*/
+        private async void availablemachinesButton_Clicked(object sender, EventArgs e)
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicatorLabel.IsVisible = true;
+            await Task.Delay(20);
+            checkboxmachinePage.machines_list = new List<Models.Machine>();
+            var builder = new MySqlConnectionStringBuilder
+            {
+                Server = "gymservernew.mysql.database.azure.com",
+                Database = "gym_schema",
+                UserID = "gymAdmin",
+                Password = "gym1Admin",
+                SslMode = MySqlSslMode.Required,
+            };
+
+            using (MySqlConnection conn = new MySqlConnection(builder.ConnectionString))
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = @"SELECT idmachine,working,name FROM gym_schema.machines;";
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int id_machine = reader.GetInt32(0);
+                            int available = reader.GetInt32(1);
+                            string name = reader.GetString(2);
+                            Models.Machine temp;
+                            temp = new Models.Machine(name, id_machine, available);
                             checkboxmachinePage.machines_list.Add(temp);
 
 
@@ -53,7 +99,10 @@ namespace QRscanner
 
                 }
             }
+          
             await Navigation.PushAsync(new checkboxmachinePage());
+            activityIndicator.IsVisible = false;
+            activityIndicatorLabel.IsVisible = false;
         }
     }
 }

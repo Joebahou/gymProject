@@ -15,11 +15,16 @@ namespace exampleApp.Pages
         ObservableCollection<Temp> list_bind = new ObservableCollection<Temp>();
         public ObservableCollection<Temp> List_bind { get { return list_bind; } }
         public ICommand Add_schedule_Command { get; set; }
+        private Boolean loadingVisbile;
+        public Boolean LoadingVisbile { get { return loadingVisbile; }
+            set { loadingVisbile = value; }
+        }
 
         List<Models.Machine> machines;
         Dictionary<int, Models.Machine> dict_machines;
         Dictionary<string, int> times = new Dictionary<string, int>();
         MySqlConnection conn;
+        ActivityIndicator activityIndicator;
         string selected_date_string;
         public  AllSchedule()
         {
@@ -40,11 +45,13 @@ namespace exampleApp.Pages
 
         public void Init_schedule_Table()
         {
-            scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Star) });
-            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30, GridUnitType.Star) });
+            scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });//hours
+            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12, GridUnitType.Star) });//empty
+            activityIndicator = new ActivityIndicator { IsRunning = true };
+            activityIndicator.IsVisible = false;
             for (int i = 1; i < 38; i++)
             {
-                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(20, GridUnitType.Star) });
+                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(11, GridUnitType.Star) });
 
             }
             var label = new Label
@@ -52,7 +59,7 @@ namespace exampleApp.Pages
                
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
-                FontSize=20
+                FontSize=27
             };
             scheduleTable.Children.Add(label, 0, 0);
 
@@ -62,7 +69,7 @@ namespace exampleApp.Pages
                     Text =time,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center,
-                    FontSize = 14
+                    FontSize = 24
                 };
                 scheduleTable.Children.Add(label, times[time], 0);
             }
@@ -224,6 +231,8 @@ namespace exampleApp.Pages
         }
         private void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
+            activityIndicator.IsVisible =true ;
+            //LoadingVisbile = true;
             selected_date_string = pickerDate.SelectedItem.ToString();
             DateTime selected_date = Convert.ToDateTime(selected_date_string);
             list_bind = new ObservableCollection<Temp>();
@@ -279,7 +288,8 @@ namespace exampleApp.Pages
                 }
                 list_bind.Add(new Temp { Li = machine.schedule_machine,button_arr=button_arr ,id_machine=machine.Id_machine});
             }
-
+            //LoadingVisbile = false;
+            activityIndicator.IsVisible = false;
 
         }
     }

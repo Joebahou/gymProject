@@ -6,17 +6,25 @@ using Xamarin.Forms;
 
 namespace exampleApp.Models
 {
-    public class Machine:INotifyPropertyChanged
+    public class Machine : INotifyPropertyChanged
     {  
         private Color f_Color;
         private string name_;
         private int id_machine_;
+        private int available;
         public string[] schedule_machine;
         public event PropertyChangedEventHandler PropertyChanged;
         public Machine(string name, Color fColor, int id_machine)
         {
             name_ = name;
             f_Color = fColor;
+            id_machine_ = id_machine;
+
+        }
+        public Machine(int id_machine, string name, int is_available)
+        {
+            name_ = name;
+            available = is_available;
             id_machine_ = id_machine;
 
         }
@@ -46,8 +54,17 @@ namespace exampleApp.Models
 
             }
         }
-      
 
+        public int Available
+        {
+            get { return available; }
+            set
+            {
+                available = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Available"));
+
+            }
+        }
 
         public int Id_machine {
             get { return id_machine_; }

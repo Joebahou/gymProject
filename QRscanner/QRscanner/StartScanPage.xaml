@@ -4,7 +4,7 @@
              x:Class="QRscanner.StartScanPage">
     <ContentPage.Content>
         <StackLayout>
-            
+            <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

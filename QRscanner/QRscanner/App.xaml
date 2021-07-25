@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QRscanner.App">
     <Application.Resources>
-        <Thickness x:Key="PageMargin">20</Thickness>
+        <Thickness x:Key="PageMargin">200</Thickness>
 
         <!-- Colors -->
-        <Color x:Key="AppPrimaryColor">#ffcc80</Color>
+        <Color x:Key="AppPrimaryColor">Color.orange</Color>
         <Color x:Key="AppBackgroundColor">AliceBlue</Color>
         <Color x:Key="PrimaryColor">Black</Color>
         <Color x:Key="SecondaryColor">White</Color>
@@ -29,9 +29,11 @@
             <Setter Property="TextColor"
                     Value="{StaticResource SecondaryColor}" />
             <Setter Property="CornerRadius"
-                    Value="5"/>
+                    Value="20"/>
             <Setter Property="HorizontalOptions"
                     Value="CenterAndExpand"/>
+            <Setter Property="AbsoluteLayout.AnchorY"
+                    Value="100"/>
         </Style>
 
         <Style TargetType="Label">
