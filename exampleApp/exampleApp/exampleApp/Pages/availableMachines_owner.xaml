@@ -3,61 +3,82 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="exampleApp.Pages.availableMachines_owner">
     <ContentPage.Content>
-        <StackLayout>
-
-            <Grid x:Name="grid_rows">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50*" ></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition ></ColumnDefinition>
-                    <ColumnDefinition ></ColumnDefinition>
-                    <ColumnDefinition ></ColumnDefinition>
-                    <ColumnDefinition ></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <BoxView Grid.Row="0" Grid.Column="0" Color="OrangeRed" Grid.ColumnSpan="4"></BoxView>
-                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
-                <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name</Label>
-                <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">available</Label>
-                <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">delete</Label>
-            </Grid>
-            <ListView x:Name="available_machines" ItemsSource="{Binding List_bind}" RowHeight="100" >
-                <ListView.ItemTemplate >
-                    <DataTemplate >
-                        <ViewCell  >
-                            <ViewCell.View>
-                                <Grid Padding="10" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="200*" ></RowDefinition>
-
-
-
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition ></ColumnDefinition>
-                                        <ColumnDefinition ></ColumnDefinition>
-                                        <ColumnDefinition ></ColumnDefinition>
-                                        <ColumnDefinition ></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-
-                                    <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="4" ></BoxView>
-                                    <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="4" ></BoxView>
-                                    <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
-                                    <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name}"></Label>
-                                    <Switch Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" ThumbColor="Orange" IsToggled="{Binding available}" />
-                                    <Button Grid.Row="0" Grid.Column="3" Text="delete" Clicked="delete_clicked" ></Button>
+        <ScrollView Orientation="Vertical">
+        <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <StackLayout>
+            
+                <Grid x:Name="grid_rows">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <BoxView Grid.Row="0" Grid.Column="0" Color="OrangeRed" Grid.ColumnSpan="4"></BoxView>
+                    <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">ID Machine</Label>
+                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">Name</Label>
+                        <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">Available</Label>
+                        <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">Delete</Label>
+                </Grid>
+                <ListView x:Name="available_machines" ItemsSource="{Binding List_bind}" RowHeight="100" >
+                    <ListView.ItemTemplate >
+                        <DataTemplate >
+                            <ViewCell  >
+                                <ViewCell.View>
+                                    <Grid Padding="10" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="200*" ></RowDefinition>
 
 
-                                </Grid>
 
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Button x:Name="addMachineButton"
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="4" ></BoxView>
+                                        <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="4" ></BoxView>
+                                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
+                                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Start" Text="{Binding name}"></Label>
+                                            <Switch Toggled="Switch_Toggled" Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Scale="1.2" ThumbColor="Orange"  IsToggled="{Binding available}" />
+                                        <Button Grid.Row="0" Grid.Column="3" Text="delete" Clicked="delete_clicked" ></Button>
+
+
+                                    </Grid>
+
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="addMachineButton"
                     Text="add a machine "
                     Clicked="addMachineButton_Clicked" ></Button>
-        </StackLayout>
+            </StackLayout>
+            <ContentView x:Name="popupAdd" IsVisible="false" BackgroundColor="#C0808080"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All" >
+                <StackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         WidthRequest="200"
+                         HeightRequest="200" BackgroundColor="White" >
+                        <Entry x:Name="entry" Placeholder="Enter Name" />
+                    <StackLayout Orientation="Horizontal">
+                        <Button Text="cancel" Clicked="click_button_cancel"></Button>
+                        <Button Text="save" Clicked="click_button_save"></Button>
+                    </StackLayout>
+
+                </StackLayout>
+
+
+            </ContentView>
+        </AbsoluteLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
