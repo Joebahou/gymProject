@@ -163,11 +163,13 @@ namespace exampleApp.Pages
 
 
             }
+            list_bind.Remove(selected_schedue_edit);
             selected_schedue_edit.id_trainee = id_Trainee.ToString();
             selected_schedue_edit.name_trainee = trainee_name;
-            Init_Table_Schedule();
+            list_bind.Add(selected_schedue_edit); 
+            Schedule_view.ItemsSource = list_bind;
             popupEdit.IsVisible = false;
-
+           
         }
     }
 }
