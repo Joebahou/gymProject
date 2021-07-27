@@ -97,9 +97,31 @@ namespace EventHubFunction
                     log.LogInformation(len.ToString());
                     if (strID.Length < 4)
                     {
-                        int[] help_msg = new int[1];
+                        object[] help_msg = new object[2];
                         int id_machine = Int32.Parse(strID[1]);
                         help_msg[0] = id_machine;
+                        using (var conn = new MySqlConnection(builder.ConnectionString))
+                        {
+
+                            await conn.OpenAsync();
+
+                            using (var command = conn.CreateCommand())
+                            {
+                                command.CommandText = "SELECT name FROM machines WHERE idmachine=@id_machine";
+                                command.Parameters.AddWithValue("@id_machine", id_machine);
+
+                                using (var reader = await command.ExecuteReaderAsync())
+                                {
+                                    while (await reader.ReadAsync())
+                                    {
+                                        help_msg[1] = reader.GetString(0);
+
+
+                                    }
+                                }
+                            }
+                        }
+
                         await signalRMessages.AddAsync(
                         new SignalRMessage
                         {
@@ -112,9 +134,32 @@ namespace EventHubFunction
                     {
                         if (strID.Length <= 6)
                         {
-                            int[] broken_msg = new int[1];
+                            object[] broken_msg = new object[2];
                             int id_machine = Int32.Parse(strID[1]);
                             broken_msg[0] = id_machine;
+                            using (var conn = new MySqlConnection(builder.ConnectionString))
+                            {
+
+                                await conn.OpenAsync();
+
+                                using (var command = conn.CreateCommand())
+                                {
+                                    command.CommandText = "SELECT name FROM machines WHERE idmachine=@id_machine";
+                                    command.Parameters.AddWithValue("@id_machine", id_machine);
+
+                                    using (var reader = await command.ExecuteReaderAsync())
+                                    {
+                                        while (await reader.ReadAsync())
+                                        {
+                                            broken_msg[1] = reader.GetString(0);
+
+
+                                        }
+                                    }
+                                }
+                            }
+
+
                             await signalRMessages.AddAsync(
                             new SignalRMessage
                             {

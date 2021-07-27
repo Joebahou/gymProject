@@ -60,7 +60,7 @@ namespace exampleApp.Pages
             };
 
             
-            this.connection.On<int[]>("helpMessage", (help_msg) =>
+            this.connection.On<object[]>("helpMessage", (help_msg) =>
             {
                 
                     MainThread.BeginInvokeOnMainThread(async () =>
@@ -69,9 +69,9 @@ namespace exampleApp.Pages
                         if (Models.User.Type == 1)
                         {
                             String resultusage = "";
-                            int helpM = help_msg[0];
-                            resultusage = "someone is asking for help in machine id " + helpM;
-                            await App.Current.MainPage.DisplayAlert("HElP ME", resultusage, "OK");
+                            
+                            resultusage = "someone is asking for help in "+help_msg[1]+ "machine, id " + help_msg[0];
+                            await App.Current.MainPage.DisplayAlert("HELP ME", resultusage, "OK");
                         }
                         
 
@@ -92,7 +92,7 @@ namespace exampleApp.Pages
             };
 
 
-            this.connection.On<int[]>("BrokenMachine", (broken_msg) =>
+            this.connection.On<object[]>("BrokenMachine", (broken_msg) =>
             {
 
                 MainThread.BeginInvokeOnMainThread(async () =>
@@ -102,7 +102,7 @@ namespace exampleApp.Pages
                     {
                         String resultusage = "";
                         
-                        resultusage = "id machine "+ broken_msg[0]+" isn't working";
+                        resultusage = broken_msg[1]+" machine, id " + broken_msg[0]+" isn't working";
                         await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
                     }
 
