@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using MySqlConnector;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace exampleApp.Pages
 {
@@ -24,7 +25,6 @@ namespace exampleApp.Pages
         Dictionary<int, Models.Machine> dict_machines;
         Dictionary<string, int> times = new Dictionary<string, int>();
         MySqlConnection conn;
-        ActivityIndicator activityIndicator;
         string selected_date_string;
         public  AllSchedule()
         {
@@ -47,8 +47,6 @@ namespace exampleApp.Pages
         {
             scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });//hours
             scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12, GridUnitType.Star) });//empty
-            activityIndicator = new ActivityIndicator { IsRunning = true };
-            activityIndicator.IsVisible = false;
             for (int i = 1; i < 38; i++)
             {
                 scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(11, GridUnitType.Star) });
@@ -229,9 +227,11 @@ namespace exampleApp.Pages
             public bool[] button_arr { get; set; }
             public int id_machine { get; set; }
         }
-        private void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
+        private async void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activityIndicator.IsVisible =true ;
+            popuploading2.IsVisible = true;
+            popuploading.IsVisible = true;
+            await Task.Delay(20);
             //LoadingVisbile = true;
             selected_date_string = pickerDate.SelectedItem.ToString();
             DateTime selected_date = Convert.ToDateTime(selected_date_string);
@@ -298,8 +298,11 @@ namespace exampleApp.Pages
                 }
                 list_bind.Add(new Temp { Li = machine.schedule_machine,button_arr=button_arr ,id_machine=machine.Id_machine});
             }
+
+            popuploading.IsVisible = false;
+            popuploading2.IsVisible = false;
             //LoadingVisbile = false;
-            activityIndicator.IsVisible = false;
+
 
         }
     }

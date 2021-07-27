@@ -8,8 +8,8 @@
        
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <AbsoluteLayout>
-            <StackLayout>
+        <AbsoluteLayout VerticalOptions="CenterAndExpand">
+            <StackLayout >
                 <Label Text= "{Binding Name_log}"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"

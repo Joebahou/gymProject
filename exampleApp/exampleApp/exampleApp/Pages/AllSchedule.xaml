@@ -2,27 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="exampleApp.Pages.AllSchedule">
+    
     <ContentPage.Content>
         <ScrollView Orientation="Horizontal">
-            <StackLayout>
-                <Picker x:Name="pickerDate" 
+            <AbsoluteLayout>
+                <StackLayout>
+                    <Picker x:Name="pickerDate" 
                     Title="Select Day to see it's schedule"                    
                     TextColor="#fb8c00"
                     SelectedIndexChanged="pickerDate_SelectedIndexChanged"></Picker>
-                <Frame x:Name="frame" BackgroundColor="Orange">
-                    <Grid x:Name="scheduleTable">
-                     
-                    </Grid>
-                </Frame>
+                    <Frame x:Name="frame" BackgroundColor="Orange">
+                        <Grid x:Name="scheduleTable">
 
-                <ListView x:Name="Peopleview"  ItemsSource="{Binding List_bind}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            
-                            <ViewCell>
-                                
-                                <ViewCell.View>
-                                        
+                        </Grid>
+                    </Frame>
+                    <ListView x:Name="Peopleview"  ItemsSource="{Binding List_bind}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+
+                                <ViewCell>
+
+                                    <ViewCell.View>
+
                                         <Grid x:Name="grid_rows">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"></RowDefinition>
@@ -69,6 +70,7 @@
 
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Row="0" Grid.Column="0"   VerticalOptions="Fill" Font="17" HorizontalOptions="Fill" Text="{Binding Li[0]} " ></Label>
+                                            <ActivityIndicator x:Name="activityIndicator"  Grid.Row="0" Grid.Column="0"  VerticalOptions="End" HorizontalOptions="End" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="17" HeightRequest="20" ></ActivityIndicator>
                                             <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
                                             <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>
                                             <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[3]}"></Label>
@@ -109,56 +111,92 @@
 
 
 
-                                        <Button Grid.Row="0" Grid.Column="1"  Text="Update" Font="10"  TextColor="Green" VerticalOptions="Center" HorizontalOptions="Fill" IsVisible="{Binding button_arr[1]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="2"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[2]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}" ></Button>
-                                        <Button Grid.Row="0" Grid.Column="3"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[3]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="4"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[4]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="5"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[5]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="6" Text="Update" Font="10"  VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[6]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="7"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[7]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="8"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[8]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="9"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[9]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="10"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[10]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="11"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[11]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="12"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[12]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="13"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[13]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="14"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[14]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="15"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[15]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="16"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[16]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="17"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[17]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="18"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[18]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="19"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[19]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="20"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[20]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="21"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[21]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="22"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[22]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="23"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[23]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="24"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[24]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="25"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[25]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="26"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[26]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="27"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[27]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="28"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[28]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="29"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[29]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="30"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[30]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="31"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[31]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="32"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[32]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="33"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[33]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="34"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[34]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="35"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[35]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="36"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[36]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                        <Button Grid.Row="0" Grid.Column="37"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[37]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                    </Grid>
-                                 
-                                </ViewCell.View>
-                                
-                            </ViewCell>
-                            
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                
+                                            <Button Grid.Row="0" Grid.Column="1"  Text="Update" Font="10"  TextColor="Green" VerticalOptions="Center" HorizontalOptions="Fill" IsVisible="{Binding button_arr[1]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="2"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[2]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}" ></Button>
+                                            <Button Grid.Row="0" Grid.Column="3"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[3]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="4"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[4]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="5"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[5]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="6" Text="Update" Font="10"  VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[6]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="7"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[7]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="8"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[8]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="9"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[9]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="10"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[10]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="11"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[11]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="12"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[12]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="13"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[13]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="14"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[14]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="15"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[15]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="16"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[16]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="17"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[17]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="18"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[18]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="19"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[19]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="20"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[20]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="21"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[21]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="22"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[22]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="23"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[23]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="24"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[24]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="25"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[25]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="26"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[26]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="27"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[27]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="28"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[28]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="29"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[29]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="30"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[30]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="31"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[31]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="32"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[32]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="33"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[33]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="34"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[34]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="35"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[35]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="36"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[36]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            <Button Grid.Row="0" Grid.Column="37"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[37]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                        </Grid>
 
-            </StackLayout>
-            
+                                    </ViewCell.View>
+
+                                </ViewCell>
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+
+                </StackLayout>
+                <ContentView x:Name="popuploading" IsVisible="false" BackgroundColor="#C0808080"
+                       AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All" Margin="0,0,20,0" >
+                    <StackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         WidthRequest="200"
+                         HeightRequest="200" BackgroundColor="White" >
+
+
+                        <ActivityIndicator x:Name="activityIndicator" IsVisible="true" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
+                        <Label  x:Name="activityIndicatorLabel" Text="Loading data, please wait..." HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" IsVisible="true"/>
+
+
+                    </StackLayout>
+
+
+
+                </ContentView>
+                <ContentView x:Name="popuploading2" IsVisible="false" 
+                       AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All" Margin="0,0,20,0" >
+                    <StackLayout VerticalOptions="Center"
+                         HorizontalOptions="Start"
+                         WidthRequest="200"
+                         HeightRequest="200" BackgroundColor="White" >
+
+
+                        <ActivityIndicator x:Name="activityIndicator2" IsVisible="true" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
+                        <Label  x:Name="activityIndicatorLabel2" Text="Loading data, please wait..." HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" IsVisible="true"/>
+
+
+                    </StackLayout>
+
+
+
+                </ContentView>
+            </AbsoluteLayout>
         </ScrollView>
         
     </ContentPage.Content>
