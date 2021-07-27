@@ -218,8 +218,15 @@ namespace exampleApp.Pages
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
         }
+        public void helped_clicked_image(Object sender, System.EventArgs e)
+        {
+           Image helped_image = (Image)sender;
+            Msg_Help msg = helped_image.BindingContext as Msg_Help;
+            list_bind.Remove(msg);
+            notification_view.ItemsSource = list_bind;
+        }
 
-            private async void editMachineButton_Clicked(object sender, EventArgs e)
+        private async void editMachineButton_Clicked(object sender, EventArgs e)
         {
             availableMachines_owner.machines_list = new List<Models.Machine>();
 
