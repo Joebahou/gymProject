@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.TrainerStatistics.StatsPerTrainee">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Choose The Trainee You Are Interested In"
+                   Margin="50,20"
+                   TextColor="Black"
+                   FontSize="Large"></Label>
+            <Picker x:Name="pickerTrainees" 
+                    Title="Select Trainee"                    
+                    TextColor="Black"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    FontAttributes="Bold"                    
+                    Margin="20,10"
+                    SelectedIndexChanged="pickerTrainees_SelectedIndexChanged">
+            </Picker>
+            <Button x:Name="ButtonShowTraineeProgress"  HorizontalOptions="Center" Text="Show Trainee Progress" 
+                    Clicked="ButtonShowTraineeProgress_Clicked" Margin="0"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

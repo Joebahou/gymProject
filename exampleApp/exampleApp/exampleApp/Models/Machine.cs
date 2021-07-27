@@ -65,6 +65,8 @@ namespace exampleApp.Models
 
             }
         }
+      
+
 
         public int Id_machine {
             get { return id_machine_; }

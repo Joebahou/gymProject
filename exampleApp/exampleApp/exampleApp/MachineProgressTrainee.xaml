@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             x:Class="exampleApp.MachineProgressTrainee">
+    <ContentPage.Content>
+        <StackLayout>
+            <Picker x:Name="pickerMachines" 
+                    Title="Select Machine"                    
+                    TextColor="Black"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    FontAttributes="Bold"                    
+                    Margin="0"
+                     SelectedIndexChanged="pickerMachines_SelectedIndexChanged"
+                    ></Picker>
+            <Label Text="Select Start Date" HorizontalOptions="Center" TextColor="Black" Margin="0"></Label>
+            <DatePicker x:Name="DatePickerStart" HorizontalOptions="Center" Margin="0"
+                        DateSelected="DatePickerStart_DateSelected"></DatePicker>
+            <Label Text="Select End Date" HorizontalOptions="Center" TextColor="Black" Margin="0"></Label>
+            <DatePicker x:Name="DatePickerEnd" HorizontalOptions="Center" Margin="0"
+                        DateSelected="DatePickerEnd_DateSelected"></DatePicker>
+            <Button x:Name="ButtonShowProgress"  HorizontalOptions="Center" Text="Show Progress" 
+                    Clicked="ButtonShowProgress_Clicked" Margin="0"></Button>
+            <microcharts:ChartView x:Name="chartViewBar" HeightRequest="300" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
