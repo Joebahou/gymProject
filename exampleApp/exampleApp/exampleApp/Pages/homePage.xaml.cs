@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Essentials;
+using System.Collections.ObjectModel;
 
 namespace exampleApp.Pages
 {
@@ -16,6 +17,8 @@ namespace exampleApp.Pages
     public partial class homePage : ContentPage
     {
         public   HubConnection connection;
+        ObservableCollection<string> list_bind = new ObservableCollection<string>();
+        public ObservableCollection<string> List_bind { get { return list_bind; } }
         private string name_log;
         public string Name_log
         {
@@ -194,7 +197,15 @@ namespace exampleApp.Pages
             await App.Current.MainPage.Navigation.PopAsync();
             
         }
-        private async void editMachineButton_Clicked(object sender, EventArgs e)
+        private void notification_clicked(object sender, EventArgs e)
+        {
+            list_bind.Add("hello from machine 1");
+            notification_view.ItemsSource = list_bind;
+            popupNotifications.IsVisible = true;
+           
+        }
+
+            private async void editMachineButton_Clicked(object sender, EventArgs e)
         {
             availableMachines_owner.machines_list = new List<Models.Machine>();
 

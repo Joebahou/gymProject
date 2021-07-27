@@ -2,34 +2,65 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="exampleApp.Pages.homePage">
-    <ContentPage.ToolbarItems>
+    <ContentPage.ToolbarItems> 
+        <ToolbarItem Text="notification" Clicked="notification_clicked"></ToolbarItem>
         <ToolbarItem Text="Logout" Clicked="OnLogout_Clicked" />
+       
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text= "{Binding Name_log}"
+        <AbsoluteLayout>
+            <StackLayout>
+                <Label Text= "{Binding Name_log}"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"
                    FontSize="Large"
                    HorizontalTextAlignment="Center"
                    TextColor="OrangeRed"></Label>
-            <Button x:Name="statisticsButton"
+                <Button x:Name="statisticsButton"
                     Text="Go to Statistics Page"
                     Clicked="statisticsButton_Clicked"></Button>
-            <Button x:Name="machinesButton"
+                <Button x:Name="machinesButton"
                     Text="See real time Machine usage"
                     Clicked="machinesButton_Clicked"></Button>
-            <Button x:Name="scheduleButton"
+                <Button x:Name="scheduleButton"
                     Text="See Schedule Page"
                     Clicked="scheduleButton_Clicked"></Button>
-            <Button x:Name="editMachineButton"
+                <Button x:Name="editMachineButton"
                     Text="Go to Available Machines Page "
                     Clicked="editMachineButton_Clicked"  IsVisible="{Binding IsOwner}">
-            </Button>
-            
-            <Button x:Name="scheduleForTrainerButton"
+                </Button>
+
+                <Button x:Name="scheduleForTrainerButton"
                     Text="See Schedule of yours trainees Page"
                     Clicked="schedule_for_trainerButton_Clicked"></Button>
-        </StackLayout>
+            </StackLayout>
+            <ContentView x:Name="popupNotifications" IsVisible="false" BackgroundColor="#C0808080"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All" VerticalOptions="Start" HorizontalOptions="End" >
+                <StackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         WidthRequest="200"
+                         HeightRequest="200" BackgroundColor="White" >
+
+                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}">
+                        <ListView.ItemTemplate >
+                            <DataTemplate >
+                                <ViewCell>
+                                    <StackLayout>
+                                         <Label Text="some msg"></Label>
+                                        <Button Text="Helped"></Button>
+                                    </StackLayout>
+                                  
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                   
+
+                </StackLayout>
+
+
+            </ContentView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

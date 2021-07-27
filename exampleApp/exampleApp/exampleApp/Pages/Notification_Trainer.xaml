@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.Notification_Trainer">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid x:Name="grid_rows">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50*" ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200*"></ColumnDefinition>
+                    <ColumnDefinition Width="200*"></ColumnDefinition>
+                    <ColumnDefinition Width="300*"></ColumnDefinition>
+                    <ColumnDefinition Width="350*"></ColumnDefinition>
+                    <ColumnDefinition Width="250*"></ColumnDefinition>
+                    <ColumnDefinition Width="350*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <BoxView Grid.Row="0" Grid.Column="0" Color="Purple" Grid.ColumnSpan="4"></BoxView>
+
+                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id_machine</Label>
+                <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name</Label>
+                <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
+                <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">date time</Label>
+                <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">edit</Label>
+                <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center">delete</Label>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

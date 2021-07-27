@@ -245,7 +245,7 @@ namespace exampleApp.Pages
             using (MySqlCommand command = conn.CreateCommand())
             {
 
-                command.CommandText = @"SELECT id_machine,id_member,start_time FROM future_schedule_machines WHERE start_time>=@selected_date AND start_time<=@tomorrow;";
+                command.CommandText = @"SELECT id_machine,id_member,start_time,name_member FROM future_schedule_machines WHERE start_time>=@selected_date AND start_time<=@tomorrow;";
                 command.Parameters.AddWithValue("@selected_date", selected_date);
                 command.Parameters.AddWithValue("@tomorrow", selected_date.AddDays(1.0));
 
@@ -257,9 +257,10 @@ namespace exampleApp.Pages
                         int id_machine = reader.GetInt32(0);
                         int id_member = reader.GetInt32(1);
                         DateTime start_time = reader.GetDateTime(2);
+                        string name_member = reader.GetString(3);
                         string hour= start_time.ToString("HH:mm");
                         int index = times[hour];
-                        dict_machines[id_machine].schedule_machine[index] = id_member.ToString();
+                        dict_machines[id_machine].schedule_machine[index] = name_member;
                     
 
 
@@ -283,7 +284,16 @@ namespace exampleApp.Pages
                     }
                     else
                     {
-                        button_arr[i] = true;
+                        if (Models.User.Type == 1)
+                        {
+                            button_arr[i] = true;
+                        }
+                        else
+                        {
+                            button_arr[i] = false;
+
+                        }
+                        
                     }
                 }
                 list_bind.Add(new Temp { Li = machine.schedule_machine,button_arr=button_arr ,id_machine=machine.Id_machine});

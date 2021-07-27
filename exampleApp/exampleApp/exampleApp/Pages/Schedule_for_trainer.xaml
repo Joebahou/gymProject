@@ -14,19 +14,21 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200*"></ColumnDefinition>
                             <ColumnDefinition Width="200*"></ColumnDefinition>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
                             <ColumnDefinition Width="300*"></ColumnDefinition>
-                            <ColumnDefinition Width="350*"></ColumnDefinition>
                             <ColumnDefinition Width="250*"></ColumnDefinition>
-                            <ColumnDefinition Width="350*"></ColumnDefinition>
+                            <ColumnDefinition Width="100*"></ColumnDefinition>
+                            <ColumnDefinition Width="100*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <BoxView Grid.Row="0" Grid.Column="0" Color="Purple" Grid.ColumnSpan="4"></BoxView>
 
-                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id</Label>
-                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name</Label>
+                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id trainee</Label>
+                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name trainee</Label>
                         <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
-                        <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">date time</Label>
-                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">edit</Label>
-                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center">delete</Label>
+                        <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">name machine</Label>
+                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">date time</Label>
+                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center">edit</Label>
+                        <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center">delete</Label>
                     </Grid>
                     <ListView x:Name="Schedule_view" ItemsSource="{Binding List_bind}" RowHeight="100" >
                         <ListView.ItemTemplate >
@@ -43,20 +45,32 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="200*"></ColumnDefinition>
                                                 <ColumnDefinition Width="200*"></ColumnDefinition>
+                                                <ColumnDefinition Width="200*"></ColumnDefinition>
                                                 <ColumnDefinition Width="300*"></ColumnDefinition>
-                                                <ColumnDefinition Width="350*"></ColumnDefinition>
                                                 <ColumnDefinition Width="250*"></ColumnDefinition>
-                                                <ColumnDefinition Width="350*"></ColumnDefinition>
+                                                <ColumnDefinition Width="100*"></ColumnDefinition>
+                                                <ColumnDefinition Width="100*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
 
                                             <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="6" ></BoxView>
-                                            <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="6" ></BoxView>
+                                            <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="7" ></BoxView>
                                             <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_trainee}"></Label>
                                             <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_trainee}"></Label>
                                             <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
-                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding date_time_string}"></Label>
-                                            <Button Grid.Row="0" Grid.Column="4" Text="edit"  Clicked="edit_clicked" ></Button>
-                                            <Button Grid.Row="0" Grid.Column="5" Text="delete" Clicked="delete_clicked" ></Button>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_machine}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding date_time_string}"></Label>
+                                            <Button Grid.Row="0" Grid.Column="5" Text="edit"  Clicked="edit_clicked" IsVisible="false"></Button>
+                                            <Image Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Source="edit" WidthRequest="35" >
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="edit_clicked_image" NumberOfTapsRequired="1" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                            <Button Grid.Row="0" Grid.Column="6" Text="delete" Clicked="delete_clicked" IsVisible="false" ></Button>
+                                            <Image Grid.Row="0" Grid.Column="6" HorizontalOptions="Center" Source="delete">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="delete_clicked_image" NumberOfTapsRequired="1" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
 
 
                                         </Grid>
