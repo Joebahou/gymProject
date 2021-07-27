@@ -20,15 +20,15 @@
                             <ColumnDefinition Width="100*"></ColumnDefinition>
                             <ColumnDefinition Width="100*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <BoxView Grid.Row="0" Grid.Column="0" Color="Purple" Grid.ColumnSpan="4"></BoxView>
+                        <BoxView Grid.Row="0" Grid.Column="0" Color="OrangeRed" Grid.ColumnSpan="7"></BoxView>
 
                         <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id trainee</Label>
                         <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name trainee</Label>
                         <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
                         <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">name machine</Label>
-                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">date time</Label>
-                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Center">edit</Label>
-                        <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Center">delete</Label>
+                        <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Start">date time</Label>
+                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Start">edit</Label>
+                        <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Start">delete</Label>
                     </Grid>
                     <ListView x:Name="Schedule_view" ItemsSource="{Binding List_bind}" RowHeight="100" >
                         <ListView.ItemTemplate >
