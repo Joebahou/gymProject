@@ -36,21 +36,33 @@
             </StackLayout>
             <ContentView x:Name="popupNotifications" IsVisible="false" BackgroundColor="#C0808080"
                      AbsoluteLayout.LayoutBounds="0,0,1,1"
-                     AbsoluteLayout.LayoutFlags="All" VerticalOptions="Start" HorizontalOptions="End" >
+                     AbsoluteLayout.LayoutFlags="All" VerticalOptions="Start" HorizontalOptions="End" WidthRequest="200" >
                 <StackLayout VerticalOptions="Center"
                          HorizontalOptions="Center"
                          WidthRequest="200"
                          HeightRequest="200" BackgroundColor="White" >
 
-                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}">
+                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}" RowHeight="100"   >
                         <ListView.ItemTemplate >
                             <DataTemplate >
                                 <ViewCell>
-                                    <StackLayout>
-                                         <Label Text="some msg"></Label>
-                                        <Button Text="Helped"></Button>
-                                    </StackLayout>
-                                  
+                                    <Grid Padding="10" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition  ></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60*" ></ColumnDefinition>
+                                            <ColumnDefinition  Width="20*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding msg}" ></Label>
+                                        <Button Grid.Row="0" Grid.Column="1" IsVisible="false" Text="Helped" HorizontalOptions="CenterAndExpand" Clicked="helped_clicked" ></Button>
+                                        <Image Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Source="helped.jpg" WidthRequest="50">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="helped_clicked_image" NumberOfTapsRequired="1" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>

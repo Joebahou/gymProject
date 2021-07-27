@@ -17,8 +17,8 @@ namespace exampleApp.Pages
     public partial class homePage : ContentPage
     {
         public   HubConnection connection;
-        ObservableCollection<string> list_bind = new ObservableCollection<string>();
-        public ObservableCollection<string> List_bind { get { return list_bind; } }
+       public static ObservableCollection<Msg_Help> list_bind = new ObservableCollection<Msg_Help>();
+        public static ObservableCollection<Msg_Help> List_bind { get { return list_bind; } }
         private string name_log;
         public string Name_log
         {
@@ -31,6 +31,10 @@ namespace exampleApp.Pages
             }
         }
         public Boolean IsOwner { get; set; }
+        public class Msg_Help
+        {
+            public string msg { get; set; }
+        }
         public homePage()
         {
             InitializeComponent();
@@ -70,7 +74,10 @@ namespace exampleApp.Pages
                         {
                             String resultusage = "";
                             
-                            resultusage = "someone is asking for help in "+help_msg[1]+ "machine, id " + help_msg[0];
+                            resultusage = "need help in "+help_msg[1]+ " machine, id " + help_msg[0];
+                            Msg_Help temp = new Msg_Help { msg = resultusage };
+                            list_bind.Add(temp);
+                            notification_view.ItemsSource = list_bind;
                             await App.Current.MainPage.DisplayAlert("HELP ME", resultusage, "OK");
                         }
                         
@@ -199,13 +206,27 @@ namespace exampleApp.Pages
         }
         private void notification_clicked(object sender, EventArgs e)
         {
-            list_bind.Add("hello from machine 1");
+           
             notification_view.ItemsSource = list_bind;
-            popupNotifications.IsVisible = true;
+            popupNotifications.IsVisible = !popupNotifications.IsVisible;
            
         }
+        public void helped_clicked(Object sender, System.EventArgs e)
+        {
+            Button thebutton = (Button)sender;
+            Msg_Help msg = thebutton.BindingContext as Msg_Help;
+            list_bind.Remove(msg);
+            notification_view.ItemsSource = list_bind;
+        }
+        public void helped_clicked_image(Object sender, System.EventArgs e)
+        {
+           Image helped_image = (Image)sender;
+            Msg_Help msg = helped_image.BindingContext as Msg_Help;
+            list_bind.Remove(msg);
+            notification_view.ItemsSource = list_bind;
+        }
 
-            private async void editMachineButton_Clicked(object sender, EventArgs e)
+        private async void editMachineButton_Clicked(object sender, EventArgs e)
         {
             availableMachines_owner.machines_list = new List<Models.Machine>();
 

@@ -51,12 +51,7 @@ namespace QRscanner
         public checkboxmachinePage()
         {
             InitializeComponent();
-            Label header = new Label
-            {
-                Text = "Gym Machines",
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                HorizontalOptions = LayoutOptions.Center
-            };
+          
 
 
 
@@ -122,7 +117,7 @@ namespace QRscanner
             {
                 Children =
                 {
-                    header,
+                   
                     listView
                 }
             };
