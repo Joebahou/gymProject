@@ -1,15 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:badge="http://xamarin.com/schemas/2020/toolkit"
              x:Class="exampleApp.Pages.homePage">
+             
     <ContentPage.ToolbarItems> 
-        <ToolbarItem Text="notification" Clicked="notification_clicked"></ToolbarItem>
+    
         <ToolbarItem Text="Logout" Clicked="OnLogout_Clicked" />
        
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <AbsoluteLayout VerticalOptions="CenterAndExpand">
+        <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <StackLayout >
+                <StackLayout VerticalOptions="Center" HorizontalOptions="End" WidthRequest="50" x:Name="notification_layout"   >
+                    
+                     <badge:BadgeView BackgroundColor="Red" 
+            FontAttributes="Bold"
+            FontSize="Medium"
+            TextColor="White"
+            Text="{Binding notifications_count}" AutoHide="True" HorizontalOptions="End" VerticalOptions="End" AnchorX="100" >
+                        <Image HorizontalOptions="End" Source="notification_black" WidthRequest="30"  VerticalOptions="End" >
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="notification_clicked" NumberOfTapsRequired="1" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                </badge:BadgeView>
+                </StackLayout>
+               
+               
                 <Label Text= "{Binding Name_log}"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"
@@ -35,14 +52,14 @@
                     Clicked="schedule_for_trainerButton_Clicked"></Button>
             </StackLayout>
             <ContentView x:Name="popupNotifications" IsVisible="false" BackgroundColor="#C0808080"
-                     AbsoluteLayout.LayoutBounds="0,0,1,1"
-                     AbsoluteLayout.LayoutFlags="All" VerticalOptions="Start" HorizontalOptions="End" WidthRequest="200" >
+                     AbsoluteLayout.LayoutBounds="0,0,1,0.55"
+                     AbsoluteLayout.LayoutFlags="All" VerticalOptions="CenterAndExpand"  HorizontalOptions="End" WidthRequest="200" >
                 <StackLayout VerticalOptions="Center"
                          HorizontalOptions="Center"
                          WidthRequest="200"
-                         HeightRequest="200" BackgroundColor="White" >
+                         HeightRequest="200" BackgroundColor="White" Padding="20" Spacing="500">
 
-                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}" RowHeight="100"   >
+                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}" RowHeight="150"   >
                         <ListView.ItemTemplate >
                             <DataTemplate >
                                 <ViewCell>
@@ -51,7 +68,7 @@
                                             <RowDefinition  ></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60*" ></ColumnDefinition>
+                                            <ColumnDefinition Width="80*" ></ColumnDefinition>
                                             <ColumnDefinition  Width="20*"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
 

@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Essentials;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace exampleApp.Pages
 {
@@ -18,6 +19,7 @@ namespace exampleApp.Pages
     {
         public   HubConnection connection;
        public static ObservableCollection<Msg_Help> list_bind = new ObservableCollection<Msg_Help>();
+
         public static ObservableCollection<Msg_Help> List_bind { get { return list_bind; } }
         private string name_log;
         public string Name_log
@@ -30,6 +32,8 @@ namespace exampleApp.Pages
 
             }
         }
+        public string notifications_count { get; set; }
+        
         public Boolean IsOwner { get; set; }
         public class Msg_Help
         {
@@ -37,20 +41,33 @@ namespace exampleApp.Pages
         }
         public homePage()
         {
+            notifications_count = "0";
             InitializeComponent();
             Name_log ="Hello "+ Models.User.Name;
-            
+            if (Models.User.Type == 0)
+            {
+                editMachineButton.IsVisible = false;
+                scheduleForTrainerButton.IsVisible = false;
+                notification_layout.IsVisible = false;
+            }
+
             if (Models.User.Type == 1)
             {
                 Set_signalR_to_trainer();
+                editMachineButton.IsVisible = false;
             }
             if (Models.User.Type == 2)
             {
                 Set_signalR_to_owner();
                 IsOwner = true;
-                
+                machinesButton.IsVisible = false;
+                scheduleButton.IsVisible = false;
+                scheduleForTrainerButton.IsVisible = false;
+
+
             }
             BindingContext = this;
+           
         }
         public async void Set_signalR_to_trainer()
         {
@@ -78,6 +95,12 @@ namespace exampleApp.Pages
                             Msg_Help temp = new Msg_Help { msg = resultusage };
                             list_bind.Add(temp);
                             notification_view.ItemsSource = list_bind;
+                            int current_count = Int32.Parse(notifications_count);
+                            current_count++;
+                            notifications_count = current_count.ToString();
+                            OnPropertyChanged("notifications_count");
+                          
+
                             await App.Current.MainPage.DisplayAlert("HELP ME", resultusage, "OK");
                         }
                         
@@ -110,6 +133,14 @@ namespace exampleApp.Pages
                         String resultusage = "";
                         
                         resultusage = broken_msg[1]+" machine, id " + broken_msg[0]+" isn't working";
+                        Msg_Help temp = new Msg_Help { msg = resultusage };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
                         await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
                     }
 
@@ -121,7 +152,9 @@ namespace exampleApp.Pages
         }
         private void statisticsButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new StatsPage());
+            if (Models.User.Type == 0) { Navigation.PushAsync(new StatisticsNavigationTrainee()); }
+            if (Models.User.Type == 1) { Navigation.PushAsync(new TrainerStatistics.StatisticsNavigationTrainer()); }
+            if (Models.User.Type == 2) { Navigation.PushAsync(new OwnerStatistics.StatisticsNavigationOwner()); }
         }
         private void scheduleButton_Clicked(object sender, EventArgs e)
         {
@@ -224,6 +257,10 @@ namespace exampleApp.Pages
             Msg_Help msg = helped_image.BindingContext as Msg_Help;
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
+            int current_count= Int32.Parse(notifications_count);
+            current_count--;
+            notifications_count = current_count.ToString();
+            OnPropertyChanged("notifications_count");
         }
 
         private async void editMachineButton_Clicked(object sender, EventArgs e)
