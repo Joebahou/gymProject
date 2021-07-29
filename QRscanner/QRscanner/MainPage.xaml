@@ -2,19 +2,50 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QRscanner.MainPage">
+    <AbsoluteLayout  >
+        <StackLayout Spacing="20" AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All" >
+            <Label Text= "{Binding Name_log}"
+                    VerticalOptions="Start" 
+                    FontSize="60"
+                    HorizontalOptions="CenterAndExpand"></Label>
+            <Label x:Name="not_working_label" Text= "This Machine Is Not Working"
+                  TextColor="Red" FontSize="27"  HorizontalOptions="CenterAndExpand" IsVisible="false"></Label>
+            <Button x:Name="scanButton" Text="Start Scan" FontSize="30" HorizontalOptions="CenterAndExpand" IsVisible="{Binding Is_working}"
+                     VerticalOptions="Fill" HeightRequest="80" WidthRequest="300" Clicked="scanButton_Clicked"/>
+            <Button x:Name="helpButton" Text="Ask for help" FontSize="30" HorizontalOptions="CenterAndExpand" IsVisible="{Binding Is_working}" 
+                      VerticalOptions="Fill" HeightRequest="80" WidthRequest="300" Clicked="helpButton_Clicked"/>
+            <Button x:Name="broken_machine_Button_alert" Text="Alert that the machine is not working" FontSize="26" HorizontalOptions="Center" IsVisible="{Binding Is_working}"
+                     VerticalOptions="Fill" HeightRequest="120" WidthRequest="300" Clicked="broken_machine_Button_alert_Clicked"/>
+            <Button x:Name="broken_machine_Button_set_by_owner" Text="Set the machine availability status" FontSize="26" HorizontalOptions="Center" 
+                     VerticalOptions="CenterAndExpand" HeightRequest="120" WidthRequest="300" BackgroundColor="Gold" IsVisible="false" Clicked="broken_machine_Button_set_by_owner_Clicked"/>
 
-    <StackLayout Spacing="40" >
-        <Label Text= "{Binding Name_log}"
-                VerticalOptions="Start" 
-                FontSize="60"
-                HorizontalOptions="CenterAndExpand"></Label>
-        <Button x:Name="scanButton" Text="Start Scan" FontSize="30" HorizontalOptions="CenterAndExpand" 
-                 VerticalOptions="Fill" HeightRequest="80" WidthRequest="300" Clicked="scanButton_Clicked"/>
-        <Button x:Name="helpButton" Text="Ask for help" FontSize="30" HorizontalOptions="CenterAndExpand" 
-                  VerticalOptions="Fill" HeightRequest="80" WidthRequest="300" Clicked="helpButton_Clicked"/>
-        <Button x:Name="broken_machine_Button" Text="Alert that the machine is not working" FontSize="26" HorizontalOptions="Center" 
-                 VerticalOptions="Fill" HeightRequest="120" WidthRequest="300" Clicked="broken_machine_Button_Clicked"/>
+        </StackLayout>
+        <ContentView x:Name="popupLogin" IsVisible="false" BackgroundColor="#C0808080"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1" 
+                     AbsoluteLayout.LayoutFlags="All" >
+            <StackLayout VerticalOptions="Center" Spacing="20" 
+                         HorizontalOptions="Center"
+                         WidthRequest="300"
+                         HeightRequest="300" BackgroundColor="Navy"   >
 
-    </StackLayout>
+                <Label Text="Login as an owner to change status" HorizontalTextAlignment="Center" TextColor="White" FontSize="26"/>
+                <Entry x:Name="Email" Placeholder="Email"   
+                           PlaceholderColor="White"   
+                           Keyboard="Email"  
+                           TextColor="White"/>
+                <Entry x:Name="Password" Placeholder="Password"   
+                           PlaceholderColor="White"  
+                           IsPassword="True"  
+                           TextColor="White"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="click_button_cancel"></Button>
+                    <Button Text="Change" Clicked="click_button_change"></Button>
+                </StackLayout>
 
+            </StackLayout>
+
+
+        </ContentView>
+    </AbsoluteLayout>
 </ContentPage>

@@ -23,30 +23,25 @@ namespace QRscanner
 
         public async void OnButttonClicked(object sender, EventArgs e)
         {
-            Boolean available = false;
+            
             String id = (sender as Button).Text;
             int temp = int.Parse(id);
             foreach (Models.Machine m in machines_list)
             {
                 if (m.Id_machine == temp)
                 {
+                    MainPage.id_machine = m.Id_machine;
+                    MainPage.name_machine = m.Name;
+                    MainPage.this_machine = m;
                     if (m.Available == 1)
-                    {
-                        MainPage.id_machine = m.Id_machine;
-                        MainPage.name_machine = m.Name;
-                        available = true;
-                        break;
-                    }
-                    else
-                    {
-                        caching_msg = "This machine has been set as not available by the owner";
-                        await App.Current.MainPage.DisplayAlert("Not Working", caching_msg, "OK");
-                    }
+                        MainPage.is_working = true;
+                    else MainPage.is_working = false;
+                    break;
                 }
 
             }
-            if (available)
-                await Navigation.PushAsync(new MainPage());
+            
+            await Navigation.PushAsync(new MainPage());
         }
         public checkboxmachinePage()
         {
@@ -71,7 +66,7 @@ namespace QRscanner
                     // Create views with bindings for displaying each property.
                     Label nameLabel = new Label { HeightRequest= 50 };
                     nameLabel.SetBinding(Label.TextProperty, "Name");
-                    nameLabel.FontSize = 20;
+                    nameLabel.FontSize = 25;
                     Button button = new Button();
                     button.HeightRequest=50;
                     button.SetBinding(Button.TextProperty, "Id_machine");

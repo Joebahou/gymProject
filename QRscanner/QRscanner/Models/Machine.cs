@@ -10,11 +10,13 @@ namespace QRscanner.Models
         private string name_;
         private int id_machine_;
         private int available_;
-        public Machine(string name, int id_machine,int available)
+        private int alert_broken;
+        public Machine(string name, int id_machine,int available,int alret_broken_)
         {
             name_ = name;
             id_machine_ = id_machine;
             available_ = available;
+            alert_broken = alret_broken_;
         }
 
         public string Name
@@ -42,6 +44,15 @@ namespace QRscanner.Models
             set
             {
                 available_ = value;
+
+            }
+        }
+        public int Alert_broken
+        {
+            get { return alert_broken; }
+            set
+            {
+                alert_broken = value;
 
             }
         }

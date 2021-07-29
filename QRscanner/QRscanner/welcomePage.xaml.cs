@@ -81,7 +81,7 @@ namespace QRscanner
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT idmachine,working,name FROM gym_schema.machines;";
+                    command.CommandText = @"SELECT idmachine,working,name,alert_broken FROM gym_schema.machines;";
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -89,8 +89,9 @@ namespace QRscanner
                             int id_machine = reader.GetInt32(0);
                             int available = reader.GetInt32(1);
                             string name = reader.GetString(2);
+                            int alert_broken = reader.GetInt32(3);
                             Models.Machine temp;
-                            temp = new Models.Machine(name, id_machine, available);
+                            temp = new Models.Machine(name, id_machine, available,alert_broken);
                             checkboxmachinePage.machines_list.Add(temp);
 
 

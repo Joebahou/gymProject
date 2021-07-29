@@ -137,6 +137,8 @@ namespace EventHubFunction
                             object[] broken_msg = new object[2];
                             int id_machine = Int32.Parse(strID[1]);
                             broken_msg[0] = id_machine;
+                            
+                                //extracting from table the machine name
                             using (var conn = new MySqlConnection(builder.ConnectionString))
                             {
 
@@ -159,13 +161,40 @@ namespace EventHubFunction
                                 }
                             }
 
-
-                            await signalRMessages.AddAsync(
-                            new SignalRMessage
+                            //checking if its an notifcation or set as not working by owner
+                            int filter = Int32.Parse(strID[2]);
+                            if (filter == 0)
                             {
-                                Target = "BrokenMachine",
-                                Arguments = new[] { broken_msg }
-                            });
+
+                                await signalRMessages.AddAsync(
+                                new SignalRMessage
+                                {
+                                    Target = "BrokenMachine_alert",
+                                    Arguments = new[] { broken_msg }
+                                });
+                            }
+                            else
+                            {
+                                if(filter==1)
+                                {
+                                    await signalRMessages.AddAsync(
+                                    new SignalRMessage
+                                    {
+                                        Target = "BrokenMachine_real",
+                                        Arguments = new[] { broken_msg }
+                                    });
+                                }
+                                else
+                                {
+                                        await signalRMessages.AddAsync(
+                                       new SignalRMessage
+                                       {
+                                           Target = "BrokenMachine_fixed",
+                                           Arguments = new[] { broken_msg }
+                                       });
+
+                                }
+                            }
 
                         }
                         else
