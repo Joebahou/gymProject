@@ -18,9 +18,10 @@ namespace exampleApp.Pages
     public partial class homePage : ContentPage
     {
         public   HubConnection connection;
-       public static ObservableCollection<Msg_Help> list_bind = new ObservableCollection<Msg_Help>();
+        MySqlConnection conn;
+        public static ObservableCollection<Msg> list_bind = new ObservableCollection<Msg>();
 
-        public static ObservableCollection<Msg_Help> List_bind { get { return list_bind; } }
+        public static ObservableCollection<Msg> List_bind { get { return list_bind; } }
         private string name_log;
         public string Name_log
         {
@@ -35,30 +36,38 @@ namespace exampleApp.Pages
         public string notifications_count { get; set; }
         
         public Boolean IsOwner { get; set; }
-        public class Msg_Help
+        public class Msg
         {
             public string msg { get; set; }
+            public string type { get; set; }
+            public int id_machine { get; set; }
+            
         }
         public homePage()
         {
+            list_bind = new ObservableCollection<Msg>();
             notifications_count = "0";
             InitializeComponent();
             Name_log ="Hello "+ Models.User.Name;
             if (Models.User.Type == 0)
             {
+                Set_signalR_to_Trainee();
                 editMachineButton.IsVisible = false;
                 scheduleForTrainerButton.IsVisible = false;
-                notification_layout.IsVisible = false;
+               
             }
 
             if (Models.User.Type == 1)
             {
                 Set_signalR_to_trainer();
                 editMachineButton.IsVisible = false;
+                ConnectDataBase();
             }
             if (Models.User.Type == 2)
             {
-                Set_signalR_to_owner();
+                ConnectDataBase();
+                Set_signalR_to_owner(); 
+                Init_alert_list();
                 IsOwner = true;
                 machinesButton.IsVisible = false;
                 scheduleButton.IsVisible = false;
@@ -68,6 +77,157 @@ namespace exampleApp.Pages
             }
             BindingContext = this;
            
+           
+        }
+        private void Init_alert_list()
+        {
+            
+            using (MySqlCommand command = conn.CreateCommand())
+            {
+
+                command.CommandText = @"SELECT idmachine,name,alert_broken " +
+                "FROM machines " +
+                "WHERE alert_broken=1;";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id_machine = reader.GetInt32(0);
+                        string name_machine = reader.GetString(1);
+                        int alert_broken= reader.GetInt32(2);
+                        string msg= name_machine + " machine, id " + id_machine + " isn't working";
+                        Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                       
+
+                     
+
+
+                    }
+                }
+
+
+            } 
+            OnPropertyChanged("notifications_count");
+            notification_view.ItemsSource = list_bind;
+        }
+        private void ConnectDataBase()
+        {
+            try
+            {
+
+                Console.WriteLine("Trying to connect");
+                var builder = new MySqlConnectionStringBuilder
+                {
+                    Server = "gymservernew.mysql.database.azure.com",
+                    Database = "gym_schema",
+                    UserID = "gymAdmin",
+                    Password = "gym1Admin",
+                    SslMode = MySqlSslMode.Required,
+                };
+
+                conn = new MySqlConnection(builder.ConnectionString);
+
+                conn.Open();
+                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+        public async void Set_signalR_to_Trainee()
+        {
+            this.connection = new HubConnectionBuilder()
+                .WithUrl("https://gymfuctions.azurewebsites.net/api")
+                .Build();
+            this.connection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+
+            };
+
+           
+
+            //message that machine is really broken
+            this.connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+
+                    if (Models.User.Type == 0)
+                    {
+
+                        String resultusage = "";
+                        string id_machine_msg_string = broken_msg[0].ToString();
+                        int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+
+                        resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " isn't working";
+                        Msg temp = new Msg { msg = resultusage, type = "broken", id_machine = id_machine_msg };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
+                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+
+
+                    }
+
+
+                });
+
+            });
+            //message that machine is now fixed.
+            // alert is shown to the trainer if the machine is in h
+            this.connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+
+                    if (Models.User.Type == 0)
+                    {
+
+
+                        String resultusage = "";
+                        string id_machine_msg_string = broken_msg[0].ToString();
+                        int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+
+                        resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " is fixed, check your schedule";
+                        Msg temp = new Msg { msg = resultusage, type = "fixed", id_machine = id_machine_msg };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
+                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+
+
+
+                    }
+
+
+                });
+
+            });
+            await this.connection.StartAsync();
         }
         public async void Set_signalR_to_trainer()
         {
@@ -80,7 +240,6 @@ namespace exampleApp.Pages
                 
             };
 
-            
             this.connection.On<object[]>("helpMessage", (help_msg) =>
             {
                 
@@ -89,10 +248,12 @@ namespace exampleApp.Pages
 
                         if (Models.User.Type == 1)
                         {
+                            string id_machine_msg_string = help_msg[0].ToString();
+                            int id_machine_msg = Int32.Parse(id_machine_msg_string);
                             String resultusage = "";
                             
                             resultusage = "need help in "+help_msg[1]+ " machine, id " + help_msg[0];
-                            Msg_Help temp = new Msg_Help { msg = resultusage };
+                            Msg temp = new Msg { msg = resultusage ,type="help",id_machine=id_machine_msg};
                             list_bind.Add(temp);
                             notification_view.ItemsSource = list_bind;
                             int current_count = Int32.Parse(notifications_count);
@@ -108,6 +269,78 @@ namespace exampleApp.Pages
                     });
                 
             });
+
+            //message that machine is really broken
+            this.connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                   
+
+                    if (Models.User.Type ==1)
+                    {
+                        
+                           String resultusage = "";
+                            string id_machine_msg_string = broken_msg[0].ToString();
+                            int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+
+                            resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " isn't working, check your schedule";
+                            Msg temp = new Msg { msg = resultusage ,type="broken",id_machine=id_machine_msg};
+                            list_bind.Add(temp);
+                            notification_view.ItemsSource = list_bind;
+                            int current_count = Int32.Parse(notifications_count);
+                            current_count++;
+                            notifications_count = current_count.ToString();
+                            OnPropertyChanged("notifications_count");
+
+                            await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+
+                       
+                    }
+
+
+                });
+
+            });
+            //message that machine is now fixed.
+            // alert is shown to the trainer if the machine is in h
+            this.connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    
+
+                    if (Models.User.Type == 1)
+                    {
+                      
+                        
+                            String resultusage = "";
+                            string id_machine_msg_string = broken_msg[0].ToString();
+                            int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+
+                            resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " is fixed, check your schedule";
+                            Msg temp = new Msg { msg = resultusage, type = "fixed", id_machine = id_machine_msg };
+                            list_bind.Add(temp);
+                            notification_view.ItemsSource = list_bind;
+                            int current_count = Int32.Parse(notifications_count);
+                            current_count++;
+                            notifications_count = current_count.ToString();
+                            OnPropertyChanged("notifications_count");
+
+                            await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+
+                        
+
+                    }
+
+
+                });
+
+            });
             await this.connection.StartAsync();
         }
         public async void Set_signalR_to_owner()
@@ -122,7 +355,7 @@ namespace exampleApp.Pages
             };
 
 
-            this.connection.On<object[]>("BrokenMachine", (broken_msg) =>
+            this.connection.On<object[]>("BrokenMachine_alert", (broken_msg) =>
             {
 
                 MainThread.BeginInvokeOnMainThread(async () =>
@@ -131,13 +364,55 @@ namespace exampleApp.Pages
                     if (Models.User.Type == 2)
                     {
                         String resultusage = "";
-                        
+                        string id_machine_msg_string = broken_msg[0].ToString();
+                        int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
                         resultusage = broken_msg[1]+" machine, id " + broken_msg[0]+" isn't working";
-                        Msg_Help temp = new Msg_Help { msg = resultusage };
+                        Msg temp = new Msg { msg = resultusage ,type="alert",id_machine=id_machine_msg};
                         list_bind.Add(temp);
                         notification_view.ItemsSource = list_bind;
                         int current_count = Int32.Parse(notifications_count);
                         current_count++;
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
+                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                    }
+
+
+                });
+
+            });
+            //message that machine is really broken
+            //alert is shown to the owner and the message of the alert is deleted.
+            this.connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+                    if (Models.User.Type == 2)
+                    {
+                        String resultusage = "";
+                        string id_machine_msg_string = broken_msg[0].ToString();
+                        int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+                        resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " broken";
+                        Msg msg_to_delete = null;
+                       
+                        foreach(Msg m in list_bind)
+                        {
+                            if(m.type=="alert" && m.id_machine== id_machine_msg)
+                            {
+                                msg_to_delete = m;
+                                break;
+
+                            }
+                        }
+                        list_bind.Remove(msg_to_delete);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count = Math.Max(0, current_count - 1);
                         notifications_count = current_count.ToString();
                         OnPropertyChanged("notifications_count");
 
@@ -224,7 +499,7 @@ namespace exampleApp.Pages
 
         private async void OnLogout_Clicked(object sender, EventArgs e)
         {
-            if (Models.User.Type > 0 && connection.State==HubConnectionState.Connected)
+            if ( connection.State==HubConnectionState.Connected)
             {
                 await this.connection.StopAsync();
             }
@@ -247,14 +522,14 @@ namespace exampleApp.Pages
         public void helped_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
-            Msg_Help msg = thebutton.BindingContext as Msg_Help;
+            Msg msg = thebutton.BindingContext as Msg;
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
         }
         public void helped_clicked_image(Object sender, System.EventArgs e)
         {
            Image helped_image = (Image)sender;
-            Msg_Help msg = helped_image.BindingContext as Msg_Help;
+            Msg msg = helped_image.BindingContext as Msg;
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
             int current_count= Int32.Parse(notifications_count);

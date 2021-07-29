@@ -29,7 +29,7 @@ namespace exampleApp.Pages
         {
             InitializeComponent();
             ConnectDataBase();
-            get_machines();
+            //get_machines();
             Init_Table_Schedule();
             Init_list_trainee();
             
@@ -53,7 +53,9 @@ namespace exampleApp.Pages
                 using (MySqlCommand command = conn.CreateCommand())
                 {
 
-                    command.CommandText = @"SELECT id_machine,id_member,start_time FROM future_schedule_machines WHERE id_member=@id_member and start_time>=@today;";
+                    command.CommandText = @"SELECT future_schedule_machines.id_machine,future_schedule_machines.id_member,future_schedule_machines.start_time,machines.working,machines.name " +
+                    "FROM future_schedule_machines,machines "+
+                    "WHERE future_schedule_machines.id_machine=machines.idmachine and future_schedule_machines.id_member=@id_member and future_schedule_machines.start_time>=@today;";
                     command.Parameters.AddWithValue("@id_member",t.Id);
                     command.Parameters.AddWithValue("@today",today);
 
@@ -64,7 +66,19 @@ namespace exampleApp.Pages
                             int id_machine = reader.GetInt32(0);
                             int id_member = reader.GetInt32(1);
                             DateTime start_time = reader.GetDateTime(2);
-                            Schedule current = new Schedule { id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = dict_machines[id_machine].Name };
+                            int working = reader.GetInt32(3);
+                            string name_machine = reader.GetString(4);
+                            Schedule current;
+                            if (working == 0)
+                            {
+                                current = new Schedule { color_row = Color.Yellow, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = name_machine+"- broken" };
+                            }
+                            else
+                            {
+                              current = new Schedule {color_row=Color.White, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = name_machine };
+
+                            }
+
                             list_bind.Add(current);
 
                           
@@ -109,6 +123,7 @@ namespace exampleApp.Pages
             public string name_machine { get; set; }
 
             public DateTime date_time { get; set; }
+            public Color color_row { get; set; }
         }
         private void ConnectDataBase()
         {

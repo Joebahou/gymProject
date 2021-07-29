@@ -53,7 +53,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="6" ></BoxView>
-                                            <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="7" ></BoxView>
+                                            <BoxView Grid.Row="0" Grid.Column="0" Color="{Binding color_row}" Grid.ColumnSpan="7" ></BoxView>
                                             <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_trainee}"></Label>
                                             <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_trainee}"></Label>
                                             <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
@@ -80,6 +80,10 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+                    <StackLayout Orientation="Horizontal" Padding="20">
+                        <BoxView Color="Yellow"></BoxView>
+                        <Label Text="  The machine is broken" HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                    </StackLayout>
 
                 </StackLayout>
                 <ContentView x:Name="popupEdit" IsVisible="false" BackgroundColor="#C0808080"

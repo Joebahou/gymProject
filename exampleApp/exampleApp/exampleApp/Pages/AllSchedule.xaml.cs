@@ -111,7 +111,9 @@ namespace exampleApp.Pages
         }
         private  void get_machines()
         {
-                using (MySqlCommand command = conn.CreateCommand())
+            dict_machines = new Dictionary<int, Models.Machine>();
+            machines = new List<Models.Machine>();
+            using (MySqlCommand command = conn.CreateCommand())
             {
 
                 command.CommandText = @"SELECT * FROM machines;";
@@ -121,7 +123,8 @@ namespace exampleApp.Pages
                         {
                             int id_machine = reader.GetInt32(0);
                             string name= reader.GetString(1);
-                            Models.Machine temp = new Models.Machine(name,id_machine);
+                            int working= reader.GetInt32(4);
+                            Models.Machine temp = new Models.Machine(id_machine,name,working);
                             machines.Add(temp);
                             dict_machines[id_machine] = temp;
 
@@ -226,6 +229,9 @@ namespace exampleApp.Pages
             public string[] Li { get; set; }
             public bool[] button_arr { get; set; }
             public int id_machine { get; set; }
+            public Color name_color { get; set; }
+            public Boolean text_visble_broken { get; set; }
+            public Color color_row { get; set; }
         }
         private async void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -237,6 +243,7 @@ namespace exampleApp.Pages
             DateTime selected_date = Convert.ToDateTime(selected_date_string);
             list_bind = new ObservableCollection<Temp>();
             Peopleview.ItemsSource = list_bind;
+            get_machines();
             foreach(Models.Machine machine in machines)
             {
                 machine.Init_schedule();
@@ -276,27 +283,44 @@ namespace exampleApp.Pages
             { 
                 bool[] button_arr = new bool[38];
                 button_arr[0] = false;
-                for(int i = 1; i < 38; i++)
+                if (machine.Available == 1)
                 {
-                    if (machine.schedule_machine[i] != "")
+                    for (int i = 1; i < 38; i++)
                     {
-                        button_arr[i] = false;
-                    }
-                    else
-                    {
-                        if (Models.User.Type == 1)
+                        if (machine.schedule_machine[i] != "")
                         {
-                            button_arr[i] = true;
+                            button_arr[i] = false;
                         }
                         else
                         {
-                            button_arr[i] = false;
+                            if (Models.User.Type == 1)
+                            {
+                                button_arr[i] = true;
+                            }
+                            else
+                            {
+                                button_arr[i] = false;
+
+                            }
 
                         }
-                        
                     }
                 }
-                list_bind.Add(new Temp { Li = machine.schedule_machine,button_arr=button_arr ,id_machine=machine.Id_machine});
+                //if machine is broken-the row will be empty
+                if (machine.Available == 0)
+                {
+                    
+                    for (int i = 1; i < machine.schedule_machine.Length; i++)
+                    {
+                        machine.schedule_machine[i] = "broken";
+                    }
+                    list_bind.Add(new Temp {color_row=Color.Yellow, Li = machine.schedule_machine, button_arr = button_arr, id_machine = machine.Id_machine, name_color = Color.OrangeRed}); ;
+
+                }
+                else
+                {
+                    list_bind.Add(new Temp {color_row=Color.White, Li = machine.schedule_machine, button_arr = button_arr, id_machine = machine.Id_machine});
+                }
             }
 
             popuploading.IsVisible = false;

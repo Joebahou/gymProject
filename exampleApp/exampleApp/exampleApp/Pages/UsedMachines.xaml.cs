@@ -62,6 +62,50 @@ namespace exampleApp.Pages
 
                 });
             });
+
+            //need to check if working
+            // need to check if needed new connection
+            connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    string id_machine_msg_string = broken_msg[0].ToString();
+                    int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+
+                    foreach (Models.Machine temp in machines_list)
+                    {
+                        if (temp.Id_machine == id_machine_msg)
+                        {
+                            temp.FColor = Color.Yellow;
+                        }
+
+                    }
+
+
+                });
+            });
+            connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                
+                    string id_machine_msg_string = broken_msg[0].ToString();
+                    int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+
+                    foreach (Models.Machine temp in machines_list)
+                    {
+                        if (temp.Id_machine == id_machine_msg)
+                        {
+                            temp.FColor = Color.Green;
+                        }
+
+                    }
+
+
+                });
+            });
             await connection.StartAsync();
 
         }
