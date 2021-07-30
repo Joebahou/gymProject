@@ -112,43 +112,267 @@
 
 
 
-                                            <Button Grid.Row="0" Grid.Column="1"  Text="Update" Font="10"  TextColor="Green" VerticalOptions="Center" HorizontalOptions="Fill" IsVisible="{Binding button_arr[1]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="2"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[2]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}" ></Button>
-                                            <Button Grid.Row="0" Grid.Column="3"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[3]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="4"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[4]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="5"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[5]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="6" Text="Update" Font="10"  VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[6]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="7"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[7]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="8"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[8]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="9"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[9]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="10"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[10]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="11"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[11]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="12"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[12]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="13"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[13]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="14"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[14]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="15"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[15]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="16"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[16]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="17"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[17]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="18"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[18]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="19"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[19]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="20"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[20]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="21"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[21]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="22"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[22]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="23"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[23]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="24"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[24]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="25"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[25]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="26"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[26]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="27"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[27]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="28"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[28]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="29"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[29]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="30"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[30]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="31"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[31]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="32"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[32]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="33"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[33]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="34"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[34]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="35"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[35]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="36"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[36]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
-                                            <Button Grid.Row="0" Grid.Column="37"  Text="Update" Font="10" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding button_arr[37]}" Clicked="handle_clicked" CommandParameter="{Binding id_machine}"></Button>
+                                            
+                                            <Frame Grid.Row="0" Grid.Column="1" BorderColor="Gray" IsVisible="{Binding button_arr[1]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="1"  Source="plus_blue" Scale="10">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="2" BorderColor="Gray" IsVisible="{Binding button_arr[2]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="2"  Source="plus_yellow" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="3" BorderColor="Gray" IsVisible="{Binding button_arr[3]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="3"  Source="plus_puple" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="4" BorderColor="Gray" IsVisible="{Binding button_arr[4]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="4"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="5" BorderColor="Gray" IsVisible="{Binding button_arr[5]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="5"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="6" BorderColor="Gray" IsVisible="{Binding button_arr[6]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="6"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="7" BorderColor="Gray" IsVisible="{Binding button_arr[7]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="7"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="8" BorderColor="Gray" IsVisible="{Binding button_arr[8]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="8"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="9" BorderColor="Gray" IsVisible="{Binding button_arr[9]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="9"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="10" BorderColor="Gray" IsVisible="{Binding button_arr[10]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="10"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="11" BorderColor="Gray" IsVisible="{Binding button_arr[11]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="11"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="12" BorderColor="Gray" IsVisible="{Binding button_arr[12]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="12"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="13" BorderColor="Gray" IsVisible="{Binding button_arr[13]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="13"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="14" BorderColor="Gray" IsVisible="{Binding button_arr[14]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="14"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="15" BorderColor="Gray" IsVisible="{Binding button_arr[15]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="15"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="16" BorderColor="Gray" IsVisible="{Binding button_arr[16]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="16"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="17" BorderColor="Gray" IsVisible="{Binding button_arr[17]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="17"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="18" BorderColor="Gray" IsVisible="{Binding button_arr[18]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="18"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="19" BorderColor="Gray" IsVisible="{Binding button_arr[19]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="19"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="20" BorderColor="Gray" IsVisible="{Binding button_arr[20]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="20"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="21" BorderColor="Gray" IsVisible="{Binding button_arr[21]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="21"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="22" BorderColor="Gray" IsVisible="{Binding button_arr[22]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="22"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="23" BorderColor="Gray" IsVisible="{Binding button_arr[23]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="23"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="24" BorderColor="Gray" IsVisible="{Binding button_arr[24]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="24"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="25" BorderColor="Gray" IsVisible="{Binding button_arr[25]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="25"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="26" BorderColor="Gray" IsVisible="{Binding button_arr[26]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="26"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="27" BorderColor="Gray" IsVisible="{Binding button_arr[27]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="27"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="28" BorderColor="Gray" IsVisible="{Binding button_arr[28]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="28"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="29" BorderColor="Gray" IsVisible="{Binding button_arr[29]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="29"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="30" BorderColor="Gray" IsVisible="{Binding button_arr[30]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="30"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="31" BorderColor="Gray" IsVisible="{Binding button_arr[31]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="31"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="32" BorderColor="Gray" IsVisible="{Binding button_arr[32]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="32"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="33" BorderColor="Gray" IsVisible="{Binding button_arr[33]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="33"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="34" BorderColor="Gray" IsVisible="{Binding button_arr[34]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="34"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="35" BorderColor="Gray" IsVisible="{Binding button_arr[35]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="35"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="36" BorderColor="Gray" IsVisible="{Binding button_arr[36]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="36"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+                                            <Frame Grid.Row="0" Grid.Column="37" BorderColor="Gray" IsVisible="{Binding button_arr[37]}" HorizontalOptions="FillAndExpand">
+                                                <Image Grid.Row="0" Grid.Column="37"  Source="plus_black" Scale="10">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="handle_clicked_image" NumberOfTapsRequired="1"  />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Frame>
+
                                         </Grid>
 
                                     </ViewCell.View>

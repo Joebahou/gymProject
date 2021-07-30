@@ -18,7 +18,7 @@ namespace exampleApp.Pages
     public partial class homePage : ContentPage
     {
         public   HubConnection connection;
-        MySqlConnection conn;
+        //MySqlConnection conn;
         public static ObservableCollection<Msg> list_bind = new ObservableCollection<Msg>();
 
         public static ObservableCollection<Msg> List_bind { get { return list_bind; } }
@@ -41,6 +41,7 @@ namespace exampleApp.Pages
             public string msg { get; set; }
             public string type { get; set; }
             public int id_machine { get; set; }
+            public Boolean clear_msg_icon { get; set; }
             
         }
         public homePage()
@@ -49,6 +50,7 @@ namespace exampleApp.Pages
             notifications_count = "0";
             InitializeComponent();
             Name_log ="Hello "+ Models.User.Name;
+            Init_alert_list();
             if (Models.User.Type == 0)
             {
                 Set_signalR_to_Trainee();
@@ -61,13 +63,13 @@ namespace exampleApp.Pages
             {
                 Set_signalR_to_trainer();
                 editMachineButton.IsVisible = false;
-                ConnectDataBase();
+                //ConnectDataBase();
             }
             if (Models.User.Type == 2)
             {
-                ConnectDataBase();
+                //ConnectDataBase();
                 Set_signalR_to_owner(); 
-                Init_alert_list();
+                
                 IsOwner = true;
                 machinesButton.IsVisible = false;
                 scheduleButton.IsVisible = false;
@@ -81,41 +83,92 @@ namespace exampleApp.Pages
         }
         private void Init_alert_list()
         {
-            
-            using (MySqlCommand command = conn.CreateCommand())
+            if (Models.User.Type == 2)
             {
-
-                command.CommandText = @"SELECT idmachine,name,alert_broken " +
-                "FROM machines " +
-                "WHERE alert_broken=1;";
-
-                using (MySqlDataReader reader = command.ExecuteReader())
+                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                 {
-                    while (reader.Read())
+                    conn.Open();
+                    using (MySqlCommand command = conn.CreateCommand())
                     {
-                        int id_machine = reader.GetInt32(0);
-                        string name_machine = reader.GetString(1);
-                        int alert_broken= reader.GetInt32(2);
-                        string msg= name_machine + " machine, id " + id_machine + " isn't working";
-                        Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine };
-                        list_bind.Add(temp);
-                        notification_view.ItemsSource = list_bind;
-                        int current_count = Int32.Parse(notifications_count);
-                        current_count++;
-                        notifications_count = current_count.ToString();
-                       
 
-                     
+                        command.CommandText = @"SELECT idmachine,name,alert_broken " +
+                        "FROM machines " +
+                        "WHERE alert_broken=1;";
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int id_machine = reader.GetInt32(0);
+                                string name_machine = reader.GetString(1);
+                                int alert_broken = reader.GetInt32(2);
+                                string msg = "someone alerted that " + " machine, id " + id_machine + " isn't working";
+                                Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = false };
+                                list_bind.Add(temp);
+                                notification_view.ItemsSource = list_bind;
+                                int current_count = Int32.Parse(notifications_count);
+                                current_count++;
+                                notifications_count = current_count.ToString();
+
+
+
+
+
+                            }
+                        }
 
 
                     }
                 }
 
+                OnPropertyChanged("notifications_count");
+                notification_view.ItemsSource = list_bind;
 
-            } 
-            OnPropertyChanged("notifications_count");
-            notification_view.ItemsSource = list_bind;
+            }
+            else
+            {
+                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
+                {
+                    conn.Open();
+                    using (MySqlCommand command = conn.CreateCommand())
+                    {
+
+                        command.CommandText = @"SELECT idmachine,name,working " +
+                        "FROM machines " +
+                        "WHERE working=0;";
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int id_machine = reader.GetInt32(0);
+                                string name_machine = reader.GetString(1);
+                                int working = reader.GetInt32(2);
+                                string msg = name_machine + " machine, id " + id_machine + " isn't working, check your schedule";
+                                Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = true };
+                                list_bind.Add(temp);
+                                notification_view.ItemsSource = list_bind;
+                                int current_count = Int32.Parse(notifications_count);
+                                current_count++;
+                                notifications_count = current_count.ToString();
+
+
+
+
+
+                            }
+                        }
+
+
+                    }
+                }
+
+                OnPropertyChanged("notifications_count");
+                notification_view.ItemsSource = list_bind;
+            }
+            
         }
+        /*
         private void ConnectDataBase()
         {
             try
@@ -142,7 +195,7 @@ namespace exampleApp.Pages
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }*/
         public async void Set_signalR_to_Trainee()
         {
             this.connection = new HubConnectionBuilder()
@@ -172,8 +225,8 @@ namespace exampleApp.Pages
                         int id_machine_msg = Int32.Parse(id_machine_msg_string);
 
 
-                        resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " isn't working";
-                        Msg temp = new Msg { msg = resultusage, type = "broken", id_machine = id_machine_msg };
+                        resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " isn't working, check your schedule";
+                        Msg temp = new Msg { msg = resultusage, type = "broken", id_machine = id_machine_msg ,clear_msg_icon=true};
                         list_bind.Add(temp);
                         notification_view.ItemsSource = list_bind;
                         int current_count = Int32.Parse(notifications_count);
@@ -209,7 +262,7 @@ namespace exampleApp.Pages
 
 
                         resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " is fixed, check your schedule";
-                        Msg temp = new Msg { msg = resultusage, type = "fixed", id_machine = id_machine_msg };
+                        Msg temp = new Msg { msg = resultusage, type = "fixed", id_machine = id_machine_msg,clear_msg_icon=true };
                         list_bind.Add(temp);
                         notification_view.ItemsSource = list_bind;
                         int current_count = Int32.Parse(notifications_count);
@@ -253,7 +306,7 @@ namespace exampleApp.Pages
                             String resultusage = "";
                             
                             resultusage = "need help in "+help_msg[1]+ " machine, id " + help_msg[0];
-                            Msg temp = new Msg { msg = resultusage ,type="help",id_machine=id_machine_msg};
+                            Msg temp = new Msg { msg = resultusage ,type="help",id_machine=id_machine_msg,clear_msg_icon=true};
                             list_bind.Add(temp);
                             notification_view.ItemsSource = list_bind;
                             int current_count = Int32.Parse(notifications_count);
@@ -287,7 +340,7 @@ namespace exampleApp.Pages
 
 
                             resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " isn't working, check your schedule";
-                            Msg temp = new Msg { msg = resultusage ,type="broken",id_machine=id_machine_msg};
+                            Msg temp = new Msg { msg = resultusage ,type="broken",id_machine=id_machine_msg,clear_msg_icon=true};
                             list_bind.Add(temp);
                             notification_view.ItemsSource = list_bind;
                             int current_count = Int32.Parse(notifications_count);
@@ -323,7 +376,7 @@ namespace exampleApp.Pages
 
 
                             resultusage = broken_msg[1] + " machine, id " + broken_msg[0] + " is fixed, check your schedule";
-                            Msg temp = new Msg { msg = resultusage, type = "fixed", id_machine = id_machine_msg };
+                            Msg temp = new Msg { msg = resultusage, type = "fixed", id_machine = id_machine_msg,clear_msg_icon=true };
                             list_bind.Add(temp);
                             notification_view.ItemsSource = list_bind;
                             int current_count = Int32.Parse(notifications_count);
@@ -367,8 +420,8 @@ namespace exampleApp.Pages
                         string id_machine_msg_string = broken_msg[0].ToString();
                         int id_machine_msg = Int32.Parse(id_machine_msg_string);
 
-                        resultusage = broken_msg[1]+" machine, id " + broken_msg[0]+" isn't working";
-                        Msg temp = new Msg { msg = resultusage ,type="alert",id_machine=id_machine_msg};
+                        resultusage = "someone alerted that "+ broken_msg[1]+" machine, id " + broken_msg[0]+" isn't working";
+                        Msg temp = new Msg { msg = resultusage ,type="alert",id_machine=id_machine_msg,clear_msg_icon=false};
                         list_bind.Add(temp);
                         notification_view.ItemsSource = list_bind;
                         int current_count = Int32.Parse(notifications_count);
@@ -409,6 +462,7 @@ namespace exampleApp.Pages
 
                             }
                         }
+
                         list_bind.Remove(msg_to_delete);
                         notification_view.ItemsSource = list_bind;
                         int current_count = Int32.Parse(notifications_count);
@@ -417,6 +471,47 @@ namespace exampleApp.Pages
                         OnPropertyChanged("notifications_count");
 
                         await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                    }
+
+
+                });
+
+            });
+
+            //there was an alert on machine but the machine is ok.
+            this.connection.On<object[]>("BrokenMachine_ignore", (broken_msg) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+                    if (Models.User.Type == 2)
+                    {
+                        String resultusage = "";
+                        string id_machine_msg_string = broken_msg[0].ToString();
+                        int id_machine_msg = Int32.Parse(id_machine_msg_string);
+
+                
+                        Msg msg_to_delete = null;
+
+                        foreach (Msg m in list_bind)
+                        {
+                            if (m.type == "alert" && m.id_machine == id_machine_msg)
+                            {
+                                msg_to_delete = m;
+                                break;
+
+                            }
+                        }
+
+                        list_bind.Remove(msg_to_delete);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count = Math.Max(0, current_count - 1);
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
+                       
                     }
 
 
@@ -444,16 +539,9 @@ namespace exampleApp.Pages
         {
             UsedMachines.machines_list = new List<Models.Machine>();
 
-            var builder = new MySqlConnectionStringBuilder
-            {
-                Server = "gymservernew.mysql.database.azure.com",
-                Database = "gym_schema",
-                UserID = "gymAdmin",
-                Password = "gym1Admin",
-                SslMode = MySqlSslMode.Required,
-            };
+         
 
-            using (var conn = new MySqlConnection(builder.ConnectionString))
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
                 using (var command = conn.CreateCommand())
@@ -526,10 +614,10 @@ namespace exampleApp.Pages
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
         }
-        public void helped_clicked_image(Object sender, System.EventArgs e)
+        public void clear_clicked_image(Object sender, System.EventArgs e)
         {
-           Image helped_image = (Image)sender;
-            Msg msg = helped_image.BindingContext as Msg;
+           Image clear_image = (Image)sender;
+            Msg msg = clear_image.BindingContext as Msg;
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
             int current_count= Int32.Parse(notifications_count);
@@ -542,16 +630,8 @@ namespace exampleApp.Pages
         {
             availableMachines_owner.machines_list = new List<Models.Machine>();
 
-            var builder = new MySqlConnectionStringBuilder
-            {
-                Server = "gymservernew.mysql.database.azure.com",
-                Database = "gym_schema",
-                UserID = "gymAdmin",
-                Password = "gym1Admin",
-                SslMode = MySqlSslMode.Required,
-            };
 
-            using (var conn = new MySqlConnection(builder.ConnectionString))
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
                 using (var command = conn.CreateCommand())

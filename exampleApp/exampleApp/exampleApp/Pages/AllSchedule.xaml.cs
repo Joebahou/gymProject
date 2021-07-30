@@ -24,14 +24,14 @@ namespace exampleApp.Pages
         List<Models.Machine> machines;
         Dictionary<int, Models.Machine> dict_machines;
         Dictionary<string, int> times = new Dictionary<string, int>();
-        MySqlConnection conn;
+        //MySqlConnection conn;
         string selected_date_string;
         public  AllSchedule()
         {
             InitializeComponent();
 
             Peopleview.ItemsSource = list_bind;
-            ConnectDataBase();
+            //ConnectDataBase();
             pickerDateInit();
             machines = new List<Models.Machine>();
             dict_machines = new Dictionary<int, Models.Machine>();
@@ -113,18 +113,21 @@ namespace exampleApp.Pages
         {
             dict_machines = new Dictionary<int, Models.Machine>();
             machines = new List<Models.Machine>();
-            using (MySqlCommand command = conn.CreateCommand())
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
+                conn.Open();
+                using (MySqlCommand command = conn.CreateCommand())
+                {
 
-                command.CommandText = @"SELECT * FROM machines;";
+                    command.CommandText = @"SELECT * FROM machines;";
                     using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        while ( reader.Read())
+                        while (reader.Read())
                         {
                             int id_machine = reader.GetInt32(0);
-                            string name= reader.GetString(1);
-                            int working= reader.GetInt32(4);
-                            Models.Machine temp = new Models.Machine(id_machine,name,working);
+                            string name = reader.GetString(1);
+                            int working = reader.GetInt32(4);
+                            Models.Machine temp = new Models.Machine(id_machine, name, working);
                             machines.Add(temp);
                             dict_machines[id_machine] = temp;
 
@@ -137,6 +140,8 @@ namespace exampleApp.Pages
 
 
                 }
+            }
+            
 
         }
         private void pickerDateInit()
@@ -157,6 +162,7 @@ namespace exampleApp.Pages
             }
         }
 
+        /*
         private void ConnectDataBase()
         {
             try
@@ -183,12 +189,9 @@ namespace exampleApp.Pages
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }*/
    
-        public void Add_schedule_button_command(object obj)
-        {
-
-        }
+       
         public void handle_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
@@ -224,6 +227,42 @@ namespace exampleApp.Pages
             Navigation.PushAsync(new Add_to_schedule());
 
         }
+        public void handle_clicked_image(Object sender, System.EventArgs e)
+        {
+            Image image_add = (Image)sender;
+            int col = Grid.GetColumn(image_add) - 1;
+            int hour = (col * 20) / 60 + 8;
+            int minutes = (col * 20) % 60;
+            string time = "";
+            if (hour < 10)
+            {
+                if (minutes == 0)
+                {
+                    time = "0" + hour + ":00";
+                }
+                else
+                {
+                    time = "0" + hour + ":" + minutes;
+                }
+            }
+            else
+            {
+                if (minutes == 0)
+                {
+                    time = hour + ":00";
+                }
+                else
+                {
+                    time = hour.ToString() + ":" + minutes.ToString();
+                }
+            }
+            DateTime time_and_date = Convert.ToDateTime(selected_date_string + " " + time);
+            Add_to_schedule.time_to_schedule = time_and_date;
+            Temp row = image_add.BindingContext as Temp;
+            Add_to_schedule.id_machine = row.id_machine;
+            Navigation.PushAsync(new Add_to_schedule());
+
+        }
         public class Temp
         {
             public string[] Li { get; set; }
@@ -249,34 +288,39 @@ namespace exampleApp.Pages
                 machine.Init_schedule();
 
             }
-            using (MySqlCommand command = conn.CreateCommand())
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
-
-                command.CommandText = @"SELECT id_machine,id_member,start_time,name_member FROM future_schedule_machines WHERE start_time>=@selected_date AND start_time<=@tomorrow;";
-                command.Parameters.AddWithValue("@selected_date", selected_date);
-                command.Parameters.AddWithValue("@tomorrow", selected_date.AddDays(1.0));
-
-
-                using (MySqlDataReader reader = command.ExecuteReader())
+                conn.Open();
+                using (MySqlCommand command = conn.CreateCommand())
                 {
-                    while (reader.Read())
+
+                    command.CommandText = @"SELECT id_machine,id_member,start_time,name_member FROM future_schedule_machines WHERE start_time>=@selected_date AND start_time<=@tomorrow;";
+                    command.Parameters.AddWithValue("@selected_date", selected_date);
+                    command.Parameters.AddWithValue("@tomorrow", selected_date.AddDays(1.0));
+
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        int id_machine = reader.GetInt32(0);
-                        int id_member = reader.GetInt32(1);
-                        DateTime start_time = reader.GetDateTime(2);
-                        string name_member = reader.GetString(3);
-                        string hour= start_time.ToString("HH:mm");
-                        int index = times[hour];
-                        dict_machines[id_machine].schedule_machine[index] = name_member;
-                    
+                        while (reader.Read())
+                        {
+                            int id_machine = reader.GetInt32(0);
+                            int id_member = reader.GetInt32(1);
+                            DateTime start_time = reader.GetDateTime(2);
+                            string name_member = reader.GetString(3);
+                            string hour = start_time.ToString("HH:mm");
+                            int index = times[hour];
+                            dict_machines[id_machine].schedule_machine[index] = name_member;
 
 
+
+                        }
                     }
+
+
+
                 }
-
-
-
             }
+            
            
             
             foreach(Models.Machine machine in machines)

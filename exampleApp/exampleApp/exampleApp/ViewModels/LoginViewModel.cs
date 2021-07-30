@@ -56,16 +56,9 @@ namespace exampleApp.ViewModels
         }
         public async void OnSubmit()
         {
-            var builder = new MySqlConnectionStringBuilder
-            {
-                Server = "gymservernew.mysql.database.azure.com",
-                Database = "gym_schema",
-                UserID = "gymAdmin",
-                Password = "gym1Admin",
-                SslMode = MySqlSslMode.Required,
-            };
+        
             bool found = false;
-            using (var conn = new MySqlConnection(builder.ConnectionString))
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
                 using (var command = conn.CreateCommand())

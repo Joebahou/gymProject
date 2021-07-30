@@ -9,6 +9,14 @@ namespace exampleApp.Models
     class Connection
     {  
         public static MySqlConnection conn;
+        public static MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
+        {
+            Server = "gymservernew.mysql.database.azure.com",
+            Database = "gym_schema",
+            UserID = "gymAdmin",
+            Password = "gym1Admin",
+            SslMode = MySqlSslMode.Required,
+        };
         public static void ConnectDataBase()
         {
             try

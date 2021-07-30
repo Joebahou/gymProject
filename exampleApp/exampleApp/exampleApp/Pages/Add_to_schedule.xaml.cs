@@ -13,13 +13,14 @@ namespace exampleApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Add_to_schedule : ContentPage
     {
-        MySqlConnection conn;
+        //MySqlConnection conn;
         public static DateTime time_to_schedule;
         public static int id_machine;
+        
         public Add_to_schedule()
         {
             InitializeComponent();
-            ConnectDataBase();
+            //ConnectDataBase();
             Init_picker_trainee();
         }
         private async void picker_Trainee_SelectedIndexChanged(object sender, EventArgs e)
@@ -34,23 +35,29 @@ namespace exampleApp.Pages
             trainee_name += selected_Trainee_array[selected_Trainee_array.Length - 2];
             int id_Trainee = Int32.Parse(selected_Trainee_array[selected_Trainee_array.Length - 1]);
             bool ready_to_add = true;
-            using (MySqlCommand command = conn.CreateCommand())
+
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
-
-                command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
-                command.Parameters.AddWithValue("@id_member", id_Trainee);
-                command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                using (MySqlDataReader reader = command.ExecuteReader())
+                conn.Open();
+                using (MySqlCommand command = conn.CreateCommand())
                 {
-                    if (reader.HasRows)
+
+                    command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
+                    command.Parameters.AddWithValue("@id_member", id_Trainee);
+                    command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        ready_to_add = false;
+                        if (reader.HasRows)
+                        {
+                            ready_to_add = false;
+                        }
                     }
+
+
                 }
-
-
             }
+            
             if (ready_to_add)
             {
                 await add_new_schedule(id_Trainee,trainee_name);
@@ -65,19 +72,25 @@ namespace exampleApp.Pages
         }
         private async Task add_new_schedule(int id_Trainee, string name_trainee )
         {
-            using (MySqlCommand command = conn.CreateCommand())
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
+                conn.Open();
+                using (MySqlCommand command = conn.CreateCommand())
+                {
 
-                command.CommandText = @"INSERT INTO future_schedule_machines(id_machine,id_member,start_time,name_member) VALUES(@id_machine,@id_member,@start_time,@name_member);";
-                command.Parameters.AddWithValue("@id_machine", id_machine);
-                command.Parameters.AddWithValue("@id_member", id_Trainee);
-                command.Parameters.AddWithValue("@start_time", time_to_schedule);
-                command.Parameters.AddWithValue("@name_member", name_trainee);
-                command.ExecuteNonQuery();
+                    command.CommandText = @"INSERT INTO future_schedule_machines(id_machine,id_member,start_time,name_member) VALUES(@id_machine,@id_member,@start_time,@name_member);";
+                    command.Parameters.AddWithValue("@id_machine", id_machine);
+                    command.Parameters.AddWithValue("@id_member", id_Trainee);
+                    command.Parameters.AddWithValue("@start_time", time_to_schedule);
+                    command.Parameters.AddWithValue("@name_member", name_trainee);
+                    command.ExecuteNonQuery();
 
 
 
+                }
             }
+
+            
             string caching_msg = "you succesfully added in date " + time_to_schedule.ToString() + ",machine " + id_machine + " with trainee " +name_trainee;
             await App.Current.MainPage.DisplayAlert("Update Schedule", caching_msg, "OK");
             await App.Current.MainPage.Navigation.PopAsync();
@@ -91,6 +104,8 @@ namespace exampleApp.Pages
                 picker_Trainee.Items.Add(t.Name+" "+t.Id);
             }
         }
+        
+        /*
         private void ConnectDataBase()
         {
             try
@@ -118,6 +133,7 @@ namespace exampleApp.Pages
                 Console.WriteLine(ex.ToString());
             }
         }
+        */
 
     }
 }

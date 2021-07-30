@@ -28,15 +28,16 @@ namespace exampleApp.Pages
 
         public static List<Models.Machine> machines_list;
 
-        MySqlConnection conn;
+        //MySqlConnection conn;
         public availableMachines_owner()
         {
             InitializeComponent();
             list_bind = new ObservableCollection<Machinebind>();
             InitList();
             isReady = true;
-            ConnectDataBase();
+            //ConnectDataBase();
         }
+        /*
         private void ConnectDataBase()
         {
             
@@ -64,7 +65,7 @@ namespace exampleApp.Pages
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }*/
         public void InitList()
         {
             foreach (Models.Machine m in machines_list)
@@ -88,18 +89,22 @@ namespace exampleApp.Pages
         {
             Button thebutton = (Button)sender;
             Machinebind machine = thebutton.BindingContext as Machinebind;
-            
-            using (MySqlCommand command = conn.CreateCommand())
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
+                conn.Open();
+                using (MySqlCommand command = conn.CreateCommand())
+                {
 
-                command.CommandText = @"DELETE FROM machines WHERE idmachine=@id_machine and name=@name;";
-                command.Parameters.AddWithValue("@id_machine", (machine.id_machine));
-                command.Parameters.AddWithValue("name",machine.name);
-       
-                command.ExecuteNonQuery();
+                    command.CommandText = @"DELETE FROM machines WHERE idmachine=@id_machine and name=@name;";
+                    command.Parameters.AddWithValue("@id_machine", (machine.id_machine));
+                    command.Parameters.AddWithValue("name", machine.name);
+
+                    command.ExecuteNonQuery();
 
 
+                }
             }
+           
             list_bind.Remove(machine);
             available_machines.ItemsSource = list_bind;
         }
@@ -127,44 +132,55 @@ namespace exampleApp.Pages
             }
             else
             {
-                using (MySqlCommand command = conn.CreateCommand())
+                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                 {
-                    command.CommandText = @"SELECT idmachine,name FROM gym_schema.machines WHERE name=@name;";
-                    command.Parameters.AddWithValue("@name", machine_name);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-
-                        {
-                            if (!reader.IsDBNull(0))
-
-                                isDUplicate = true;
-
-                        }
-                    }
-                }
-                if (!isDUplicate)
-                {
-
+                    conn.Open();
                     using (MySqlCommand command = conn.CreateCommand())
                     {
-                        command.CommandText = @"INSERT INTO machines(name) VALUES (@name);";
-                        command.Parameters.AddWithValue("@name", machine_name);
-                        command.ExecuteNonQuery();
-                    }
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-                        command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE name=@name;";
+                        command.CommandText = @"SELECT idmachine,name FROM gym_schema.machines WHERE name=@name;";
                         command.Parameters.AddWithValue("@name", machine_name);
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
 
                             {
-                                new_id = reader.GetInt32(0);
+                                if (!reader.IsDBNull(0))
+
+                                    isDUplicate = true;
+
                             }
                         }
                     }
+                }
+              
+                if (!isDUplicate)
+                {
+                    using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
+                    {
+                        conn.Open();
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"INSERT INTO machines(name) VALUES (@name);";
+                            command.Parameters.AddWithValue("@name", machine_name);
+                            command.ExecuteNonQuery();
+                        }
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE name=@name;";
+                            command.Parameters.AddWithValue("@name", machine_name);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (reader.Read())
+
+                                {
+                                    new_id = reader.GetInt32(0);
+                                }
+                            }
+                        }
+                    }
+
+
+                 
 
 
                     Machinebind new_machine = new Machinebind { name = machine_name, id_machine = new_id, available = true };
@@ -181,33 +197,6 @@ namespace exampleApp.Pages
 
         }
 
-            private void Switch_Toggled(object sender, ToggledEventArgs e)
-        {
-            if (isReady)
-            {
-                Switch thebutton = (Switch)sender;
-                Machinebind machine = thebutton.BindingContext as Machinebind;
-                if (machine != null)
-                {
-                    int new_working;
-                    if (machine.available)
-                        new_working = 1;
-                    else new_working = 0;
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"UPDATE machines SET working=@new_working WHERE idmachine=@id_machine and name=@name;";
-                        command.Parameters.AddWithValue("@id_machine", machine.id_machine);
-                        command.Parameters.AddWithValue("@new_working", new_working);
-                        command.Parameters.AddWithValue("@name", machine.name);
-                        command.ExecuteNonQuery();
-
-
-                    }
-                    machine.available = !machine.available;
-                    available_machines.ItemsSource = list_bind;
-                }
-            }
-        }
+        
     }
 }

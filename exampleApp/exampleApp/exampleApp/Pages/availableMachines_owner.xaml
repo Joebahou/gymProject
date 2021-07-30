@@ -46,7 +46,7 @@
                                         <BoxView Grid.Row="0" Grid.Column="0" Color="White"  Grid.ColumnSpan="4" ></BoxView>
                                         <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
                                         <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Start" Text="{Binding name}"></Label>
-                                            <Switch IsEnabled="False" Toggled="Switch_Toggled" Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Scale="1.5" ThumbColor="Orange" OnColor="CadetBlue"  IsToggled="{Binding available}" />
+                                            <Switch IsEnabled="False" Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Scale="1.5" ThumbColor="Orange" OnColor="CadetBlue"  IsToggled="{Binding available}"/>
                                         <Button Grid.Row="0" Grid.Column="3" Text="delete" Clicked="delete_clicked" ></Button>
 
 
