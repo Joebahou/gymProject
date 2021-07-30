@@ -73,11 +73,11 @@
                                             <ColumnDefinition  Width="20*"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding msg}" FontSize="14" ></Label>
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding msg}" ></Label>
                                         <Button Grid.Row="0" Grid.Column="1" IsVisible="false" Text="Helped" HorizontalOptions="CenterAndExpand" Clicked="helped_clicked" ></Button>
-                                        <Image Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Source="helped.jpg" WidthRequest="50" IsVisible="{Binding clear_msg_icon}">
+                                        <Image Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Source="helped.jpg" WidthRequest="50">
                                             <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Tapped="clear_clicked_image" NumberOfTapsRequired="1" />
+                                                <TapGestureRecognizer Tapped="helped_clicked_image" NumberOfTapsRequired="1" />
                                             </Image.GestureRecognizers>
                                         </Image>
                                     </Grid>

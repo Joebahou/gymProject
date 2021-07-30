@@ -45,7 +45,7 @@ namespace QRscanner
         public  StartScanPage()
         {
             InitializeComponent();
-            String caching_msg = "";
+            String catching_msg = "";
             scanning_time = DateTime.Now;
             dataUsage[1] = MainPage.id_machine;
             dataUsage[2] = 0;
@@ -77,7 +77,7 @@ namespace QRscanner
                             await Client.SendEventAsync(message);
                             await App.Current.MainPage.Navigation.PopModalAsync();
                             activityIndicator.IsVisible = true;
-                            await Task.Delay(2000);
+                            await Task.Delay(2500);
                             activityIndicator.IsVisible = false;
                             await Navigation.PopAsync();
 
@@ -91,8 +91,8 @@ namespace QRscanner
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             
-                            caching_msg = "id_member = " + App.member_from_table + " is using id machine " + MainPage.id_machine;
-                            await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
+                            catching_msg = "id_member = " + App.member_from_table + " is using id machine " + MainPage.id_machine;
+                            await App.Current.MainPage.DisplayAlert("Scanned Barcode", catching_msg, "OK");
                         });
                     }
                 }
@@ -197,8 +197,8 @@ namespace QRscanner
                                 Device.BeginInvokeOnMainThread(async () =>
                                 {
 
-                                    caching_msg = "this machine has been scheduled by onther trainer at this time. If he will not come in "+(five_min-time_has_passed).Minutes+" minutes, you can scan again and use the machine";
-                                    await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
+                                    catching_msg = "this machine has been scheduled by onther trainer at this time. If he will not come in "+(five_min-time_has_passed).Minutes+" minutes, you can scan again and use the machine";
+                                    await App.Current.MainPage.DisplayAlert("Scanned Barcode", catching_msg, "OK");
                                     await App.Current.MainPage.Navigation.PopModalAsync();
                                     await App.Current.MainPage.Navigation.PopAsync();
                                 });
@@ -212,8 +212,8 @@ namespace QRscanner
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             
-                            caching_msg = "you can't use more than one machine at the same time!";
-                            await App.Current.MainPage.DisplayAlert("Scanned Barcode", caching_msg, "OK");
+                            catching_msg = "you can't use more than one machine at the same time!";
+                            await App.Current.MainPage.DisplayAlert("Scanned Barcode", catching_msg, "OK");
                             await App.Current.MainPage.Navigation.PopModalAsync();
                             await App.Current.MainPage.Navigation.PopAsync();
                         });

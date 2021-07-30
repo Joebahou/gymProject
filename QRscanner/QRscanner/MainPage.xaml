@@ -7,7 +7,7 @@
                      AbsoluteLayout.LayoutFlags="All" >
             <Label Text= "{Binding Name_log}"
                     VerticalOptions="Start" 
-                    FontSize="60"
+                    FontSize="50"
                     HorizontalOptions="CenterAndExpand"></Label>
             <Label x:Name="not_working_label" Text= "This Machine Is Not Working"
                   TextColor="Red" FontSize="27"  HorizontalOptions="CenterAndExpand" IsVisible="false"></Label>
@@ -41,6 +41,7 @@
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Cancel" Clicked="click_button_cancel"></Button>
                     <Button Text="Change" Clicked="click_button_change"></Button>
+                    <Button Text="Ignore" Clicked="click_button_ignore"></Button>
                 </StackLayout>
 
             </StackLayout>

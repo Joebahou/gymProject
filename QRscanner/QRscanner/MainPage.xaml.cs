@@ -69,6 +69,8 @@ namespace QRscanner
 
         public async void Set_signalR()
         {
+            string member_name="";
+            string machine_name="";
             connection = new HubConnectionBuilder()
                 .WithUrl("https://gymfuctions.azurewebsites.net/api")
                 .Build();
@@ -83,12 +85,44 @@ namespace QRscanner
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
 
+                    using (var conn = new MySqlConnection(builder.ConnectionString))
+                    {
+                        conn.Open();
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT name FROM gym_schema.members WHERE idmember = @id_machine;";
+                            command.Parameters.AddWithValue("@id_machine", msgupdate[2]);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    member_name = reader.GetString(0);
+                                }
+                            }
+
+                        }
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT name FROM gym_schema.machines WHERE idmachine = @id_machine;";
+                            command.Parameters.AddWithValue("@id_machine", msgupdate[0]);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    machine_name = reader.GetString(0);
+                                }
+                            }
+
+                        }
+
+
+                    }
                     String resultusage = "";
                     int usage = msgupdate[1];
                     if (usage == 1)
-                        resultusage = "id_member = " + msgupdate[2] + " has started using id machine " + msgupdate[0];
+                        resultusage = member_name + " started using the "+ machine_name + " machine";
                     else
-                        resultusage = "id_member = " + msgupdate[2] + " has finished using id machine " + msgupdate[0];
+                        resultusage = member_name + " finished using the " + machine_name + " machine";
                     await App.Current.MainPage.DisplayAlert("Scanned Barcode", resultusage, "OK");
 
 
@@ -162,6 +196,7 @@ namespace QRscanner
                     }
                 }
                 await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                this_machine.Alert_broken = 1;
                 broken_machine_Button_set_by_owner.IsVisible = true;
 
             }
@@ -174,6 +209,72 @@ namespace QRscanner
         public void click_button_cancel(Object sender, System.EventArgs e)
         {
             popupLogin.IsVisible = false;
+
+        }
+
+        public async void click_button_ignore(Object sender, System.EventArgs e)
+        {
+            bool isOwner = false;
+            
+            using (var conn = new MySqlConnection(builder.ConnectionString))
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = @"SELECT type FROM gym_schema.members WHERE email = @email and password=@password;";
+                    command.Parameters.AddWithValue("@email", Email.Text);
+                    command.Parameters.AddWithValue("@password", Password.Text);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            if (!reader.IsDBNull(0))
+                            {
+                                if (reader.GetInt32(0) == 2)
+                                    isOwner = true;
+                            }
+
+
+                        }
+                    }
+
+                }
+
+                if (isOwner)
+                {
+
+                    popupLogin.IsVisible = false;
+                    broken_machine_Button_set_by_owner.IsVisible = false;
+
+                    using (MySqlCommand command = conn.CreateCommand())
+                    {
+
+                        command.CommandText = @"UPDATE machines SET alert_broken=@alert WHERE idmachine=@id_machine and name=@name;";
+                        command.Parameters.AddWithValue("@id_machine", id_machine);
+                        command.Parameters.AddWithValue("@alert", 1 - alert);
+                        command.Parameters.AddWithValue("@name", name_machine);
+                        command.ExecuteNonQuery();
+
+                    }
+                    this_machine.Alert_broken = 0;
+                    dataBrokenMachine[0] = id_machine;
+                    dataBrokenMachine[1] = 3;
+                    string messageJson = JsonConvert.SerializeObject(dataBrokenMachine);
+                    Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                    await Client.SendEventAsync(message);
+                    String resultusage;
+                    if (this_machine.Available == 1)
+                        resultusage = "Now the machine is set as working";
+                    else resultusage = "Now the machine is set as not working";
+                    await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                }
+                else
+                {
+                    string msg = "you are not the owner, you can't change this property";
+                    await Application.Current.MainPage.DisplayAlert("Not An Owner", msg, "OK");
+                }
+            }
+
 
         }
         public async void click_button_change(Object sender, System.EventArgs e)
@@ -203,8 +304,10 @@ namespace QRscanner
                     }
 
                 }
+
                 if (isOwner)
                 {
+                    
                     popupLogin.IsVisible = false;
                     is_working = !is_working;
                     Is_working = !Is_working;

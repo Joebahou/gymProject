@@ -186,12 +186,25 @@ namespace EventHubFunction
                                 }
                                 else
                                 {
+                                    if (filter == 2)
+                                    {
                                         await signalRMessages.AddAsync(
-                                       new SignalRMessage
-                                       {
-                                           Target = "BrokenMachine_fixed",
-                                           Arguments = new[] { broken_msg }
-                                       });
+                                        new SignalRMessage
+                                        {
+                                            Target = "BrokenMachine_fixed",
+                                            Arguments = new[] { broken_msg }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        await signalRMessages.AddAsync(
+                                        new SignalRMessage
+                                        {
+                                            Target = "BrokenMachine_ignore",
+                                            Arguments = new[] { broken_msg }
+                                        });
+
+                                    }
 
                                 }
                             }
