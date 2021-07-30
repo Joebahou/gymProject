@@ -16,21 +16,21 @@ namespace exampleApp.Pages
     public partial class UsedMachines : ContentPage
     {
         public static List<Models.Machine> machines_list;
-        public static HubConnection connection;
+        public HubConnection connection;
       
     
         public async void Set_signalR()
         {
-            connection = new HubConnectionBuilder()
+            this.connection = new HubConnectionBuilder()
                .WithUrl("https://gymfuctions.azurewebsites.net/api")
                .Build();
-            connection.Closed += async (error) =>
+            this.connection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await connection.StartAsync();
             };
 
-            connection.On<int[]>("newMessage", (msgupdate) =>
+            this.connection.On<int[]>("newMessage", (msgupdate) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
@@ -65,7 +65,7 @@ namespace exampleApp.Pages
 
             //need to check if working
             // need to check if needed new connection
-            connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
+            this.connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
@@ -85,7 +85,7 @@ namespace exampleApp.Pages
 
                 });
             });
-            connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
+            this.connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
@@ -109,6 +109,7 @@ namespace exampleApp.Pages
             await connection.StartAsync();
 
         }
+        
         public  UsedMachines()
         {
             InitializeComponent();
