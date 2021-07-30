@@ -179,12 +179,105 @@ namespace exampleApp.Pages
                     };
                 })
             };
+
+            BoxView b_green = new BoxView
+            {
+                Color = Color.Green
+            };
+            BoxView b_red = new BoxView
+            {
+                Color = Color.Red
+            };
+            BoxView b_yellow = new BoxView
+            {
+                Color = Color.Yellow
+            };
+            Label l_green = new Label
+            {
+                Text = "The machine is avalibale to use",
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions=LayoutOptions.Center
+                
+            };
+            Label l_red = new Label
+            {
+                Text = "The machine is now being used",
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+
+            };
+            Label l_yellow = new Label
+            {
+                Text = "The machine is broken",
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+
+            };
+
+
+
+            StackLayout mikra = new StackLayout
+            {
+                
+                HeightRequest=200,
+                Orientation = StackOrientation.Vertical,
+                Children =
+                {
+                    new StackLayout
+                    {
+                        Padding = 10,
+                        Orientation = StackOrientation.Horizontal,
+                        Children =
+                        {
+                            b_green,
+                            l_green
+                        }
+
+
+                    },
+                    new StackLayout
+                    {
+                        Padding = 10,
+                        Orientation = StackOrientation.Horizontal,
+                        Children =
+                        {
+                            b_red,
+                            l_red
+                        }
+
+
+                    },
+                    new StackLayout
+                    {
+                        Padding = 10,
+                        Orientation = StackOrientation.Horizontal,
+                        Children =
+                        {
+                            b_yellow,
+                            l_yellow
+                        }
+
+
+                    }
+
+                }
+
+            };
             this.Content = new StackLayout
             {
                 Children =
                 {
-                    header,
-                    listView
+                    new StackLayout
+                    {
+                        HeightRequest=600,
+                        Children={
+                        header,
+                       listView
+                        }
+                     
+                    },
+                    
+                    mikra
                 }
             };
             

@@ -9,6 +9,13 @@
                 <StackLayout>
                     <Label Text="Here you can see which are the busiest hours of the day (1-24)"
                            Margin="0,5" FontSize="Large" TextColor="Black"></Label>
+                    <DatePicker x:Name="DatePickerStart" HorizontalOptions="Center" Margin="0"
+                                DateSelected="DatePickerStart_DateSelected"></DatePicker>
+                    <Label Text="Select End Date" HorizontalOptions="Center" TextColor="Black" Margin="0"></Label>
+                    <DatePicker x:Name="DatePickerEnd" HorizontalOptions="Center" Margin="0"
+                                DateSelected="DatePickerEnd_DateSelected"></DatePicker>
+                    <Button x:Name="ButtonShowPop"  HorizontalOptions="Center" Text="Show Machine Popularity" 
+                            Clicked="ButtonShowPop_Clicked" Margin="0"></Button>
                     <microcharts:ChartView x:Name="chartViewPie" HeightRequest="280"/>
                 </StackLayout>
             </ScrollView>

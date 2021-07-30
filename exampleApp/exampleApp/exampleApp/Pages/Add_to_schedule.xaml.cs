@@ -16,12 +16,21 @@ namespace exampleApp.Pages
         //MySqlConnection conn;
         public static DateTime time_to_schedule;
         public static int id_machine;
-        
+        public static string name_machine_chosen;
+        public string chosen_date { get; set; }
+        public string chosen_machine { get; set; }
+
         public Add_to_schedule()
         {
             InitializeComponent();
             //ConnectDataBase();
             Init_picker_trainee();
+            chosen_date = "the date you chose: " + time_to_schedule.ToString();
+            chosen_machine = "the machine you chose: " + name_machine_chosen;
+            OnPropertyChanged("chosen_date");
+            OnPropertyChanged("chose_machine");
+            BindingContext = this;
+            
         }
         private async void picker_Trainee_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -260,6 +260,7 @@ namespace exampleApp.Pages
             Add_to_schedule.time_to_schedule = time_and_date;
             Temp row = image_add.BindingContext as Temp;
             Add_to_schedule.id_machine = row.id_machine;
+            Add_to_schedule.name_machine_chosen = dict_machines[row.id_machine].Name;
             Navigation.PushAsync(new Add_to_schedule());
 
         }

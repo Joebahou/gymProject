@@ -4,6 +4,8 @@
              x:Class="exampleApp.Pages.Add_to_schedule">
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="{Binding chosen_date}"></Label>
+            <Label Text="{Binding chosen_machine}"></Label>
 
             <Picker x:Name="picker_Trainee" 
                     Title="Select trainee "                    

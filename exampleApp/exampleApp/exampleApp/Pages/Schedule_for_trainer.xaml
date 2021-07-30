@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="exampleApp.Pages.Schedule_for_trainer">
     <ContentPage.Content> 
-        <ScrollView Orientation="Horizontal">
+        <ScrollView Orientation="Both">
             <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <StackLayout>
 
@@ -17,7 +17,7 @@
                             <ColumnDefinition Width="200*"></ColumnDefinition>
                             <ColumnDefinition Width="300*"></ColumnDefinition>
                             <ColumnDefinition Width="250*"></ColumnDefinition>
-                            <ColumnDefinition Width="100*"></ColumnDefinition>
+                            
                             <ColumnDefinition Width="100*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <BoxView Grid.Row="0" Grid.Column="0" Color="OrangeRed" Grid.ColumnSpan="7"></BoxView>
@@ -27,8 +27,8 @@
                         <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
                         <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center">name machine</Label>
                         <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Start">date time</Label>
-                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Start">edit</Label>
-                        <Label Grid.Row="0" Grid.Column="6" VerticalOptions="Center" HorizontalOptions="Start">delete</Label>
+                       
+                        <Label Grid.Row="0" Grid.Column="5" VerticalOptions="Center" HorizontalOptions="Start">delete</Label>
                     </Grid>
                     <ListView x:Name="Schedule_view" ItemsSource="{Binding List_bind}" RowHeight="100" >
                         <ListView.ItemTemplate >
@@ -48,25 +48,29 @@
                                                 <ColumnDefinition Width="200*"></ColumnDefinition>
                                                 <ColumnDefinition Width="300*"></ColumnDefinition>
                                                 <ColumnDefinition Width="250*"></ColumnDefinition>
-                                                <ColumnDefinition Width="100*"></ColumnDefinition>
+                                                
                                                 <ColumnDefinition Width="100*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
 
                                             <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="6" ></BoxView>
                                             <BoxView Grid.Row="0" Grid.Column="0" Color="{Binding color_row}" Grid.ColumnSpan="7" ></BoxView>
                                             <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_trainee}"></Label>
-                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_trainee}"></Label>
+                                            <StackLayout  Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                                                <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_trainee}"></Label>
+                                                <Image Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Source="edit" WidthRequest="25" >
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="edit_clicked_image" NumberOfTapsRequired="1" />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </StackLayout>
+                                            
                                             <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
                                             <Label Grid.Row="0" Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_machine}"></Label>
                                             <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding date_time_string}"></Label>
-                                            <Button Grid.Row="0" Grid.Column="5" Text="edit"  Clicked="edit_clicked" IsVisible="false"></Button>
-                                            <Image Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Source="edit" WidthRequest="35" >
-                                                <Image.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="edit_clicked_image" NumberOfTapsRequired="1" />
-                                                </Image.GestureRecognizers>
-                                            </Image>
-                                            <Button Grid.Row="0" Grid.Column="6" Text="delete" Clicked="delete_clicked" IsVisible="false" ></Button>
-                                            <Image Grid.Row="0" Grid.Column="6" HorizontalOptions="Center" Source="delete">
+                                           
+                                            
+                                            <Button Grid.Row="0" Grid.Column="5" Text="delete" Clicked="delete_clicked" IsVisible="false" ></Button>
+                                            <Image Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Source="delete">
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="delete_clicked_image" NumberOfTapsRequired="1" />
                                                 </Image.GestureRecognizers>

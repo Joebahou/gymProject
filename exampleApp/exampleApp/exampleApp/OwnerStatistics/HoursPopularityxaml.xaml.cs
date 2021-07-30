@@ -20,11 +20,13 @@ namespace exampleApp.OwnerStatistics
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HoursPopularityxaml : ContentPage
     {
+        private DateTime DateStart = DateTime.Now;
+        private DateTime DateEnd = DateTime.Now;
         public HoursPopularityxaml()
         {
             InitializeComponent();
             ConnectDataBase();
-            HoursPop();
+            //HoursPop();
         }
         private MySqlConnection conn;
         private void ConnectDataBase()
@@ -59,8 +61,12 @@ namespace exampleApp.OwnerStatistics
          and present it in the microchart*/
         private void HoursPop()
         {
+            string start_date = DateStart.ToString("yyyy-MM-dd");
+            string end_date = DateEnd.ToString("yyyy-MM-dd");
             string cmd_text = $"SELECT hour(usage_gym.start) as h, count(*) " +
                 $"from usage_gym " +
+                $"where date(usage_gym.start) >= '{start_date}' " +
+                $"and date(usage_gym.start) <= '{end_date}' " +
                 $"group by h ";
             List<Tuple<string, long>> HourNumUses = new List<Tuple<string, long>>();
             MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
@@ -111,6 +117,19 @@ namespace exampleApp.OwnerStatistics
                 PointMode = PointMode.Circle,
                 BackgroundColor = SKColor.Parse("#00ffffff")
             };
+        }
+        private void DatePickerStart_DateSelected(object sender, DateChangedEventArgs e)
+        {
+            DateStart = DatePickerStart.Date;
+        }
+
+        private void DatePickerEnd_DateSelected(object sender, DateChangedEventArgs e)
+        {
+            DateEnd = DatePickerEnd.Date;
+        }
+        private void ButtonShowPop_Clicked(object sender, EventArgs e)
+        {
+            HoursPop();
         }
     }
 }
