@@ -13,8 +13,16 @@ namespace EventHubFunction
 {
     public static class EventHubFunction
     {
+        
+        
+        public static async void updateScore()
+        {
+
+        }
         public static async Task<string> updateDB(int id_member,int id_machine,int usage, int weight_or_speed, int reps, int sets, MySqlConnection conn)
         {
+            String temp;
+            int last_usage=0;
             if (usage == 0)
             {
                 using (var command = conn.CreateCommand())
@@ -30,10 +38,6 @@ namespace EventHubFunction
                     command.Parameters.AddWithValue("@start", theDate);
                     int rowCount = await command.ExecuteNonQueryAsync();
 
-                   
-                    
-
-
                 }
                 using (var command = conn.CreateCommand())
                 {
@@ -42,18 +46,34 @@ namespace EventHubFunction
                     command.Parameters.AddWithValue("@id_machine", id_machine);
                     command.Parameters.AddWithValue("@taken", 1-usage);
                     int rowCount = await command.ExecuteNonQueryAsync();
-                    String temp = String.Format("Number of rows updated={0}", rowCount);
-                    return temp;
+                    temp = String.Format("Number of rows updated={0}", rowCount);
                 }
-
+                return temp;
             }
             else
             {
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "UPDATE usage_gym SET end = @end WHERE idmember = @id_member AND idmachine = @id_machine;";
+                    command.CommandText = "SELECT max(idusage) FROM usage_gym WHERE idmember = @id_member AND idmachine = @id_machine";
                     command.Parameters.AddWithValue("@id_member", id_member);
                     command.Parameters.AddWithValue("@id_machine", id_machine);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            last_usage = reader.GetInt32(0);
+
+                        }
+                    }
+                }
+
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = "UPDATE usage_gym SET end = @end WHERE idmember = @id_member AND idmachine = @id_machine and idusage=@last_usage;";
+                    command.Parameters.AddWithValue("@id_member", id_member);
+                    command.Parameters.AddWithValue("@id_machine", id_machine);
+                    command.Parameters.AddWithValue("@last_usage", last_usage);
                     command.Parameters.AddWithValue("@end", DateTime.Now.AddHours(3.0));
                     int rowCount = await command.ExecuteNonQueryAsync();
                     
@@ -65,7 +85,7 @@ namespace EventHubFunction
                     command.Parameters.AddWithValue("@id_machine", id_machine);
                     command.Parameters.AddWithValue("@taken", 1 - usage);
                     int rowCount = await command.ExecuteNonQueryAsync();
-                    String temp = String.Format("Number of rows updated={0}", rowCount);
+                    temp = String.Format("Number of rows updated={0}", rowCount);
                     return temp;
                 }
 
@@ -75,6 +95,7 @@ namespace EventHubFunction
         [FunctionName("EventHubFunction")]
         public static async Task Run([EventHubTrigger("gymeventhub", Connection = "EventHubGym")] EventData[] events, [SignalR(HubName = "chat")] IAsyncCollector<SignalRMessage> signalRMessages, ILogger log)
         {
+            int score=-1;
             var exceptions = new List<Exception>();
             var builder = new MySqlConnectionStringBuilder
             {
@@ -138,7 +159,7 @@ namespace EventHubFunction
                             int id_machine = Int32.Parse(strID[1]);
                             broken_msg[0] = id_machine;
                             
-                                //extracting from table the machine name
+                             //extracting from table the machine name
                             using (var conn = new MySqlConnection(builder.ConnectionString))
                             {
 
@@ -218,6 +239,7 @@ namespace EventHubFunction
                             int weight_or_speed = Int32.Parse(strID[3]);
                             int reps = Int32.Parse(strID[4]);
                             int sets = Int32.Parse(strID[5]);
+
                             int num_usage = 0;
                             using (var conn = new MySqlConnection(builder.ConnectionString))
                             {
@@ -254,6 +276,38 @@ namespace EventHubFunction
                                 Target = "newMessage",
                                 Arguments = new[] { msgupdate }
                             });
+
+                            /*updating score
+                            if (reps != 0 && sets != 0)
+                            {
+                                score = weight_or_speed * sets * reps;
+                            }
+                            else
+                            {
+                                using (var conn = new MySqlConnection(builder.ConnectionString))
+                                {
+
+                                    conn.Open();
+
+                                    using (var command = conn.CreateCommand())
+                                    {
+                                        command.CommandText = "SELECT start,end FROM usage_gym WHERE idmachine=@id_machine";
+                                        command.Parameters.AddWithValue("@id_machine", id_machine);
+
+                                        using (var reader =  command.ExecuteReader())
+                                        {
+                                            while (reader.Read())
+                                            {
+                                                help_msg[1] = reader.GetString(0);
+
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            */
+
                         }
                     }
 
