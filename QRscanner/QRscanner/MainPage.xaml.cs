@@ -161,12 +161,15 @@ namespace QRscanner
         {
             if (connection.State == HubConnectionState.Connected)
             {
+                activityIndicator.IsVisible = true;
                 dataHelp[0] = id_machine;
                 string messageJson = JsonConvert.SerializeObject(dataHelp);
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                
                 await Client.SendEventAsync(message);
                 String resultusage = "A help message has been sent to all trainers";
                 await App.Current.MainPage.DisplayAlert("HELP ME", resultusage, "OK");
+                activityIndicator.IsVisible = true;
             }
 
         }
@@ -174,6 +177,7 @@ namespace QRscanner
         {
             if (connection.State == HubConnectionState.Connected)
             {
+                activityIndicator.IsVisible = true;
                 dataBrokenMachine[0] = id_machine;
                 dataBrokenMachine[1] = 0;
                 string messageJson = JsonConvert.SerializeObject(dataBrokenMachine);
@@ -198,7 +202,7 @@ namespace QRscanner
                 await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
                 this_machine.Alert_broken = 1;
                 broken_machine_Button_set_by_owner.IsVisible = true;
-
+                activityIndicator.IsVisible = false;
             }
 
         }

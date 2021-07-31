@@ -22,21 +22,50 @@ namespace EventHubFunction
         public static async Task<string> updateDB(int id_member,int id_machine,int usage, int weight_or_speed, int reps, int sets, MySqlConnection conn)
         {
             String temp;
-            int last_usage=0;
+            int last_usage = 0,speed=0;
+            double score=-1;
+            DateTime theEndDate;
+            DateTime start_time= DateTime.Now.AddHours(3.0);
             if (usage == 0)
             {
-                using (var command = conn.CreateCommand())
+                if (reps != 0 && sets != 0)
                 {
+                    score = weight_or_speed * sets * reps;
+                }
+                if (score < 0)
+                {
+                    using (var command = conn.CreateCommand())
+                    {
 
-                    command.CommandText = @"INSERT INTO usage_gym (idmember,start,idmachine,weight_or_speed,reps,sets) VALUES (@id_member,@start, @id_machine,@weight_or_speed,@reps,@sets);";
-                    command.Parameters.AddWithValue("@id_member", id_member);
-                    command.Parameters.AddWithValue("@id_machine", id_machine);
-                    command.Parameters.AddWithValue("@weight_or_speed", weight_or_speed);
-                    command.Parameters.AddWithValue("@reps", reps);
-                    command.Parameters.AddWithValue("@sets", sets);
-                    DateTime theDate = DateTime.Now.AddHours(3.0);
-                    command.Parameters.AddWithValue("@start", theDate);
-                    int rowCount = await command.ExecuteNonQueryAsync();
+                        command.CommandText = @"INSERT INTO usage_gym (idmember,start,idmachine,weight_or_speed,reps,sets) VALUES (@id_member,@start, @id_machine,@weight_or_speed,@reps,@sets);";
+                        command.Parameters.AddWithValue("@id_member", id_member);
+                        command.Parameters.AddWithValue("@id_machine", id_machine);
+                        command.Parameters.AddWithValue("@weight_or_speed", weight_or_speed);
+                        command.Parameters.AddWithValue("@reps", reps);
+                        command.Parameters.AddWithValue("@sets", sets);
+                        DateTime theDate = DateTime.Now.AddHours(3.0);
+                        command.Parameters.AddWithValue("@start", theDate);
+                        int rowCount = await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+                else
+                {
+                    using (var command = conn.CreateCommand())
+                    {
+
+                        command.CommandText = @"INSERT INTO usage_gym (idmember,start,idmachine,weight_or_speed,reps,sets,score) VALUES (@id_member,@start, @id_machine,@weight_or_speed,@reps,@sets,@score);";
+                        command.Parameters.AddWithValue("@id_member", id_member);
+                        command.Parameters.AddWithValue("@id_machine", id_machine);
+                        command.Parameters.AddWithValue("@weight_or_speed", weight_or_speed);
+                        command.Parameters.AddWithValue("@reps", reps);
+                        command.Parameters.AddWithValue("@sets", sets);
+                        command.Parameters.AddWithValue("@score", score);
+                        DateTime theDate = DateTime.Now.AddHours(3.0);
+                        command.Parameters.AddWithValue("@start", theDate);
+                        int rowCount = await command.ExecuteNonQueryAsync();
+
+                    }
 
                 }
                 using (var command = conn.CreateCommand())
@@ -74,7 +103,8 @@ namespace EventHubFunction
                     command.Parameters.AddWithValue("@id_member", id_member);
                     command.Parameters.AddWithValue("@id_machine", id_machine);
                     command.Parameters.AddWithValue("@last_usage", last_usage);
-                    command.Parameters.AddWithValue("@end", DateTime.Now.AddHours(3.0));
+                    theEndDate = DateTime.Now.AddHours(3.0);
+                    command.Parameters.AddWithValue("@end", theEndDate);
                     int rowCount = await command.ExecuteNonQueryAsync();
                     
                 }
@@ -86,8 +116,42 @@ namespace EventHubFunction
                     command.Parameters.AddWithValue("@taken", 1 - usage);
                     int rowCount = await command.ExecuteNonQueryAsync();
                     temp = String.Format("Number of rows updated={0}", rowCount);
-                    return temp;
+                    
                 }
+                //updating score
+               
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = "SELECT start,score,weight_or_speed FROM usage_gym WHERE idusage=@last_usage";
+                    
+                    command.Parameters.AddWithValue("@last_usage", last_usage);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            start_time = reader.GetDateTime(0);
+                            score= reader.GetDouble(1);
+                            speed = reader.GetInt32(2);
+
+                        }
+                    }
+                }
+                if (score == 0)
+                {
+                    score = speed * (theEndDate - start_time).TotalMinutes;
+                    using (var command = conn.CreateCommand())
+                    {
+                        command.CommandText = "UPDATE usage_gym SET score=@score WHERE idusage=@last_usage;";
+                        command.Parameters.AddWithValue("@last_usage", last_usage);
+                        command.Parameters.AddWithValue("@score", score);
+                        int rowCount = await command.ExecuteNonQueryAsync();
+                       
+
+                    }
+                }
+                    
+                
+                return temp;
 
             }
             
@@ -95,7 +159,7 @@ namespace EventHubFunction
         [FunctionName("EventHubFunction")]
         public static async Task Run([EventHubTrigger("gymeventhub", Connection = "EventHubGym")] EventData[] events, [SignalR(HubName = "chat")] IAsyncCollector<SignalRMessage> signalRMessages, ILogger log)
         {
-            int score=-1;
+            
             var exceptions = new List<Exception>();
             var builder = new MySqlConnectionStringBuilder
             {
@@ -277,36 +341,9 @@ namespace EventHubFunction
                                 Arguments = new[] { msgupdate }
                             });
 
-                            /*updating score
-                            if (reps != 0 && sets != 0)
-                            {
-                                score = weight_or_speed * sets * reps;
-                            }
-                            else
-                            {
-                                using (var conn = new MySqlConnection(builder.ConnectionString))
-                                {
-
-                                    conn.Open();
-
-                                    using (var command = conn.CreateCommand())
-                                    {
-                                        command.CommandText = "SELECT start,end FROM usage_gym WHERE idmachine=@id_machine";
-                                        command.Parameters.AddWithValue("@id_machine", id_machine);
-
-                                        using (var reader =  command.ExecuteReader())
-                                        {
-                                            while (reader.Read())
-                                            {
-                                                help_msg[1] = reader.GetString(0);
-
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            */
+                            
+                            
+                            
 
                         }
                     }

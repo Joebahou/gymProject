@@ -19,6 +19,8 @@
                      VerticalOptions="Fill" HeightRequest="120" WidthRequest="300" Clicked="broken_machine_Button_alert_Clicked"/>
             <Button x:Name="broken_machine_Button_set_by_owner" Text="Set the machine availability status" FontSize="26" HorizontalOptions="Center" 
                      VerticalOptions="CenterAndExpand" HeightRequest="120" WidthRequest="300" BackgroundColor="Gold" IsVisible="false" Clicked="broken_machine_Button_set_by_owner_Clicked"/>
+            <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
+
 
         </StackLayout>
         <ContentView x:Name="popupLogin" IsVisible="false" BackgroundColor="#C0808080"
