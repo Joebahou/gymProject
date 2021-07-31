@@ -41,6 +41,7 @@
                     Value="5"/>
             <Setter Property="HorizontalOptions"
                     Value="CenterAndExpand"/>
+           
         </Style>
 
         <Style TargetType="Label">
@@ -50,6 +51,7 @@
                     Value="{StaticResource PrimaryColor}" />
             <Setter Property="FontAttributes"
                     Value="Bold" />
+            
         </Style>
 
         <Style TargetType="NavigationPage">

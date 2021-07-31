@@ -16,6 +16,16 @@ namespace exampleApp.Models
 
             }
         }
+        private static string gender;
+        public static string Gender
+        {
+            get { return gender; }
+            set
+            {
+                gender= value;
+
+            }
+        }
 
 
 
@@ -46,6 +56,16 @@ namespace exampleApp.Models
             set
             {
                 type = value;
+
+            }
+        }
+        private static int age;
+        public static int Age
+        {
+            get { return age; }
+            set
+            {
+                age = value;
 
             }
         }

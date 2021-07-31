@@ -29,7 +29,7 @@
                                                 <RowDefinition Height="*"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="15.5*"></ColumnDefinition>
+                                                <ColumnDefinition Width="19*"></ColumnDefinition>
                                                 <ColumnDefinition Width="12*"></ColumnDefinition>
                                                 <ColumnDefinition Width="12*"></ColumnDefinition>
                                                 <ColumnDefinition Width="12*"></ColumnDefinition>
@@ -70,7 +70,7 @@
 
                                             </Grid.ColumnDefinitions>
                                             <BoxView Grid.Row="0" Grid.Column="0" Color="{Binding color_row}" Grid.ColumnSpan="38" ></BoxView>
-                                            <Label Grid.Row="0" Grid.Column="0" TextColor="{Binding name_color}" VerticalOptions="Fill" Font="17" HorizontalOptions="Fill" Text="{Binding Li[0]} " ></Label>
+                                            <Label Grid.Row="0" Grid.Column="0" TextColor="{Binding name_color}" VerticalOptions="Fill" Font="16" HorizontalOptions="Fill" Text="{Binding Li[0]} " ></Label>
                                             <ActivityIndicator x:Name="activityIndicator"  Grid.Row="0" Grid.Column="0"  VerticalOptions="End" HorizontalOptions="End" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="17" HeightRequest="20" ></ActivityIndicator>
                                             <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[1]}"></Label>
                                             <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Li[2]}"></Label>

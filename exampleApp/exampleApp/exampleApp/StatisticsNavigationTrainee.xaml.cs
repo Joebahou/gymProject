@@ -25,5 +25,9 @@ namespace exampleApp
         {
             Navigation.PushAsync(new MachineProgressTrainee());
         }
+        private void GlobalProgress_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new Statistics_Per_Age_Gender());
+        }
     }
 }

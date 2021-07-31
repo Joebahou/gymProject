@@ -63,7 +63,7 @@ namespace exampleApp.ViewModels
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT email,password,idmember,name,type FROM gym_schema.members;";
+                    command.CommandText = @"SELECT email,password,idmember,name,type,age,gender FROM gym_schema.members;";
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -80,6 +80,8 @@ namespace exampleApp.ViewModels
                                 Models.User.Name = name_login;
                                 Models.User.Id = id_member_login;
                                 Models.User.Type = Ttype;
+                                Models.User.Age= reader.GetInt32(5);
+                                Models.User.Gender= reader.GetString(6);
                             }
                        
 

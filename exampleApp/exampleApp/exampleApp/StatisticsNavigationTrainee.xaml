@@ -16,6 +16,10 @@
                     Text="Show Progress Per Machine"
                     Margin="10,10"
                     Clicked="MachinesProgress_Clicked"></Button>
+            <Button x:Name="GlobalProgress"
+                    Text="Show Global Progress regarding age and gender"
+                    Margin="10,10"
+                    Clicked="GlobalProgress_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -419,17 +419,29 @@ namespace exampleApp.Pages
                         String resultusage = "";
                         string id_machine_msg_string = broken_msg[0].ToString();
                         int id_machine_msg = Int32.Parse(id_machine_msg_string);
+                        Boolean found = false;
+                        foreach(Msg m in list_bind)
+                        {
+                            if (m.id_machine == id_machine_msg)
+                            {
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            resultusage = "someone alerted that " + broken_msg[1] + " machine, id " + broken_msg[0] + " isn't working";
+                            Msg temp = new Msg { msg = resultusage, type = "alert", id_machine = id_machine_msg, clear_msg_icon = false };
+                            list_bind.Add(temp);
+                            notification_view.ItemsSource = list_bind;
+                            int current_count = Int32.Parse(notifications_count);
+                            current_count++;
+                            notifications_count = current_count.ToString();
+                            OnPropertyChanged("notifications_count");
 
-                        resultusage = "someone alerted that "+ broken_msg[1]+" machine, id " + broken_msg[0]+" isn't working";
-                        Msg temp = new Msg { msg = resultusage ,type="alert",id_machine=id_machine_msg,clear_msg_icon=false};
-                        list_bind.Add(temp);
-                        notification_view.ItemsSource = list_bind;
-                        int current_count = Int32.Parse(notifications_count);
-                        current_count++;
-                        notifications_count = current_count.ToString();
-                        OnPropertyChanged("notifications_count");
+                            await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                        }
 
-                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                        
                     }
 
 
@@ -530,9 +542,12 @@ namespace exampleApp.Pages
         {
             Navigation.PushAsync(new AllSchedule());
         }
-        private void schedule_for_trainerButton_Clicked(object sender, EventArgs e)
+        private async void schedule_for_trainerButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Schedule_for_trainer());
+            activityIndicator.IsVisible = true;
+            await Task.Delay(20);
+            await Navigation.PushAsync(new Schedule_for_trainer());
+            activityIndicator.IsVisible = false;
         }
 
         private async void machinesButton_Clicked(object sender, EventArgs e)
