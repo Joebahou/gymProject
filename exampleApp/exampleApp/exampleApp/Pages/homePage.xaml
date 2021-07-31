@@ -1,14 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:badge="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="exampleApp.Pages.homePage">
+             x:Class="exampleApp.Pages.homePage"
+             Title="{Binding Name_log}" 
+             BackgroundImageSource="gym_3"
+             >
              
     <ContentPage.ToolbarItems> 
     
         <ToolbarItem Text="Logout" Clicked="OnLogout_Clicked" />
        
+       
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
+        
         <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                      AbsoluteLayout.LayoutFlags="All">
@@ -28,29 +33,35 @@
                 </StackLayout>
                
                
-                <Label Text= "{Binding Name_log}"
-                VerticalOptions="CenterAndExpand" 
+               
+                <StackLayout Spacing="20" VerticalOptions="FillAndExpand"> 
+                    <Label Text= "{Binding Name_log}"
+                VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand"
                    FontSize="Large"
                    HorizontalTextAlignment="Center"
                    TextColor="OrangeRed"></Label>
-                <Button x:Name="statisticsButton"
+                    <Button x:Name="statisticsButton"
                     Text="Go to Statistics Page"
-                    Clicked="statisticsButton_Clicked"></Button>
+                    Clicked="statisticsButton_Clicked"  VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
                 <Button x:Name="machinesButton"
                     Text="See real time Machine usage"
-                    Clicked="machinesButton_Clicked"></Button>
+                    Clicked="machinesButton_Clicked" VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
                 <Button x:Name="scheduleButton"
                     Text="See Schedule Page"
-                    Clicked="scheduleButton_Clicked"></Button>
+                    Clicked="scheduleButton_Clicked" VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
                 <Button x:Name="editMachineButton"
                     Text="Go to Available Machines Page "
-                    Clicked="editMachineButton_Clicked"  IsVisible="{Binding IsOwner}">
+                    Clicked="editMachineButton_Clicked" VerticalOptions="CenterAndExpand"  IsVisible="{Binding IsOwner}" WidthRequest="250" HeightRequest="70">
                 </Button>
 
                 <Button x:Name="scheduleForTrainerButton"
                     Text="See Schedule of yours trainees Page"
-                    Clicked="schedule_for_trainerButton_Clicked"></Button>
+                    Clicked="schedule_for_trainerButton_Clicked" VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
+                    <ActivityIndicator x:Name="activityIndicator"  AbsoluteLayout.LayoutBounds="0,0,1,0.55"
+                     AbsoluteLayout.LayoutFlags="All"  VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" ></ActivityIndicator>
+                </StackLayout>
+                
             </StackLayout>
             <ContentView x:Name="popupNotifications" IsVisible="false" BackgroundColor="#C0808080"
                      AbsoluteLayout.LayoutBounds="0,0,1,0.55"

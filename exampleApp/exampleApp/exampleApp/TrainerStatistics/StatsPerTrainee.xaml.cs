@@ -13,6 +13,8 @@ namespace exampleApp.TrainerStatistics
     public partial class StatsPerTrainee : ContentPage
     {
         public static int idTrainee {get; set;}
+        public static int ageTrainee { get; set; }
+        public static string genderTrainee { get; set; }
         
         public StatsPerTrainee()
         {
@@ -26,6 +28,8 @@ namespace exampleApp.TrainerStatistics
             int index = pickerTrainees.SelectedIndex;
             Console.WriteLine("index: " + index);
             idTrainee = StatisticsNavigationTrainer.TraineesListIds[index];
+            ageTrainee = StatisticsNavigationTrainer.TraineesListAges[index];
+            genderTrainee = StatisticsNavigationTrainer.TraineesListGenders[index];
         }
 
         private void ButtonShowTraineeProgress_Clicked(object sender, EventArgs e)

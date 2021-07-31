@@ -163,14 +163,16 @@ namespace exampleApp
                         entries.Add(ce);
                     }
                 }
+              
+              
                 chartViewBar.Chart = new LineChart
                 {
                     Entries = entries,
                     LabelOrientation = Orientation.Horizontal,
                     ValueLabelOrientation = Orientation.Horizontal,
-                    BackgroundColor = SKColor.Parse("#00ffffff"),
-                    LineSize = 10,                    
-                    LabelTextSize = 40
+                    BackgroundColor = SKColor.Parse("#00ffffff"),   
+                    LabelTextSize = 40,
+                    PointMode=PointMode.Square
                 };
             }
         }

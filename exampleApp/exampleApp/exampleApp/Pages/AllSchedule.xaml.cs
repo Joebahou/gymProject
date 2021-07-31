@@ -46,18 +46,18 @@ namespace exampleApp.Pages
         public void Init_schedule_Table()
         {
             scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });//hours
-            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12, GridUnitType.Star) });//empty
+            scheduleTable.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(13.5, GridUnitType.Star) });//empty
             for (int i = 1; i < 38; i++)
             {
-                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(11, GridUnitType.Star) });
+                scheduleTable.ColumnDefinitions.Add(new ColumnDefinition{Width= new GridLength(12, GridUnitType.Star) });
 
             }
             var label = new Label
             {
                
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-                FontSize=27
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                FontSize=20
             };
             scheduleTable.Children.Add(label, 0, 0);
 
@@ -65,9 +65,9 @@ namespace exampleApp.Pages
                 label = new Label
                 {
                     Text =time,
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                    FontSize = 24
+                    VerticalOptions = LayoutOptions.CenterAndExpand,
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    FontSize = 20
                 };
                 scheduleTable.Children.Add(label, times[time], 0);
             }
