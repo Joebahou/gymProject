@@ -86,6 +86,7 @@
                                 <li class="nav-item"><a class="page-scroll" href="#machine-app">Machine App</a></li> 
                                 <li class="nav-item"><a class="page-scroll" href="#user-app">User App</a></li> 
                                 <li class="nav-item"><a class="page-scroll" href="#statistics">Statistics</a></li>
+								<li class="nav-item"><a class="page-scroll" href="#technology">Technology</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#about">About</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#contact">Contact</a></li>                                 
                             </ul>
@@ -379,7 +380,7 @@
                 <div class="col-lg-6 col-md-10">
                     <div class="section-title text-center pb-10">
                         <h3 class="title">Trainee's Statistics</h3>
-                        <p class="text">Our goal is to improve the trainee health. Our project helps the trainee to track his activity in the gym <br/>Which can be used for getting a good progress and achieve his/hers personal goals.<br/>We provide two features:<br/>1) You can get detailed statistics for every device you used. For each use you can find out: date, number of sets, number of reps, length of use.<br/>2) You can select a date range and see a graphic presentation of your progress in every machine you used during that time.</p>
+                        <p class="text">Our goal is to improve the trainee health. Our project helps the trainee to track his activity in the gym <br/>Which can be used for getting a good progress and achieve his/hers personal goals.<br/>We provide <b>three features</b>:<br/>1) You can get detailed statistics for every device you used. For each use you can find out: date, number of sets, number of reps, length of use.<br/>2) You can select a date range and see a graphic presentation of your progress in every machine you used during that time.<br/>3) You can see your progress Compared to other trainees with the same age and gender.</p>
                     </div> <!-- row -->
                 </div>
             </div> <!-- row -->
@@ -555,6 +556,49 @@
     </section>
 
     <!--====== statistics PART ENDS ======-->
+	
+	<!--====== technology PART START ======-->
+	  <section id="technology" class="features-area">
+        <div class="container">
+            <div class="row justify-content-left">
+                <div class="col-lg-6 col-md-10">
+                    <div class="section-title    pb-10">
+                        <h3 class="title">Technology</h3>
+                        <p class="text">
+						<h3> User App</h3>
+						
+						1)Listens to <b>SignalR</b> in order to update information on real time.
+						<br/>
+						2) Connects to <b>SQL database</b> in order to get and set information in the sql tables.
+
+						</p>
+						<br/>
+						<p class="text">
+						<h3>Machine App(The device)</h3>
+						
+						Sends messages to the <b>Iot Hub</b>. 
+						<br/>
+						<b>The Iot Hub</b> forwards the messages to the <b>Event Hub</b> .
+						<br/>
+						The <b>Event Hub</b> trigger function sends relevent messages using the <b>SignalR</b> according to the information from the device.
+						
+						</p>
+                    </div> <!-- row -->
+                </div>
+            </div> <!-- row -->
+			<div class="row justify-content-center">
+  
+                        <div class="pricing-icon text-center">
+                            <img src="assets/images/Sketch_Tech.png" alt="" >
+                        </div>
+						
+                   
+              
+			</div>
+			
+        </div>
+    </section>
+	 <!--====== technology PART ENDS ======-->
     
     <!--====== ABOUT PART START ======-->
 
