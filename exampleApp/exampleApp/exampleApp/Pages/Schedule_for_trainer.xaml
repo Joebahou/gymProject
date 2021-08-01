@@ -6,6 +6,12 @@
         <ScrollView Orientation="Both">
             <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Picker x:Name="picker_Trainee_Filter" 
+                    Title="Select trainee "                    
+                    TextColor="#fb8c00"  ItemsSource="{Binding List_trainee_filter_bind}"></Picker>
+                        <Button Text="Filter" HorizontalOptions="Start"  Clicked="click_button_filter"></Button>
+                    </StackLayout>
 
                     <Grid x:Name="grid_rows">
                         <Grid.RowDefinitions>

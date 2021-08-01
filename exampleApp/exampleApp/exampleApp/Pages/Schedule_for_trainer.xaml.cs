@@ -19,6 +19,8 @@ namespace exampleApp.Pages
 
         ObservableCollection<string> list_trainee_bind = new ObservableCollection<string>();
         public ObservableCollection<string> List_trainee_bind { get { return list_trainee_bind; } }
+        ObservableCollection<string> list_trainee_filter_bind = new ObservableCollection<string>();
+        public ObservableCollection<string> List_trainee_filter_bind { get { return list_trainee_filter_bind; } }
         //MySqlConnection conn;
 
 
@@ -39,9 +41,13 @@ namespace exampleApp.Pages
             foreach (Models.Trainee t in Models.User.Trainees)
             {
                 list_trainee_bind.Add(t.Name + " " + t.Id);
+                list_trainee_filter_bind.Add(t.Name + " " + t.Id);
+
             }
             picker_Trainee.ItemsSource = list_trainee_bind;
-
+            list_trainee_filter_bind.Add("See All");
+            picker_Trainee_Filter.ItemsSource = list_trainee_filter_bind;
+         
         }
         public void Init_Table_Schedule()
         {
@@ -124,6 +130,7 @@ namespace exampleApp.Pages
  
 
         }
+    
         public class Schedule
         {
             public string id_trainee { get; set; }
@@ -214,6 +221,7 @@ namespace exampleApp.Pages
         public void edit_clicked(Object sender, System.EventArgs e)
         {
             popupEdit.IsVisible = true;
+            popupEdit.Focus();
             Button thebutton = (Button)sender;
             Schedule schedule = thebutton.BindingContext as Schedule;
             Selected_trainee = schedule.name_trainee + " " + schedule.id_trainee;
@@ -223,6 +231,7 @@ namespace exampleApp.Pages
         public void edit_clicked_image(Object sender, System.EventArgs e)
         {
             popupEdit.IsVisible = true;
+            popupEdit.Focus();
             Image image_edit = (Image)sender;
             Schedule schedule = image_edit.BindingContext as Schedule;
             Selected_trainee = schedule.name_trainee + " " + schedule.id_trainee;
@@ -233,6 +242,84 @@ namespace exampleApp.Pages
         {
             popupEdit.IsVisible = false;
         
+        }
+        public async void click_button_filter(Object sender, System.EventArgs e)
+        {
+            if (picker_Trainee_Filter.SelectedIndex == -1)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Choose Trainee", "OK");
+
+            }
+            else
+            {
+                list_bind = new ObservableCollection<Schedule>();
+                DateTime today = DateTime.Now;
+                today = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
+                string selected_Trainee =picker_Trainee_Filter.SelectedItem.ToString();
+                if(selected_Trainee=="See All")
+                {
+                    Init_Table_Schedule();
+                }
+                else
+                {
+                    string[] selected_Trainee_array = selected_Trainee.Split(' ');
+                    string trainee_name = "";
+                    for (int i = 0; i < selected_Trainee_array.Length - 2; i++)
+                    {
+                        trainee_name += selected_Trainee_array[i] + " ";
+                    }
+                    trainee_name += selected_Trainee_array[selected_Trainee_array.Length - 2];
+                    int id_Trainee = Int32.Parse(selected_Trainee_array[selected_Trainee_array.Length - 1]);
+
+                    using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
+                    {
+                        conn.Open();
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
+
+                            command.CommandText = @"SELECT future_schedule_machines.id_machine,future_schedule_machines.id_member,future_schedule_machines.start_time,machines.working,machines.name " +
+                            "FROM future_schedule_machines,machines " +
+                            "WHERE future_schedule_machines.id_machine=machines.idmachine and future_schedule_machines.id_member=@id_member and future_schedule_machines.start_time>=@today;";
+                            command.Parameters.AddWithValue("@id_member", id_Trainee);
+                            command.Parameters.AddWithValue("@today", today);
+
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    int id_machine = reader.GetInt32(0);
+                                    int id_member = reader.GetInt32(1);
+                                    DateTime start_time = reader.GetDateTime(2);
+                                    int working = reader.GetInt32(3);
+                                    string name_machine = reader.GetString(4);
+                                    Schedule current;
+                                    if (working == 0)
+                                    {
+                                        current = new Schedule { color_row = Color.Yellow, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = trainee_name, date_time = start_time, name_machine = name_machine + "- broken" };
+                                    }
+                                    else
+                                    {
+                                        current = new Schedule { color_row = Color.White, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = trainee_name, date_time = start_time, name_machine = name_machine };
+
+                                    }
+
+                                    list_bind.Add(current);
+
+
+                                }
+                            }
+
+
+                        }
+                    }
+
+
+                    Schedule_view.ItemsSource = list_bind;
+
+                }
+               
+            }
+
         }
         public async void click_button_save(Object sender, System.EventArgs e)
         {

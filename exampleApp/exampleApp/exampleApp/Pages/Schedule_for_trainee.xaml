@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.Schedule_for_trainee">
+    <ContentPage.Content>
+        <ScrollView Orientation="Both">
+            <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <StackLayout>
+                    <Grid x:Name="grid_rows">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*" ></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
+              
+                        </Grid.ColumnDefinitions>
+                        <BoxView Grid.Row="0" Grid.Column="0" Color="OrangeRed" Grid.ColumnSpan="3"></BoxView>
+                        <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">id machine</Label>
+                        <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">name machine</Label>
+                        <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Start">date time</Label>
+                    </Grid>
+                    <ListView x:Name="Schedule_view" ItemsSource="{Binding List_bind}" RowHeight="100" >
+                        <ListView.ItemTemplate >
+                            <DataTemplate >
+                                <ViewCell  >
+                                    <ViewCell.View>
+                                        <Grid Padding="10" >
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="200*" ></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200*"></ColumnDefinition>
+                                                <ColumnDefinition Width="200*"></ColumnDefinition>
+                                                <ColumnDefinition Width="200*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+
+                                            <BoxView Grid.Row="0" Grid.Column="0" Color="Aqua" Grid.ColumnSpan="3" ></BoxView>
+                                            <BoxView Grid.Row="0" Grid.Column="0" Color="{Binding color_row}" Grid.ColumnSpan="3" ></BoxView>
+
+
+                                            <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding id_machine}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding name_machine}"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding date_time_string}"></Label>
+
+                                        </Grid>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackLayout Orientation="Horizontal" Padding="20">
+                        <BoxView Color="Yellow"></BoxView>
+                        <Label Text="  The machine is broken" HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </AbsoluteLayout>
+        </ScrollView>
+        
+    </ContentPage.Content>
+</ContentPage>

@@ -63,6 +63,7 @@ namespace exampleApp.Pages
             {
                 Set_signalR_to_trainer();
                 editMachineButton.IsVisible = false;
+                scheduleForTraineeButton.IsVisible = false;
                 //ConnectDataBase();
             }
             if (Models.User.Type == 2)
@@ -74,6 +75,7 @@ namespace exampleApp.Pages
                 machinesButton.IsVisible = false;
                 scheduleButton.IsVisible = false;
                 scheduleForTrainerButton.IsVisible = false;
+                scheduleForTraineeButton.IsVisible = false;
 
 
             }
@@ -547,6 +549,13 @@ namespace exampleApp.Pages
             activityIndicator.IsVisible = true;
             await Task.Delay(20);
             await Navigation.PushAsync(new Schedule_for_trainer());
+            activityIndicator.IsVisible = false;
+        }
+        private async void schedule_for_traineeButton_Clicked(object sender, EventArgs e)
+        {
+            activityIndicator.IsVisible = true;
+            await Task.Delay(20);
+            await Navigation.PushAsync(new Schedule_for_trainee());
             activityIndicator.IsVisible = false;
         }
 

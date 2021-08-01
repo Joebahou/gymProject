@@ -44,7 +44,7 @@ namespace exampleApp.Pages
             trainee_name += selected_Trainee_array[selected_Trainee_array.Length - 2];
             int id_Trainee = Int32.Parse(selected_Trainee_array[selected_Trainee_array.Length - 1]);
             bool ready_to_add = true;
-
+            bool other_already_taken = false;
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -65,14 +65,43 @@ namespace exampleApp.Pages
 
 
                 }
+                using (MySqlCommand command = conn.CreateCommand())
+                {
+
+                    command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
+                    command.Parameters.AddWithValue("@id_machine", id_machine);
+                    command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            other_already_taken = true;
+                        }
+                    }
+
+
+                }
+
             }
             
             if (ready_to_add)
             {
-                await add_new_schedule(id_Trainee,trainee_name);
+                if (!other_already_taken)
+                {
+                    await add_new_schedule(id_Trainee,trainee_name);
+
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "The schedule already taken. pleae refresh the page", "OK");
+                    await App.Current.MainPage.Navigation.PopAsync();
+                    await App.Current.MainPage.Navigation.PopAsync();
+                }
             }
             else
             {
+                
                 await App.Current.MainPage.DisplayAlert("Error", "The trainee has different schedult on that time, try again", "OK");
             }
      

@@ -227,8 +227,12 @@ namespace exampleApp.Pages
             Navigation.PushAsync(new Add_to_schedule());
 
         }
-        public void handle_clicked_image(Object sender, System.EventArgs e)
+        public async void handle_clicked_image(Object sender, System.EventArgs e)
         {
+            popuploading2.IsVisible = true;
+            
+            popuploading.IsVisible = true;
+            await Task.Delay(20);
             Image image_add = (Image)sender;
             int col = Grid.GetColumn(image_add) - 1;
             int hour = (col * 20) / 60 + 8;
@@ -261,8 +265,41 @@ namespace exampleApp.Pages
             Temp row = image_add.BindingContext as Temp;
             Add_to_schedule.id_machine = row.id_machine;
             Add_to_schedule.name_machine_chosen = dict_machines[row.id_machine].Name;
-            Navigation.PushAsync(new Add_to_schedule());
+            Boolean ready_to_choose_trainee = true;
+            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
+            {
+                conn.Open();
+                using (MySqlCommand command = conn.CreateCommand())
+                {
 
+                    command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
+                    command.Parameters.AddWithValue("@id_machine", row.id_machine);
+                    command.Parameters.AddWithValue("@time_to_schedule", time_and_date);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                           ready_to_choose_trainee = false;
+                        }
+                    }
+
+
+                }
+            }
+            if (ready_to_choose_trainee)
+            {
+                await Navigation.PushAsync(new Add_to_schedule());
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "The schedule already taken. pleae refresh the page", "OK");
+
+            }
+
+
+            popuploading.IsVisible = false;
+            popuploading2.IsVisible = false;
         }
         public class Temp
         {

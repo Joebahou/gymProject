@@ -58,6 +58,10 @@
                 <Button x:Name="scheduleForTrainerButton"
                     Text="See Schedule of yours trainees Page"
                     Clicked="schedule_for_trainerButton_Clicked" VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
+                    <Button x:Name="scheduleForTraineeButton"
+                    Text="See your own schedule"
+                    Clicked="schedule_for_traineeButton_Clicked" VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
+                    
                     <ActivityIndicator x:Name="activityIndicator"  AbsoluteLayout.LayoutBounds="0,0,1,0.55"
                      AbsoluteLayout.LayoutFlags="All"  VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" ></ActivityIndicator>
                 </StackLayout>
