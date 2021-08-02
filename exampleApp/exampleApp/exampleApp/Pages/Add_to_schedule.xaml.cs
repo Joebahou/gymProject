@@ -1,9 +1,7 @@
-﻿using MySqlConnector;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -33,6 +31,14 @@ namespace exampleApp.Pages
             BindingContext = this;
             
         }
+        public class Result
+        {
+           public bool isTrue { get; set; }
+        }
+        public class L
+        {
+           public Result[] results { get; set; }
+        }
         private async void picker_Trainee_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected_Trainee = picker_Trainee.SelectedItem.ToString();
@@ -46,6 +52,22 @@ namespace exampleApp.Pages
             int id_Trainee = Int32.Parse(selected_Trainee_array[selected_Trainee_array.Length - 1]);
             bool ready_to_add = true;
             bool other_already_taken = false;
+            string parameters = "id_member=" + id_Trainee +
+                "&time_to_schedule=" + time_to_schedule.ToString() +
+                "&id_machine=" + id_machine;
+            string req = "https://gymfuctions.azurewebsites.net/api/check_schedule?query=check_schedule_for_trainee&" + parameters;
+            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+            request.ContentType = "application/json; charset=utf-8";
+            System.Net.WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string result = reader.ReadToEnd();
+            L reshima = JsonConvert.DeserializeObject<L>(result);
+            ready_to_add = reshima.results[0].isTrue;
+            other_already_taken= reshima.results[1].isTrue;
+
+
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -84,8 +106,8 @@ namespace exampleApp.Pages
 
                 }
 
-            }
-            
+            }*/
+
             if (ready_to_add)
             {
                 if (!other_already_taken)

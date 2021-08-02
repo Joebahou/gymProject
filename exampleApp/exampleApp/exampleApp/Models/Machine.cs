@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -25,6 +26,14 @@ namespace exampleApp.Models
         {
             name_ = name;
             available = is_available;
+            id_machine_ = id_machine;
+
+        }
+        [JsonConstructor]
+        public Machine(string name, int id_machine, int available)
+        {
+            name_ = name;
+            this.available = available;
             id_machine_ = id_machine;
 
         }

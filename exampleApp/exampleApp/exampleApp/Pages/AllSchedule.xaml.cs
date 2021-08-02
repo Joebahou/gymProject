@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using MySqlConnector;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace exampleApp.Pages
 {
@@ -109,10 +111,30 @@ namespace exampleApp.Pages
             }
             times["20:00"] = index;
         }
+        public class Machine_from_sql
+        {
+            public string name { get; set; }
+            public int id_machine { get; set; }
+            public int working { get; set; }
+        }
         private  void get_machines()
         {
             dict_machines = new Dictionary<int, Models.Machine>();
             machines = new List<Models.Machine>();
+            string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
+            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+            request.ContentType = "application/json; charset=utf-8";
+            System.Net.WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string result = reader.ReadToEnd();
+            machines = JsonConvert.DeserializeObject<List<Models.Machine>> (result);
+            foreach(Models.Machine m in machines)
+            {
+                int id_machine = m.Id_machine;
+                dict_machines[id_machine] = m;
+            }
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -140,8 +162,8 @@ namespace exampleApp.Pages
 
 
                 }
-            }
-            
+            }*/
+
 
         }
         private void pickerDateInit()
@@ -266,6 +288,20 @@ namespace exampleApp.Pages
             Add_to_schedule.id_machine = row.id_machine;
             Add_to_schedule.name_machine_chosen = dict_machines[row.id_machine].Name;
             Boolean ready_to_choose_trainee = true;
+            string parameters = "id_machine=" + row.id_machine +
+               "&time_to_schedule=" + time_and_date.ToString();
+            string req = "https://gymfuctions.azurewebsites.net/api/check_schedule?query=ready_to_choose_trainee&" + parameters;
+            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+            System.Net.WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string result = reader.ReadToEnd();
+            if (result == "false")
+            {
+                ready_to_choose_trainee = false;
+            }
+          
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -286,7 +322,7 @@ namespace exampleApp.Pages
 
 
                 }
-            }
+            }*/
             if (ready_to_choose_trainee)
             {
                 await Navigation.PushAsync(new Add_to_schedule());
