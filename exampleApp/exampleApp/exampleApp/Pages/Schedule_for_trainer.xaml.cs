@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -198,7 +199,25 @@ namespace exampleApp.Pages
         {
             Image image_delete = (Image)sender;
             Schedule schedule = image_delete.BindingContext as Schedule;
-            int i = 0;
+            string parameters = "id_machine=" + schedule.id_machine +
+                "&id_member=" + schedule.id_trainee +
+                "&start_time=" + schedule.date_time.ToString();
+            string req = "https://gymfuctions.azurewebsites.net/api/delete_sql?query=delete_schedule&" + parameters;
+            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+            System.Net.WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string result = reader.ReadToEnd();
+            if (result == "1")
+            {
+                list_bind.Remove(schedule);
+                Schedule_view.ItemsSource = list_bind;
+            }
+            else
+            {
+                Console.WriteLine("delte machine didnt wen well");
+            }
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -213,10 +232,9 @@ namespace exampleApp.Pages
 
 
                 }
-            }
+            }*/
 
-            list_bind.Remove(schedule);
-            Schedule_view.ItemsSource = list_bind;
+        
         }
         public void edit_clicked(Object sender, System.EventArgs e)
         {
@@ -326,7 +344,7 @@ namespace exampleApp.Pages
             string selected_Trainee = picker_Trainee.SelectedItem.ToString();
             string[] selected_Trainee_array = selected_Trainee.Split(' ');
             string trainee_name = "";
-            for(int i = 0; i < selected_Trainee_array.Length - 2; i++)
+            for (int i = 0; i < selected_Trainee_array.Length - 2; i++)
             {
                 trainee_name += selected_Trainee_array[i] + " ";
             }
@@ -338,64 +356,51 @@ namespace exampleApp.Pages
             }
             else
             {
-                Boolean ready_to_add = true;
-                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
+              
 
-                        command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
-                        command.Parameters.AddWithValue("@id_member", id_Trainee);
-                        command.Parameters.AddWithValue("@time_to_schedule", selected_schedue_edit.date_time);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                ready_to_add = false;
-                            }
-                        }
-
-
-                    }
-                }
-                if (ready_to_add)
-                {
-                    //update the schedule table
-                    using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (MySqlCommand command = conn.CreateCommand())
-                        {
-
-                            command.CommandText = @"UPDATE future_schedule_machines SET id_member=@new_id_member,name_member=@new_name_member WHERE id_member=@old_id_member and id_machine=@id_machine and start_time=@start_time;";
-                            command.Parameters.AddWithValue("@id_machine", Int32.Parse(selected_schedue_edit.id_machine));
-                            command.Parameters.AddWithValue("@new_id_member", id_Trainee);
-                            command.Parameters.AddWithValue("@old_id_member", Int32.Parse(selected_schedue_edit.id_trainee));
-                            command.Parameters.AddWithValue("@start_time", selected_schedue_edit.date_time);
-                            command.Parameters.AddWithValue("@new_name_member", trainee_name);
-                            command.ExecuteNonQuery();
-
-
-                        }
-                    }
-
-                    list_bind.Remove(selected_schedue_edit);
-                    selected_schedue_edit.id_trainee = id_Trainee.ToString();
-                    selected_schedue_edit.name_trainee = trainee_name;
-                    list_bind.Add(selected_schedue_edit);
-                    Schedule_view.ItemsSource = list_bind;
-                    popupEdit.IsVisible = false;
-                }
-                else
+                string parameters = "id_machine=" + selected_schedue_edit.id_machine +
+                    "&new_id_member=" + id_Trainee +
+                    "&old_id_member=" + selected_schedue_edit.id_trainee +
+                    "&start_time=" + selected_schedue_edit.date_time.ToString() +
+                    "&new_name_member=" + trainee_name;
+                string req = "https://gymfuctions.azurewebsites.net/api/update_schedule_of_trainer?query=update_new_schedule&" + parameters;
+                System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+                System.Net.WebResponse response = request.GetResponse();
+                Stream dataStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(dataStream);
+                string result = reader.ReadToEnd();
+                if (result == "trainee is not free")
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "The trainee has different schedult on that time, try again", "OK");
                 }
+                else
+                {
+                    if (result == "1")
+                    {
+                        list_bind.Remove(selected_schedue_edit);
+                        selected_schedue_edit.id_trainee = id_Trainee.ToString();
+                        selected_schedue_edit.name_trainee = trainee_name;
+                        list_bind.Add(selected_schedue_edit);
+                        Schedule_view.ItemsSource = list_bind;
+                        popupEdit.IsVisible = false;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("update schedule didnt went well");
+
+                    }
+                }
+
+
+         
+
+
+
             }
-          
-            
-           
+
+
+
         }
     }
 }

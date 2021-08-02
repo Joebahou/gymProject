@@ -282,6 +282,44 @@ namespace exampleApp.Pages
                 });
 
             });
+
+            //machine is delted
+            
+            this.connection.On<object[]>("deleteMachine", (result) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+
+                    if (Models.User.Type == 0)
+                    {
+
+
+                        String resultusage = "";
+                        string id_machine_string = result[0].ToString();
+     
+                        resultusage = result[1]+ " machine is deleted. please refresh your app";
+                        Msg temp = new Msg { msg = resultusage, type = "deleted", clear_msg_icon = true, id_machine = Int32.Parse(id_machine_string) };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
+                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+
+
+
+                    }
+
+
+                });
+
+            });
+
+
             await this.connection.StartAsync();
         }
         public async void Set_signalR_to_trainer()
@@ -389,6 +427,39 @@ namespace exampleApp.Pages
                             await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
 
                         
+
+                    }
+
+
+                });
+
+            });
+            this.connection.On<object[]>("deleteMachine", (result) =>
+            {
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+
+                    if (Models.User.Type == 1)
+                    {
+
+
+                        String resultusage = "";
+                        string id_machine_string = result[0].ToString();
+
+                        resultusage = result[1] + " machine is deleted. please refresh your app";
+                        Msg temp = new Msg { msg = resultusage, type = "deleted", clear_msg_icon = true, id_machine = Int32.Parse(id_machine_string) };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                        OnPropertyChanged("notifications_count");
+
+                        await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+
+
 
                     }
 

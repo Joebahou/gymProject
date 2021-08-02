@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,6 +111,21 @@ namespace exampleApp.Pages
         }
         private async Task add_new_schedule(int id_Trainee, string name_trainee )
         {
+            string parameters = "id_machine=" + id_machine.ToString() + "&id_Trainee=" + id_Trainee + "&time_to_schedule=" + time_to_schedule.ToString() + "&name_trainee=" + name_trainee;
+            string req= "https://gymfuctions.azurewebsites.net/api/insert_sql?query=insert_new_schedule&"+parameters;
+            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+            System.Net.WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string result = reader.ReadToEnd();
+            if (result == "1")
+            {
+                string caching_msg = "you succesfully added in date " + time_to_schedule.ToString() + ",machine " + id_machine + " with trainee " + name_trainee;
+                await App.Current.MainPage.DisplayAlert("Update Schedule", caching_msg, "OK");
+                await App.Current.MainPage.Navigation.PopAsync();
+                await App.Current.MainPage.Navigation.PopAsync();
+            }
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -126,13 +142,13 @@ namespace exampleApp.Pages
 
 
                 }
+            }*/
+            else
+            {
+                Console.WriteLine("the insert didnt went well");
             }
-
             
-            string caching_msg = "you succesfully added in date " + time_to_schedule.ToString() + ",machine " + id_machine + " with trainee " +name_trainee;
-            await App.Current.MainPage.DisplayAlert("Update Schedule", caching_msg, "OK");
-            await App.Current.MainPage.Navigation.PopAsync();
-            await App.Current.MainPage.Navigation.PopAsync();
+            
 
         }
         private void Init_picker_trainee()

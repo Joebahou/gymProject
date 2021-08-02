@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,6 +90,24 @@ namespace exampleApp.Pages
         {
             Button thebutton = (Button)sender;
             Machinebind machine = thebutton.BindingContext as Machinebind;
+            string parameters = "id_machine=" + machine.id_machine +
+                "&machine_name=" + machine.name;
+            string req = "https://gymfuctions.azurewebsites.net/api/delete_sql?query=delete_machine&" + parameters;
+            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+            System.Net.WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string result = reader.ReadToEnd();
+            if (result == "1")
+            {
+                list_bind.Remove(machine);
+                available_machines.ItemsSource = list_bind;
+            }
+            else
+            {
+                Console.WriteLine("delte machine didnt wen well");
+            }
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -97,16 +116,15 @@ namespace exampleApp.Pages
 
                     command.CommandText = @"DELETE FROM machines WHERE idmachine=@id_machine and name=@name;";
                     command.Parameters.AddWithValue("@id_machine", (machine.id_machine));
-                    command.Parameters.AddWithValue("name", machine.name);
+                    command.Parameters.AddWithValue("@name", machine.name);
 
                     command.ExecuteNonQuery();
 
 
                 }
-            }
-           
-            list_bind.Remove(machine);
-            available_machines.ItemsSource = list_bind;
+            }*/
+
+          
         }
         public void addMachineButton_Clicked(Object sender, System.EventArgs e)
         {
@@ -155,6 +173,26 @@ namespace exampleApp.Pages
               
                 if (!isDUplicate)
                 {
+                    string parameters = "machine_name=" + machine_name.ToString();
+                    string req = "https://gymfuctions.azurewebsites.net/api/insert_new_machine?query=insert_new_machine&" + parameters;
+                    System.Net.WebRequest request = System.Net.WebRequest.Create(req);
+                    System.Net.WebResponse response = request.GetResponse();
+                    Stream dataStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(dataStream);
+                    string result = reader.ReadToEnd();
+                    if (result == "-1")
+                    {
+                        Console.WriteLine("the insert didnt went well");
+                    }
+                    else
+                    {
+                        new_id = Int32.Parse(result);
+                        Machinebind new_machine = new Machinebind { name = machine_name, id_machine = new_id, available = true };
+                        list_bind.Add(new_machine);
+                        available_machines.ItemsSource = list_bind;
+                        popupAdd.IsVisible = false;
+                    }
+                    /*
                     using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                     {
                         conn.Open();
@@ -177,16 +215,13 @@ namespace exampleApp.Pages
                                 }
                             }
                         }
-                    }
+                    }*/
 
 
-                 
 
 
-                    Machinebind new_machine = new Machinebind { name = machine_name, id_machine = new_id, available = true };
-                    list_bind.Add(new_machine);
-                    available_machines.ItemsSource = list_bind;
-                    popupAdd.IsVisible = false;
+
+                    
                 }
                 else
                 {
