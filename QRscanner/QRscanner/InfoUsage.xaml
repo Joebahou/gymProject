@@ -9,7 +9,13 @@
 
                 <Frame BackgroundColor="#BF043055" HasShadow="False">
                     <StackLayout Orientation="Vertical" Spacing="10">
-                        <Entry x:Name="Weight_Or_Speed" Text="{Binding Weight_Or_Speed}" Placeholder="Weight or Speed"   
+                    <Label Text="Please fill in the following lines the appropriate info"
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        FontSize="20"
+                        TextColor="White"
+                        HorizontalTextAlignment="Center"/>
+                    <Entry x:Name="Weight_Or_Speed" Text="{Binding Weight_Or_Speed}" Placeholder="Weight or Speed"   
                                PlaceholderColor="White" HeightRequest="40"     
                                TextColor="White"/>
                         <Entry x:Name="Reps" Text="{Binding Reps}" Placeholder="Reps"   

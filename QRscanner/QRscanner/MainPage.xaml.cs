@@ -32,7 +32,7 @@ namespace QRscanner
         }
         public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
-        public static HubConnection connection;
+        //public HubConnection connection;
         public static string name_machine;
         public static int id_machine;
         public static int id_member;
@@ -64,10 +64,10 @@ namespace QRscanner
                 broken_machine_Button_set_by_owner.IsVisible = true;
             Name_log = name_machine;
             BindingContext = this;
-            Set_signalR();
+            //Set_signalR();
         }
 
-        public async void Set_signalR()
+        /*public async void Set_signalR()
         {
             string member_name="";
             string machine_name="";
@@ -130,7 +130,7 @@ namespace QRscanner
             });
             await connection.StartAsync();
         }
-
+        */
         private async void scanButton_Clicked(object sender, EventArgs e)
         {
             using (var conn = new MySqlConnection(builder.ConnectionString))
@@ -138,17 +138,37 @@ namespace QRscanner
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT idmember,taken FROM gym_schema.machines WHERE idmachine = @id_machine;";
+                    command.CommandText = @"SELECT idmember,taken FROM machines  WHERE idmachine = @id_machine;";
                     command.Parameters.AddWithValue("@id_machine", id_machine);
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
+
                             App.member_from_table = reader.GetInt32(0);
                             App.taken = reader.GetInt32(1);
+                            
                         }
                     }
 
+                }
+                if (App.member_from_table != -1)
+                {
+                    using (var command = conn.CreateCommand())
+                    {
+                        command.CommandText = @"SELECT name FROM members  WHERE idmember=@id_member;";
+                        command.Parameters.AddWithValue("@id_member", App.member_from_table);
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+
+                                App.name_of_member = reader.GetString(0);
+
+                            }
+                        }
+
+                    }
                 }
 
 
@@ -159,7 +179,7 @@ namespace QRscanner
         }
         public async void helpButton_Clicked(object sender, EventArgs e)
         {
-            if (connection.State == HubConnectionState.Connected)
+            if (App.connection.State == HubConnectionState.Connected)
             {
                 activityIndicator.IsVisible = true;
                 dataHelp[0] = id_machine;
@@ -175,30 +195,16 @@ namespace QRscanner
         }
         public async void broken_machine_Button_alert_Clicked(object sender, EventArgs e)
         {
-            if (connection.State == HubConnectionState.Connected)
+            if (App.connection.State == HubConnectionState.Connected)
             {
                 activityIndicator.IsVisible = true;
                 dataBrokenMachine[0] = id_machine;
                 dataBrokenMachine[1] = 0;
+                //update
                 string messageJson = JsonConvert.SerializeObject(dataBrokenMachine);
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                 await Client.SendEventAsync(message);
                 String resultusage = "An alert has been sent to the owner";
-                using (var conn = new MySqlConnection(builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"UPDATE machines SET alert_broken=@alert WHERE idmachine=@id_machine and name=@name;";
-                        command.Parameters.AddWithValue("@id_machine", id_machine);
-                        command.Parameters.AddWithValue("@alert", alert);
-                        command.Parameters.AddWithValue("@name", name_machine);
-                        command.ExecuteNonQuery();
-
-
-                    }
-                }
                 await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
                 this_machine.Alert_broken = 1;
                 broken_machine_Button_set_by_owner.IsVisible = true;
@@ -249,17 +255,7 @@ namespace QRscanner
 
                     popupLogin.IsVisible = false;
                     broken_machine_Button_set_by_owner.IsVisible = false;
-
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"UPDATE machines SET alert_broken=@alert WHERE idmachine=@id_machine and name=@name;";
-                        command.Parameters.AddWithValue("@id_machine", id_machine);
-                        command.Parameters.AddWithValue("@alert", 1 - alert);
-                        command.Parameters.AddWithValue("@name", name_machine);
-                        command.ExecuteNonQuery();
-
-                    }
+                    //update
                     this_machine.Alert_broken = 0;
                     dataBrokenMachine[0] = id_machine;
                     dataBrokenMachine[1] = 3;
@@ -323,18 +319,7 @@ namespace QRscanner
                     if (is_working)
                         new_working = 1;
                     else new_working = 0;
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"UPDATE machines SET working=@new_working, alert_broken=@alert WHERE idmachine=@id_machine and name=@name;";
-                        command.Parameters.AddWithValue("@id_machine", id_machine);
-                        command.Parameters.AddWithValue("@new_working", new_working);
-                        command.Parameters.AddWithValue("@alert", 1-alert);
-                        command.Parameters.AddWithValue("@name", name_machine);
-                        command.ExecuteNonQuery();
-
-
-                    }
+                    //update
                     
                     dataBrokenMachine[0] = id_machine;
                     if (is_working)

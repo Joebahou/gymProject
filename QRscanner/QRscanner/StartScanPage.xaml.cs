@@ -21,7 +21,7 @@ namespace QRscanner
     {
         public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
-        public static HubConnection connection;
+        
         ZXingScannerPage scanPage;
         public static int id_member;
         DateTime scanning_time;
@@ -53,6 +53,7 @@ namespace QRscanner
             dataUsage[4] = 0;
             MobileBarcodeScanningOptions options = new MobileBarcodeScanningOptions();
             options.DelayBetweenContinuousScans = 5000;
+          
             scanPage = new ZXingScannerPage(options);
             
             scanPage.OnScanResult += async (result) =>
@@ -91,7 +92,7 @@ namespace QRscanner
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             
-                            catching_msg = "id_member = " + App.member_from_table + " is using id machine " + MainPage.id_machine;
+                            catching_msg = App.name_of_member + " is already using this machine ";
                             await App.Current.MainPage.DisplayAlert("Scanned Barcode", catching_msg, "OK");
                         });
                     }
@@ -170,6 +171,7 @@ namespace QRscanner
                             Device.BeginInvokeOnMainThread(async () =>
                             {
 
+                               
                                 await App.Current.MainPage.Navigation.PopModalAsync();
                             
                                 await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());

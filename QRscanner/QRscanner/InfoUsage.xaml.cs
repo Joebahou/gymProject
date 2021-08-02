@@ -37,9 +37,9 @@ namespace QRscanner
 
         private async void SubmitButton_Clicked(object sender, EventArgs e)
         {
-            // fix navigation to main page and having a back button(do not do a new navigation)
+            
             activityIndicator.IsVisible = true;
-            //await Task.Delay(2500);
+            await Task.Delay(10);
             using (var conn = new MySqlConnection(builder.ConnectionString))
             {
                 conn.Open();
@@ -65,12 +65,14 @@ namespace QRscanner
             }
             if((nearest_future_schedule-submiting_time)<hour_1)
             {
-                catching_msg = "this machine has been booked by another trainer in about "+ (nearest_future_schedule - submiting_time).Minutes+" minutes";
+                catching_msg = "This machine has been booked by another trainer in about "+ (nearest_future_schedule - submiting_time).Minutes+" minutes";
                 await App.Current.MainPage.DisplayAlert("Reminder", catching_msg, "I'll finish in time");
             }
-            await App.Current.MainPage.Navigation.PopAsync();
-            await App.Current.MainPage.Navigation.PopAsync();
+            await Task.Delay(2000);
             activityIndicator.IsVisible = false;
+            await App.Current.MainPage.Navigation.PopAsync();
+            await App.Current.MainPage.Navigation.PopAsync();
+            
 
 
         }

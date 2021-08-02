@@ -15,10 +15,7 @@ namespace EventHubFunction
     {
         
         
-        public static async void updateScore()
-        {
-
-        }
+        
         public static async Task<string> updateDB(int id_member,int id_machine,int usage, int weight_or_speed, int reps, int sets, MySqlConnection conn)
         {
             String temp;
@@ -248,9 +245,24 @@ namespace EventHubFunction
 
                             //checking if its an notifcation or set as not working by owner
                             int filter = Int32.Parse(strID[2]);
+                            //alert
                             if (filter == 0)
                             {
 
+                                using (var conn = new MySqlConnection(builder.ConnectionString))
+                                {
+                                    conn.Open();
+                                    using (MySqlCommand command = conn.CreateCommand())
+                                    {
+
+                                        command.CommandText = @"UPDATE machines SET alert_broken=@alert WHERE idmachine=@id_machine;";
+                                        command.Parameters.AddWithValue("@id_machine", id_machine);
+                                        command.Parameters.AddWithValue("@alert", 1);
+                                        command.ExecuteNonQuery();
+
+
+                                    }
+                                }
                                 await signalRMessages.AddAsync(
                                 new SignalRMessage
                                 {
@@ -262,6 +274,22 @@ namespace EventHubFunction
                             {
                                 if(filter==1)
                                 {
+                                    using (var conn = new MySqlConnection(builder.ConnectionString))
+                                    {
+                                        conn.Open();
+                                        using (MySqlCommand command = conn.CreateCommand())
+                                        {
+
+                                            command.CommandText = @"UPDATE machines SET working=@new_working, alert_broken=@alert WHERE idmachine=@id_machine;";
+                                            command.Parameters.AddWithValue("@id_machine", id_machine);
+                                            command.Parameters.AddWithValue("@new_working", 0);
+                                            command.Parameters.AddWithValue("@alert", 0);
+                                            int rowCount=command.ExecuteNonQuery();
+                                            log.LogInformation($"C# Event Hub trigger function updated table, num of rows updated is : {rowCount.ToString()}");
+
+
+                                        }
+                                    }
                                     await signalRMessages.AddAsync(
                                     new SignalRMessage
                                     {
@@ -271,8 +299,25 @@ namespace EventHubFunction
                                 }
                                 else
                                 {
+                                   
                                     if (filter == 2)
                                     {
+                                        using (var conn = new MySqlConnection(builder.ConnectionString))
+                                        {
+                                            conn.Open();
+                                            using (MySqlCommand command = conn.CreateCommand())
+                                            {
+
+                                                command.CommandText = @"UPDATE machines SET working=@new_working, alert_broken=@alert WHERE idmachine=@id_machine;";
+                                                command.Parameters.AddWithValue("@id_machine", id_machine);
+                                                command.Parameters.AddWithValue("@new_working", 1);
+                                                command.Parameters.AddWithValue("@alert", 0);
+                                                
+                                                command.ExecuteNonQuery();
+
+
+                                            }
+                                        }
                                         await signalRMessages.AddAsync(
                                         new SignalRMessage
                                         {
@@ -282,6 +327,21 @@ namespace EventHubFunction
                                     }
                                     else
                                     {
+                                        //filter=3
+                                        using (var conn = new MySqlConnection(builder.ConnectionString))
+                                        {
+                                            conn.Open();
+                                            using (MySqlCommand command = conn.CreateCommand())
+                                            {
+
+                                                command.CommandText = @"UPDATE machines SET alert_broken=@alert WHERE idmachine=@id_machine;";
+                                                command.Parameters.AddWithValue("@id_machine", id_machine);
+                                                command.Parameters.AddWithValue("@alert", 0);
+
+                                                command.ExecuteNonQuery();
+
+                                            }
+                                        }
                                         await signalRMessages.AddAsync(
                                         new SignalRMessage
                                         {

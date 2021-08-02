@@ -105,7 +105,7 @@ namespace exampleApp.Pages
             }
             else
             {
-                Console.WriteLine("delte machine didnt wen well");
+                Console.WriteLine("delete machine didnt went well");
             }
             /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
