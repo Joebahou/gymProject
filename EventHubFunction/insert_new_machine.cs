@@ -36,7 +36,8 @@ namespace EventHubFunction
             query = query ?? data?.query;
             int rowCount = 0;
             int new_id=-1;
-
+            string responseMessage="";
+            bool isDuplicate = false;
             if (query == "insert_new_machine")
             {
                 string machine_name = req.Query["machine_name"];
@@ -45,30 +46,52 @@ namespace EventHubFunction
                     conn.Open();
                     using (MySqlCommand command = conn.CreateCommand())
                     {
-                        command.CommandText = @"INSERT INTO machines(name) VALUES (@name);";
-                        command.Parameters.AddWithValue("@name", machine_name);
-                        rowCount = command.ExecuteNonQuery();
-                    }
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-                        command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE name=@name;";
+                        command.CommandText = @"SELECT idmachine,name FROM gym_schema.machines WHERE name=@name;";
                         command.Parameters.AddWithValue("@name", machine_name);
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
 
                             {
-                                new_id = reader.GetInt32(0);
+                                if (!reader.IsDBNull(0))
+
+                                    isDuplicate = true;
+
                             }
                         }
                     }
+                    if (!isDuplicate)
+                    {
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"INSERT INTO machines(name) VALUES (@name);";
+                            command.Parameters.AddWithValue("@name", machine_name);
+                            rowCount = command.ExecuteNonQuery();
+                        }
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE name=@name;";
+                            command.Parameters.AddWithValue("@name", machine_name);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (reader.Read())
+
+                                {
+                                    new_id = reader.GetInt32(0);
+                                }
+                            }
+                        }
+                        responseMessage = new_id.ToString();
+                    }
+                    else
+                        responseMessage = "isDuplicate";
                 }
 
             }
 
 
 
-            string responseMessage = new_id.ToString();
+            
 
 
             return new OkObjectResult(responseMessage);

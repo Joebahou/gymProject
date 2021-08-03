@@ -12,10 +12,19 @@ using System.Collections.Generic;
 
 namespace EventHubFunction
 {
-   
-    public static class initListMachines
+    public static class select_all_schedule
     {
-        
+
+        public class Future_schedule
+        {
+            public string Name_member { get; set; }
+            public int Id_machine { get; set; }
+            public DateTime Start_time { get; set; }
+            public int Id_member { get; set; }
+           
+
+        }
+
         static MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
             Server = "gymservernew.mysql.database.azure.com",
@@ -24,20 +33,8 @@ namespace EventHubFunction
             Password = "gym1Admin",
             SslMode = MySqlSslMode.Required,
         };
-        public class Machine
-        {
-            public string Name { get; set; }
-            public int Available { get; set; }
-            public int Id_machine { get; set; }
-            public int Taken { get; set; }
-            public int Id_member {get; set;}
-            public int Alert_broken { get; set; }
-           
-        }
+        [FunctionName("select_all_schedule")]
 
-        [FunctionName("initListMachines")]
-
-        
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
@@ -49,30 +46,32 @@ namespace EventHubFunction
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             query = query ?? data?.query;
-            
-            List<Machine> machines = new List<Machine>();
-            if (query == "select_machines")
+
+            List<Future_schedule> schedules = new List<Future_schedule>();
+            if (query == "select_schedule_for_date")
             {
+                DateTime start_time = Convert.ToDateTime(req.Query["start_time"]);
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
                     conn.Open();
                     using (MySqlCommand command = conn.CreateCommand())
                     {
 
-                        command.CommandText = @"SELECT * FROM machines;";
+                        command.CommandText = @"SELECT * FROM future_schedule_machines WHERE start_time>=@start_time AND start_time<=@tomorrow;";
+                        command.Parameters.AddWithValue("@start_time", start_time);
+                        command.Parameters.AddWithValue("@tomorrow", start_time.AddDays(1.0));
+
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                int id_machine = reader.GetInt32(0);
-                                string name = reader.GetString(1);
-                                int taken = reader.GetInt32(2);
-                                int id_member = reader.GetInt32(3);
-                                int working = reader.GetInt32(4);
-                                int alert_broken = reader.GetInt32(5);
-                                Machine temp = new Machine {Name=name,Id_machine=id_machine,Available=working,Id_member=id_member,Taken=taken,Alert_broken=alert_broken };
-                                machines.Add(temp);
-                                //dict_machines[id_machine] = temp;
+                                int id_machine = reader.GetInt32(1);
+                                int id_member = reader.GetInt32(2);
+                                string name_member = reader.GetString(3);
+                                DateTime time = reader.GetDateTime(4);
+                                Future_schedule temp = new Future_schedule {Id_machine=id_machine,Id_member=id_member, Name_member=name_member,Start_time=time};
+                                schedules.Add(temp);
+                                
 
 
                             }
@@ -86,8 +85,8 @@ namespace EventHubFunction
                 }
             }
 
-            return new OkObjectResult(JsonConvert.SerializeObject(machines));
-                
+            return new OkObjectResult(JsonConvert.SerializeObject(schedules));
+
         }
     }
 }

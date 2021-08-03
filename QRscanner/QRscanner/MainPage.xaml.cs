@@ -189,7 +189,7 @@ namespace QRscanner
                 await Client.SendEventAsync(message);
                 String resultusage = "A help message has been sent to all trainers";
                 await App.Current.MainPage.DisplayAlert("HELP ME", resultusage, "OK");
-                activityIndicator.IsVisible = true;
+                activityIndicator.IsVisible = false;
             }
 
         }
