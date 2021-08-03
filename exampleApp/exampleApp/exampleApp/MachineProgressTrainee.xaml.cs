@@ -12,6 +12,7 @@ using Microcharts;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 namespace exampleApp
 {
@@ -35,7 +36,7 @@ namespace exampleApp
             
             
 
-            ConnectDataBase();
+            //ConnectDataBase();
             pickerMachineInit();
         }
         /*connect to data base*/
@@ -71,6 +72,12 @@ namespace exampleApp
         /*load machine to picker*/
         private void pickerMachineInit()
         {
+            List<string> MachineNames = new List<string>();
+            string parameters = "id_member=" + IdMember;
+            string req = "https://gymfuctions.azurewebsites.net/api/machine_used_by_trainee?query=machine_used_by_trainee&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            MachineNames = JsonConvert.DeserializeObject<List<string>>(result);
+            /*
             string cmd_text = $"select distinct machines.name " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
@@ -90,6 +97,7 @@ namespace exampleApp
                 }
             }
             rdr.Close();
+            */
             pickerMachines.Items.Clear();
             foreach (string name in MachineNames)
             {
@@ -106,10 +114,76 @@ namespace exampleApp
             
 
         }
+        public class progress_from_sql
+        {
+            public double score { get; set; }
+            public DateTime start { get; set; }
+
+            [JsonConstructor]
+            public progress_from_sql(double score, DateTime start)
+            {
+                this.score = score;
+                this.start = start;
+            }
+        }
 
         /*this method load the machine progress to microchart*/
         private void MachineUploadProgress(string machineName)
         {
+            List<ChartEntry> entries = new List<ChartEntry>();
+            List<Tuple<double, DateTime>> MachineNumUses = new List<Tuple<double, DateTime>>();
+            string parameters = "id_member=" + IdMember +
+               "&machineName=" + machineName;
+            string req = "https://gymfuctions.azurewebsites.net/api/machine_used_by_trainee?query=machine_progress&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            List<progress_from_sql> progress = JsonConvert.DeserializeObject<List<progress_from_sql>>(result);
+            if (progress.Count != 0)
+            {
+                foreach(progress_from_sql p in progress)
+                {
+                    double score = -1;
+                    DateTime date = DateTime.Now;
+
+                    score = p.score;
+
+                    date = p.start; 
+                    MachineNumUses.Add(Tuple.Create(score, date));
+                }
+                foreach (Tuple<double, DateTime> entry in MachineNumUses)
+                {
+                    if (entry.Item1 != -1)
+                    {
+                        /*DATES*/
+                        DateTime currDate = entry.Item2;
+                        int res = DateTime.Compare(currDate.Date, DateStart.Date);
+                        Console.WriteLine("curr= " + currDate.Date + " start= " + DateStart.Date + " res= " + res);
+                        if (res < 0) { continue; }
+                        res = DateTime.Compare(currDate.Date, DateEnd.Date);
+                        Console.WriteLine("curr= " + currDate.Date + " end= " + DateEnd.Date + " res= " + res);
+                        if (res > 0) { continue; }
+                        /*DATES*/
+                        ChartEntry ce = new ChartEntry((float)entry.Item1)
+                        {
+                            Label = entry.Item2.ToString("d/M/yy"),
+                            ValueLabel = entry.Item1.ToString(),
+                            Color = SKColor.Parse("#eb5b34")
+                        };
+                        entries.Add(ce);
+                    }
+                }
+
+
+                chartViewBar.Chart = new LineChart
+                {
+                    Entries = entries,
+                    LabelOrientation = Orientation.Horizontal,
+                    ValueLabelOrientation = Orientation.Horizontal,
+                    BackgroundColor = SKColor.Parse("#00ffffff"),
+                    LabelTextSize = 40,
+                    PointMode = PointMode.Square
+                };
+            }
+            /*
             string cmd_text = $"select weight_or_speed, usage_gym.start " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
@@ -121,6 +195,7 @@ namespace exampleApp
             List<Tuple<long, DateTime>> MachineNumUses = new List<Tuple<long, DateTime>>();
             MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
+            
             if (rdr.HasRows)
             {
                 while (rdr.Read())
@@ -140,41 +215,9 @@ namespace exampleApp
                     MachineNumUses.Add(Tuple.Create(speedOrWeight, date));
 
                 }
-                rdr.Close();
-                foreach (Tuple<long, DateTime> entry in MachineNumUses)
-                {
-                    if (entry.Item1 != -1)
-                    {
-                        /*DATES*/
-                        DateTime currDate = entry.Item2;
-                        int res = DateTime.Compare(currDate.Date, DateStart.Date);
-                        Console.WriteLine("curr= " + currDate.Date + " start= " + DateStart.Date + " res= " + res);
-                        if(res < 0) { continue; }
-                        res = DateTime.Compare(currDate.Date, DateEnd.Date);
-                        Console.WriteLine("curr= " + currDate.Date + " end= " + DateEnd.Date + " res= " + res);
-                        if (res > 0) { continue; }
-                        /*DATES*/
-                        ChartEntry ce = new ChartEntry(entry.Item1)
-                        {
-                            Label = entry.Item2.ToString("d/M/yy"),
-                            ValueLabel = entry.Item1.ToString(),
-                            Color = SKColor.Parse("#eb5b34")
-                        };
-                        entries.Add(ce);
-                    }
-                }
-              
-              
-                chartViewBar.Chart = new LineChart
-                {
-                    Entries = entries,
-                    LabelOrientation = Orientation.Horizontal,
-                    ValueLabelOrientation = Orientation.Horizontal,
-                    BackgroundColor = SKColor.Parse("#00ffffff"),   
-                    LabelTextSize = 40,
-                    PointMode=PointMode.Square
-                };
-            }
+                rdr.Close();*/
+           
+            
         }
 
         private void ButtonShowProgress_Clicked(object sender, EventArgs e)

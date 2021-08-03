@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,8 +21,9 @@ namespace exampleApp.Pages
 
         ObservableCollection<string> list_trainee_bind = new ObservableCollection<string>();
         public ObservableCollection<string> List_trainee_bind { get { return list_trainee_bind; } }
+       
+        public ObservableCollection<string> List_trainee_filter_bind { get { return list_trainee_filter_bind; } } 
         ObservableCollection<string> list_trainee_filter_bind = new ObservableCollection<string>();
-        public ObservableCollection<string> List_trainee_filter_bind { get { return list_trainee_filter_bind; } }
         //MySqlConnection conn;
 
 
@@ -57,6 +59,31 @@ namespace exampleApp.Pages
             today = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
             foreach (Models.Trainee t in Models.User.Trainees)
             {
+                string parameters = "id_member=" + t.Id;
+                string req = "https://gymfuctions.azurewebsites.net/api/select_schedule_for_trainee?query=select_schedule_for_trainee&" + parameters;
+                string result = Models.Connection.get_result_from_http(req, true);
+                List<Schedule> trainee_schedule = JsonConvert.DeserializeObject<List<Schedule>>(result);
+                foreach (Schedule s in trainee_schedule)
+                {
+                    //int id_machine = s.id_machine.ToString();
+
+                    DateTime start_time = s.date_time;
+                    int working = s.available;
+                    string name_machine = s.name_machine;
+                    Schedule current;
+                    if (working == 0)
+                    {
+                        current = new Schedule { color_row = Color.Yellow, id_machine =s.id_machine, id_trainee = t.Id.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = name_machine + "- broken" };
+                    }
+                    else
+                    {
+                        current = new Schedule { color_row = Color.White, id_machine = s.id_machine, id_trainee = t.Id.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = name_machine };
+
+                    }
+
+                    list_bind.Add(current);
+                }
+                /*
                 using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                 {
                     conn.Open();
@@ -97,13 +124,14 @@ namespace exampleApp.Pages
 
 
                     }
-                }
-                
+                }*/
+
 
             }
             Schedule_view.ItemsSource = list_bind;
         }
 
+        /*
         private void get_machines()
         {
             dict_machines = new Dictionary<int, Models.Machine>();
@@ -130,7 +158,7 @@ namespace exampleApp.Pages
             }
  
 
-        }
+        }*/
     
         public class Schedule
         {
@@ -139,9 +167,23 @@ namespace exampleApp.Pages
             public string id_machine { get; set; }
             public string date_time_string { get; set; }
             public string name_machine { get; set; }
+            public int available { get; set; }
 
             public DateTime date_time { get; set; }
             public Color color_row { get; set; }
+            [JsonConstructor]
+            public Schedule(int id_machine, DateTime start_time, int availabe, string name_machine)
+            {
+                this.id_machine = id_machine.ToString();
+                this.date_time = start_time;
+                this.available = available;
+                this.name_machine = name_machine;
+
+            }
+            public Schedule()
+            {
+
+            }
         }
         /*
         private void ConnectDataBase()
@@ -171,6 +213,8 @@ namespace exampleApp.Pages
                 Console.WriteLine(ex.ToString());
             }
         }*/
+        
+        //need to delete
         public void delete_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
@@ -203,11 +247,7 @@ namespace exampleApp.Pages
                 "&id_member=" + schedule.id_trainee +
                 "&start_time=" + schedule.date_time.ToString();
             string req = "https://gymfuctions.azurewebsites.net/api/delete_sql?query=delete_schedule&" + parameters;
-            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-            System.Net.WebResponse response = request.GetResponse();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string result = reader.ReadToEnd();
+            string result = Models.Connection.get_result_from_http(req,false);
             if (result == "1")
             {
                 list_bind.Remove(schedule);
@@ -289,6 +329,31 @@ namespace exampleApp.Pages
                     trainee_name += selected_Trainee_array[selected_Trainee_array.Length - 2];
                     int id_Trainee = Int32.Parse(selected_Trainee_array[selected_Trainee_array.Length - 1]);
 
+                    string parameters = "id_member=" + id_Trainee;
+                    string req = "https://gymfuctions.azurewebsites.net/api/select_schedule_for_trainee?query=select_schedule_for_trainee&" + parameters;
+                    string result = Models.Connection.get_result_from_http(req, true);
+                    List<Schedule> trainee_schedule = JsonConvert.DeserializeObject<List<Schedule>>(result);
+                    foreach(Schedule s in trainee_schedule)
+                    {
+                        string id_machine = s.id_machine;
+                        int id_member = id_Trainee;
+                        DateTime start_time = s.date_time;
+                        int working = s.available;
+                        string name_machine = s.name_machine;
+                        Schedule current;
+                        if (working == 0)
+                        {
+                            current = new Schedule { color_row = Color.Yellow, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = trainee_name, date_time = start_time, name_machine = name_machine + "- broken" };
+                        }
+                        else
+                        {
+                            current = new Schedule { color_row = Color.White, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = trainee_name, date_time = start_time, name_machine = name_machine };
+
+                        }
+
+                        list_bind.Add(current);
+                    }
+                    /*
                     using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                     {
                         conn.Open();
@@ -329,7 +394,7 @@ namespace exampleApp.Pages
 
 
                         }
-                    }
+                    }*/
 
 
                     Schedule_view.ItemsSource = list_bind;
@@ -364,11 +429,7 @@ namespace exampleApp.Pages
                     "&start_time=" + selected_schedue_edit.date_time.ToString() +
                     "&new_name_member=" + trainee_name;
                 string req = "https://gymfuctions.azurewebsites.net/api/update_schedule_of_trainer?query=update_new_schedule&" + parameters;
-                System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-                System.Net.WebResponse response = request.GetResponse();
-                Stream dataStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(dataStream);
-                string result = reader.ReadToEnd();
+                string result = Models.Connection.get_result_from_http(req, true);
                 if (result == "trainee is not free")
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "The trainee has different schedult on that time, try again", "OK");

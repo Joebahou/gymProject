@@ -56,12 +56,7 @@ namespace exampleApp.Pages
                 "&time_to_schedule=" + time_to_schedule.ToString() +
                 "&id_machine=" + id_machine;
             string req = "https://gymfuctions.azurewebsites.net/api/check_schedule?query=check_schedule_for_trainee&" + parameters;
-            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-            request.ContentType = "application/json; charset=utf-8";
-            System.Net.WebResponse response = request.GetResponse();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string result = reader.ReadToEnd();
+            String result = Models.Connection.get_result_from_http(req, true);
             Result[] reshima = JsonConvert.DeserializeObject<Result[]>(result);
 
             ready_to_add = reshima[0].isTrue;
@@ -141,6 +136,8 @@ namespace exampleApp.Pages
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string result = reader.ReadToEnd();
+            response.Close();
+            reader.Close();
             if (result == "1")
             {
                 string caching_msg = "you succesfully added in date " + time_to_schedule.ToString() + ",machine " + id_machine + " with trainee " + name_trainee;

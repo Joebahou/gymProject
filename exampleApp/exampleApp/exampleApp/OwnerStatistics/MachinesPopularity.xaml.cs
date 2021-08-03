@@ -13,6 +13,7 @@ using MySqlConnector;
 
 using Microcharts;
 using SkiaSharp;
+using Newtonsoft.Json;
 
 namespace exampleApp.OwnerStatistics
 {
@@ -22,7 +23,7 @@ namespace exampleApp.OwnerStatistics
         public MachinesPopularity()
         {
             InitializeComponent();
-            ConnectDataBase();            
+            //ConnectDataBase();            
         }
 
         private DateTime DateStart = DateTime.Now;
@@ -59,10 +60,39 @@ namespace exampleApp.OwnerStatistics
         }
         /*This method gets the popularity of every machine
          and present it in the microchart*/
+        public class machines_popularity_from_sql
+        {
+            public string machinename { get; set; }
+            public long machinenumuses { get; set; }
+
+            [JsonConstructor]
+            public machines_popularity_from_sql(string machinename,long machinenumuses)
+            {
+                this.machinename = machinename;
+                this.machinenumuses = machinenumuses;
+            }
+        }
         private void MachinesPop()
         {
             string start_date = DateStart.ToString("yyyy-MM-dd");
             string end_date = DateEnd.ToString("yyyy-MM-dd");
+
+            string parameters = "start_date=" + start_date +
+                "&end_date=" + end_date;
+            string req = "https://gymfuctions.azurewebsites.net/api/machines_popularity?query=select_popular_machines&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            List<machines_popularity_from_sql> machine_uses = JsonConvert.DeserializeObject<List<machines_popularity_from_sql>>(result);
+            List<Tuple<string, long>> MachineNumUses = new List<Tuple<string, long>>();
+            foreach(machines_popularity_from_sql m in machine_uses)
+            {
+                string machineName = m.machinename;
+                Console.WriteLine(machineName);
+                long machineNumUses = m.machinenumuses;
+                MachineNumUses.Add(Tuple.Create(machineName, machineNumUses));
+
+            }
+
+            /*
             string cmd_text = $"select machines.name, count(*) " +
                 $"from usage_gym, machines " +
                 $"where machines.idmachine = usage_gym.idmachine " +
@@ -83,6 +113,7 @@ namespace exampleApp.OwnerStatistics
                 }                
             }
             rdr.Close();
+            */
             int count = 0;
             List<ChartEntry> entries = new List<ChartEntry>();
             foreach (Tuple<string, long> tuple in MachineNumUses)

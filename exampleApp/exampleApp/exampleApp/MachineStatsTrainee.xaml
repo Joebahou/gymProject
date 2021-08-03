@@ -74,12 +74,12 @@
                                         <ColumnDefinition Width="1.5*"></ColumnDefinition>
                                         <ColumnDefinition Width="1.5*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Text="{Binding Sets}"></Label>
-                                    <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Text="{Binding Reps}"></Label>
-                                    <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Text="{Binding WeightOrSpeed}"></Label>
-                                    <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Center" Text="{Binding Start}"></Label>
-                                    <Label Grid.Row="0" Grid.Column="4" HorizontalOptions="Center" Text="{Binding End}"></Label>
-                                    <Label Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Text="{Binding Date}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Text="{Binding sets}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Text="{Binding reps}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Text="{Binding weightorspeed}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Center" Text="{Binding start}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="4" HorizontalOptions="Center" Text="{Binding end}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Text="{Binding date}"></Label>
                                 </Grid>
                             </Frame>
                         </ViewCell>

@@ -12,6 +12,7 @@ using Microcharts;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 namespace exampleApp
 {
@@ -38,17 +39,27 @@ namespace exampleApp
             Console.WriteLine("id trainee: " + IdMember);
 
 
-            ConnectDataBase();
+            //ConnectDataBase();
             pickerMachineInit();
         }
         public class MachineData
         {
-            public int Sets { get; set; }
-            public int Reps { get; set; }
-            public int WeightOrSpeed { get; set; }
-            public string Start { get; set; }
-            public string End { get; set; }
-            public string Date { get; set; }
+            public int sets { get; set; }
+            public int reps { get; set; }
+            public int weightorspeed { get; set; }
+            public string start { get; set; }
+            public string end { get; set; }
+            public string date { get; set; }
+            [JsonConstructor]
+            public MachineData(int sets, int reps, int weightorspeed, string start, string end, string date)
+            {
+                this.sets = sets;
+                this.reps = reps;
+                this.weightorspeed = weightorspeed;
+                this.start = start;
+                this.end = end;
+                this.date = date;
+            }
         }
 
         /*connect to data base*/
@@ -84,6 +95,13 @@ namespace exampleApp
         /*load machine to picker*/
         private void pickerMachineInit()
         {
+            List<string> MachineNames = new List<string>();
+
+            string parameters = "id_member=" + IdMember;
+            string req = "https://gymfuctions.azurewebsites.net/api/machine_used_by_trainee?query=machine_used_by_trainee&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            MachineNames = JsonConvert.DeserializeObject<List<string>>(result);
+            /*
             string cmd_text = $"select distinct machines.name " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
@@ -102,7 +120,7 @@ namespace exampleApp
                     }
                 }
             }
-            rdr.Close();
+            rdr.Close();*/
             pickerMachines.Items.Clear();
             foreach (string name in MachineNames)
             {
@@ -124,6 +142,22 @@ namespace exampleApp
         /*machine data grid*/
         private void MachineUploadData(string machineName)
         {
+            ListData.Clear();
+            string parameters = "id_member=" + IdMember +
+                "&machineName=" + machineName;
+            string req = "https://gymfuctions.azurewebsites.net/api/select_used_machines?query=select_used_machines&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+           List<MachineData> uses_of_machine= JsonConvert.DeserializeObject<List<MachineData>>(result);
+            if (uses_of_machine.Count != 0)
+            {
+                foreach(MachineData m in uses_of_machine)
+                {
+                    ListData.Add(m);
+                }
+            }
+            MachineStatsListView.ItemsSource = ListData;
+
+            /*
             string cmd_text = $"select sets, reps, weight_or_speed, usage_gym.start, usage_gym.end " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
@@ -183,7 +217,7 @@ namespace exampleApp
                 rdr.Close();
                 MachineStatsListView.ItemsSource = ListData;
 
-            }
+            }*/
         }
     }
 }

@@ -14,6 +14,7 @@ using MySqlConnector;
 using Microcharts;
 using SkiaSharp;
 using Color = Xamarin.Forms.Color;
+using Newtonsoft.Json;
 
 namespace exampleApp.OwnerStatistics
 {
@@ -25,7 +26,7 @@ namespace exampleApp.OwnerStatistics
         public HoursPopularityxaml()
         {
             InitializeComponent();
-            ConnectDataBase();
+            //ConnectDataBase();
             //HoursPop();
         }
         private MySqlConnection conn;
@@ -56,13 +57,37 @@ namespace exampleApp.OwnerStatistics
                 Console.WriteLine(ex.ToString());
             }
         }
+        public class popularityHours_from_sql{
+            public string date { get; set; }
+            public long count { get; set; }
 
+            [JsonConstructor]
+            public popularityHours_from_sql(string date,long count)
+            {
+                this.date = date;
+                this.count = count;
+            }
+        }
         /*This method gets the popularity of every hour exists in the usage database
          and present it in the microchart*/
         private void HoursPop()
         {
             string start_date = DateStart.ToString("yyyy-MM-dd");
             string end_date = DateEnd.ToString("yyyy-MM-dd");
+
+            string parameters = "start_date=" + start_date +
+                "&end_date=" + end_date;
+            string req = "https://gymfuctions.azurewebsites.net/api/select_hour_popularity?query=select_popular_hours&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            List<popularityHours_from_sql> hours = JsonConvert.DeserializeObject<List<popularityHours_from_sql>>(result);
+            List<Tuple<string, long>> HourNumUses = new List<Tuple<string, long>>();
+            foreach(popularityHours_from_sql h in hours)
+            {
+                long count = h.count;
+                string date = h.date; ;
+                HourNumUses.Add(Tuple.Create(date, count));
+            }
+            /*
             string cmd_text = $"SELECT hour(usage_gym.start) as h, count(*) " +
                 $"from usage_gym " +
                 $"where date(usage_gym.start) >= '{start_date}' " +
@@ -92,6 +117,7 @@ namespace exampleApp.OwnerStatistics
                 }
             }
             rdr.Close();
+            */
             List<ChartEntry> entries = new List<ChartEntry>();
             int cnt = 0;            
             foreach (Tuple<string, long> tuple in HourNumUses)

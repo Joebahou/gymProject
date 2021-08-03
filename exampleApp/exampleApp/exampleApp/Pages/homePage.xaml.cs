@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Essentials;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace exampleApp.Pages
 {
@@ -85,8 +87,31 @@ namespace exampleApp.Pages
         }
         private void Init_alert_list()
         {
+            List<Models.Machine> list_for_notification = new List<Models.Machine>();
+            string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
+            string result = Models.Connection.get_result_from_http(req, true);
+            list_for_notification = JsonConvert.DeserializeObject<List<Models.Machine>>(result);
             if (Models.User.Type == 2)
             {
+               foreach(Models.Machine m in list_for_notification)
+                {
+                    if (m.Alert_broken == 1)
+                    {
+                        int id_machine = m.Id_machine;
+                        string name_machine = m.Name;
+                        int alert_broken = m.Alert_broken;
+                        string msg = "someone alerted that " + " machine, id " + id_machine + " isn't working";
+                        Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = false };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                    }
+                }
+
+                
+                /*
                 using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                 {
                     conn.Open();
@@ -121,7 +146,7 @@ namespace exampleApp.Pages
 
 
                     }
-                }
+                }*/
 
                 OnPropertyChanged("notifications_count");
                 notification_view.ItemsSource = list_bind;
@@ -129,6 +154,23 @@ namespace exampleApp.Pages
             }
             else
             {
+                foreach(Models.Machine m in list_for_notification)
+                {
+                    if (m.Available == 0)
+                    {
+                        int id_machine = m.Id_machine;
+                        string name_machine = m.Name;
+                        int working = m.Available;
+                        string msg = name_machine + " machine, id " + id_machine + " isn't working, check your schedule";
+                        Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = true };
+                        list_bind.Add(temp);
+                        notification_view.ItemsSource = list_bind;
+                        int current_count = Int32.Parse(notifications_count);
+                        current_count++;
+                        notifications_count = current_count.ToString();
+                    }
+                }
+                /*
                 using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                 {
                     conn.Open();
@@ -163,7 +205,7 @@ namespace exampleApp.Pages
 
 
                     }
-                }
+                }*/
 
                 OnPropertyChanged("notifications_count");
                 notification_view.ItemsSource = list_bind;
@@ -633,9 +675,40 @@ namespace exampleApp.Pages
         private async void machinesButton_Clicked(object sender, EventArgs e)
         {
             UsedMachines.machines_list = new List<Models.Machine>();
+            List<Models.Machine> list_for_used = new List<Models.Machine>();
+            string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
+            string result = Models.Connection.get_result_from_http(req, true);
+            list_for_used = JsonConvert.DeserializeObject<List<Models.Machine>>(result);
 
-         
+            foreach (Models.Machine m in list_for_used)
+            {
+                int id_machine = m.Id_machine;
+                int taken = m.Taken;
+                string name = m.Name;
+                int available = m.Available;
+                Models.Machine temp;
+                if (available == 1)
+                {
+                    if (taken == 0)
+                    {
+                        temp = new Models.Machine(name, Color.Green, id_machine);
 
+                    }
+                    else
+                    {
+                        temp = new Models.Machine(name, Color.Red, id_machine);
+                    }
+
+                }
+                else
+                {
+                    temp = new Models.Machine(name, Color.Yellow, id_machine);
+                }
+                UsedMachines.machines_list.Add(temp);
+
+            }
+
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -662,7 +735,7 @@ namespace exampleApp.Pages
                                 {
                                     temp = new Models.Machine(name, Color.Red, id_machine);
                                 }
-                                
+
                             }
                             else
                             {
@@ -675,9 +748,9 @@ namespace exampleApp.Pages
 
 
                 }
-            }
+            }*/
 
-           await  Navigation.PushAsync(new UsedMachines());
+            await  Navigation.PushAsync(new UsedMachines());
         }
 
         private async void OnLogout_Clicked(object sender, EventArgs e)
@@ -690,7 +763,7 @@ namespace exampleApp.Pages
             {
                 this.connection = null;
             }
-
+            Models.User.Type = -1;
             App.Current.MainPage = new NavigationPage(new Pages.LoginPage());
             await App.Current.MainPage.Navigation.PopAsync();
             
@@ -724,31 +797,45 @@ namespace exampleApp.Pages
         private async void editMachineButton_Clicked(object sender, EventArgs e)
         {
             availableMachines_owner.machines_list = new List<Models.Machine>();
-
-
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
+            List<Models.Machine> list_for_owner = new List<Models.Machine>();
+            string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
+            string result = Models.Connection.get_result_from_http(req, true);
+            list_for_owner = JsonConvert.DeserializeObject<List<Models.Machine>>(result);
+            foreach (Models.Machine m in list_for_owner)
             {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = @"SELECT idmachine,name,working FROM gym_schema.machines;";
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            int id_machine = reader.GetInt32(0);
-                            string name = reader.GetString(1);
-                            int available = reader.GetInt32(2);
-                            Models.Machine temp = new Models.Machine(id_machine,name,available);
-                            availableMachines_owner.machines_list.Add(temp);
-                        }
-                    }
+                int id_machine = m.Id_machine;
+                string name = m.Name;
+                int available = m.Available;
+                Models.Machine temp = new Models.Machine(id_machine, name, available);
+                availableMachines_owner.machines_list.Add(temp);
 
-
-                }
             }
-            
-            await Navigation.PushAsync(new availableMachines_owner());
+
+
+                /*
+                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
+                {
+                    conn.Open();
+                    using (var command = conn.CreateCommand())
+                    {
+                        command.CommandText = @"SELECT idmachine,name,working FROM gym_schema.machines;";
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                int id_machine = reader.GetInt32(0);
+                                string name = reader.GetString(1);
+                                int available = reader.GetInt32(2);
+                                Models.Machine temp = new Models.Machine(id_machine,name,available);
+                                availableMachines_owner.machines_list.Add(temp);
+                            }
+                        }
+
+
+                    }
+                }*/
+
+                await Navigation.PushAsync(new availableMachines_owner());
         }
 
 

@@ -93,11 +93,7 @@ namespace exampleApp.Pages
             string parameters = "id_machine=" + machine.id_machine +
                 "&machine_name=" + machine.name;
             string req = "https://gymfuctions.azurewebsites.net/api/delete_sql?query=delete_machine&" + parameters;
-            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-            System.Net.WebResponse response = request.GetResponse();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string result = reader.ReadToEnd();
+            string result = Models.Connection.get_result_from_http(req, false);
             if (result == "1")
             {
                 list_bind.Remove(machine);
@@ -141,7 +137,7 @@ namespace exampleApp.Pages
         {
             string msg;
             int new_id=-1;
-            bool isDUplicate = false;
+         
             string machine_name = entry.Text;
             if (machine_name == "" || machine_name==null)
             {
@@ -150,6 +146,7 @@ namespace exampleApp.Pages
             }
             else
             {
+                /*
                 using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
                 {
                     conn.Open();
@@ -169,17 +166,22 @@ namespace exampleApp.Pages
                             }
                         }
                     }
-                }
-              
-                if (!isDUplicate)
-                {
-                    string parameters = "machine_name=" + machine_name.ToString();
+                }*/
+                string parameters = "machine_name=" + machine_name.ToString();
                     string req = "https://gymfuctions.azurewebsites.net/api/insert_new_machine?query=insert_new_machine&" + parameters;
-                    System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-                    System.Net.WebResponse response = request.GetResponse();
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
-                    string result = reader.ReadToEnd();
+                string result = Models.Connection.get_result_from_http(req, false);
+                if (result == "isDuplicate")
+                {
+                    
+                        msg = "there is already a machine with the same name, please try diffrent name";
+                        await Application.Current.MainPage.DisplayAlert("duplicate machine name", msg, "OK");
+                  
+
+                }
+            
+                else
+                {
+                    
                     if (result == "-1")
                     {
                         Console.WriteLine("the insert didnt went well");
@@ -223,11 +225,7 @@ namespace exampleApp.Pages
 
                     
                 }
-                else
-                {
-                    msg = "there is already a machine with the same name, please try diffrent name";
-                    await Application.Current.MainPage.DisplayAlert("duplicate machine name", msg, "OK");
-                }
+               
             }
 
         }

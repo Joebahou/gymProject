@@ -1,5 +1,6 @@
 ﻿using Microcharts;
 using MySqlConnector;
+using Newtonsoft.Json;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,13 @@ namespace exampleApp
         }
         private void pickerMachineInit()
         {
+            List<string> MachineNames = new List<string>();
+
+            string parameters = "id_member=" + IdMember;
+            string req = "https://gymfuctions.azurewebsites.net/api/machine_used_by_trainee?query=machine_used_by_trainee&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            MachineNames = JsonConvert.DeserializeObject<List<string>>(result);
+            /*
             string cmd_text = $"select distinct machines.name " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
@@ -89,7 +97,7 @@ namespace exampleApp
                     }
                 }
             }
-            rdr.Close();
+            rdr.Close();*/
             pickerMachines.Items.Clear();
             foreach (string name in MachineNames)
             {
@@ -111,8 +119,52 @@ namespace exampleApp
             }
             UploadGlobalProgress(machineName);
         }
+        public class usage_same_age_gender
+        {
+            public double score { get; set; }
+            public int id_member { get; set; }
+
+            [JsonConstructor]
+            public usage_same_age_gender(double score,int id_member)
+            {
+                this.score = score;
+                this.id_member = id_member;
+            }
+        }
         private void UploadGlobalProgress(string machineName)
         {
+            Dictionary<int, double> Avg_Per_member = new Dictionary<int, double>();
+            Dictionary<int, int> Times_Usg_Per_member = new Dictionary<int, int>();
+            List<ChartEntry> entries = new List<ChartEntry>();
+
+            string parameters = "age=" + age +
+                "&gender=" + gender +
+                "&machineName=" + machineName;
+
+            string req = "https://gymfuctions.azurewebsites.net/api/select_same_age_gender?query=select_users_scores&" + parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+           List<usage_same_age_gender> list_uses= JsonConvert.DeserializeObject<List<usage_same_age_gender>>(result);
+            foreach(usage_same_age_gender u in list_uses)
+            {
+                double score = u.score;
+                int id_member = u.id_member;
+                if (score > 0)
+                {
+                    if (Avg_Per_member.ContainsKey(id_member))
+                    {
+                        Avg_Per_member[id_member] += score;
+                        Times_Usg_Per_member[id_member] += 1;
+                    }
+                    else
+                    {
+                        Avg_Per_member.Add(id_member, score);
+                        Times_Usg_Per_member.Add(id_member, 1);
+
+                    }
+
+                }
+            }
+            /*
             string cmd_text = $"select usage_gym.score, members.idmember " +
                 $"from members, machines, usage_gym " +
                 $"where members.idmember = usage_gym.idmember " +
@@ -150,7 +202,7 @@ namespace exampleApp
 
                 }
             }
-                rdr.Close();
+                rdr.Close();*/
             if (Avg_Per_member.Count == 0)
             {
                 No_Progress_to_show();

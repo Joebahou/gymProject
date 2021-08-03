@@ -122,12 +122,7 @@ namespace exampleApp.Pages
             dict_machines = new Dictionary<int, Models.Machine>();
             machines = new List<Models.Machine>();
             string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
-            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-            request.ContentType = "application/json; charset=utf-8";
-            System.Net.WebResponse response = request.GetResponse();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string result = reader.ReadToEnd();
+            string result = Models.Connection.get_result_from_http(req, true);
             machines = JsonConvert.DeserializeObject<List<Models.Machine>> (result);
             foreach(Models.Machine m in machines)
             {
@@ -288,14 +283,11 @@ namespace exampleApp.Pages
             Add_to_schedule.id_machine = row.id_machine;
             Add_to_schedule.name_machine_chosen = dict_machines[row.id_machine].Name;
             Boolean ready_to_choose_trainee = true;
+
             string parameters = "id_machine=" + row.id_machine +
                "&time_to_schedule=" + time_and_date.ToString();
             string req = "https://gymfuctions.azurewebsites.net/api/check_schedule?query=ready_to_choose_trainee&" + parameters;
-            System.Net.WebRequest request = System.Net.WebRequest.Create(req);
-            System.Net.WebResponse response = request.GetResponse();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string result = reader.ReadToEnd();
+            string result = Models.Connection.get_result_from_http(req, false);
             if (result == "false")
             {
                 ready_to_choose_trainee = false;
@@ -346,6 +338,22 @@ namespace exampleApp.Pages
             public Boolean text_visble_broken { get; set; }
             public Color color_row { get; set; }
         }
+        public class future_schedule
+        {
+            public string name_member { get; set; }
+            public int id_machine { get; set; }
+            public DateTime start_time { get; set; }
+            public int id_member { get; set; }
+
+            [JsonConstructor]
+            public future_schedule(string name_member, int id_machine, DateTime start_time, int id_member)
+            {
+                this.name_member = name_member;
+                this.id_machine = id_machine;
+                this.start_time = start_time;
+                this.id_member = id_member;
+            }
+        }
         private async void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
             popuploading2.IsVisible = true;
@@ -362,6 +370,23 @@ namespace exampleApp.Pages
                 machine.Init_schedule();
 
             }
+            List<future_schedule> future_schedule_query = new List<future_schedule>();
+            string parameters = "start_time=" + selected_date.ToString();
+               
+            string req = "https://gymfuctions.azurewebsites.net/api/select_all_schedule?query=select_schedule_for_date&"+parameters;
+            string result = Models.Connection.get_result_from_http(req, true);
+            future_schedule_query = JsonConvert.DeserializeObject<List<future_schedule>>(result);
+            foreach(future_schedule f in future_schedule_query)
+            {
+                int id_machine = f.id_machine;
+                int id_member = f.id_member;
+                DateTime start_time = f.start_time;
+                string name_member = f.name_member;
+                string hour = start_time.ToString("HH:mm");
+                int index = times[hour];
+                dict_machines[id_machine].schedule_machine[index] = name_member;
+            }
+            /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
                 conn.Open();
@@ -393,11 +418,11 @@ namespace exampleApp.Pages
 
 
                 }
-            }
-            
-           
-            
-            foreach(Models.Machine machine in machines)
+            }*/
+
+
+
+            foreach (Models.Machine machine in machines)
             { 
                 bool[] button_arr = new bool[38];
                 button_arr[0] = false;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,6 +28,37 @@ namespace exampleApp.Models
                 id = value;
 
             }
+        }
+
+        private string gender;
+        public string Gender
+        {
+            get { return gender; }
+            set
+            {
+                gender = value;
+
+            }
+        }
+
+        private int age;
+        public int Age
+        {
+            get { return age; }
+            set
+            {
+                age = value;
+
+            }
+        }
+
+        [JsonConstructor]
+        public Trainee(int id_member,string name,string gender,int age)
+        {
+            this.id = id_member;
+            this.name = name;
+            this.gender = gender;
+            this.age = age;
         }
     }
 }

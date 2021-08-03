@@ -32,7 +32,7 @@ namespace exampleApp.TrainerStatistics
             TraineesListNames = new List<string>();
             TraineesListGenders = new List<string>();
             TraineesListAges = new List<int>();
-            ConnectDataBase();
+            //ConnectDataBase();
             getTrainees();
         }
         /*connect to data base*/
@@ -70,6 +70,27 @@ namespace exampleApp.TrainerStatistics
 
         private void getTrainees()
         {
+            foreach(Models.Trainee t in Models.User.Trainees)
+            {
+                int id = -1;
+                string name = "";
+                string gender = "Unknown";
+                int age = -1;
+
+                id = t.Id;
+
+                name = t.Name;
+
+                gender = t.Gender;
+
+                age = t.Age;
+            
+                TraineesListIds.Add(id);
+                TraineesListNames.Add(name);
+                TraineesListGenders.Add(gender);
+                TraineesListAges.Add(age);
+            }
+            /*
             string cmd_text = $"select idmember, name, gender, age " +
                 $"from members " +
                 $"where trainer = {IdTrainer} ";            
@@ -109,7 +130,8 @@ namespace exampleApp.TrainerStatistics
                     TraineesListAges.Add((int)age);
                 }
             }
-            rdr.Close();            
+            rdr.Close();
+            */
         }
 
         private void StatsPerTrainee_Clicked(object sender, EventArgs e)
