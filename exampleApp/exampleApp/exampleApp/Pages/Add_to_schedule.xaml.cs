@@ -62,9 +62,10 @@ namespace exampleApp.Pages
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string result = reader.ReadToEnd();
-            L reshima = JsonConvert.DeserializeObject<L>(result);
-            ready_to_add = reshima.results[0].isTrue;
-            other_already_taken= reshima.results[1].isTrue;
+            Result[] reshima = JsonConvert.DeserializeObject<Result[]>(result);
+
+            ready_to_add = reshima[0].isTrue;
+            other_already_taken = reshima[1].isTrue;
 
 
             /*

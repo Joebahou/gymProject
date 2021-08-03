@@ -37,6 +37,7 @@ namespace exampleApp.Models
             id_machine_ = id_machine;
 
         }
+     
         public Machine(string name,  int id_machine)
         {
             name_ = name;

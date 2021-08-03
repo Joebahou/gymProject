@@ -40,7 +40,7 @@
                 HorizontalOptions="CenterAndExpand"
                    FontSize="Large"
                    HorizontalTextAlignment="Center"
-                   TextColor="OrangeRed"></Label>
+                   TextColor="OrangeRed" IsVisible="false"></Label>
                     <Button x:Name="statisticsButton"
                     Text="Go to Statistics Page"
                     Clicked="statisticsButton_Clicked"  VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>

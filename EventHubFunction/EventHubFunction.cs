@@ -289,6 +289,15 @@ namespace EventHubFunction
 
 
                                         }
+                                        using (MySqlCommand command = conn.CreateCommand())
+                                        {
+
+                                            command.CommandText = @"DELETE FROM future_schedule_machines WHERE id_machine=@id_machine;";
+                                            command.Parameters.AddWithValue("@id_machine", id_machine);
+                                            command.ExecuteNonQuery();
+
+
+                                        }
                                     }
                                     await signalRMessages.AddAsync(
                                     new SignalRMessage

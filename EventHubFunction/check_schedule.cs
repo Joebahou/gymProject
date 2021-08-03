@@ -62,7 +62,7 @@ namespace EventHubFunction
                     using (MySqlCommand command = conn.CreateCommand())
                     {
                         
-                        command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
+                        command.CommandText = @"SELECT gym_schema.future_schedule_machines.id_machine from gym_schema.future_schedule_machines,gym_schema.machines WHERE gym_schema.future_schedule_machines.id_member=@id_member and gym_schema.future_schedule_machines.start_time=@time_to_schedule and gym_schema.machines.idmachine=gym_schema.future_schedule_machines.id_machine and gym_schema.machines.working=1;";
                         command.Parameters.AddWithValue("@id_member", id_member);
                         command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
 
@@ -95,14 +95,9 @@ namespace EventHubFunction
                     }
 
                 }
-                return new OkObjectResult(JsonConvert.SerializeObject
-                (new
-                {
-                    results = results
-
-                }
-                 )
-            ); ;
+                return new OkObjectResult(JsonConvert.SerializeObject(results));
+              
+            
             }
             else
             {
