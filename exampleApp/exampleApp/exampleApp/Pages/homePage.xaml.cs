@@ -775,6 +775,12 @@ namespace exampleApp.Pages
             popupNotifications.IsVisible = !popupNotifications.IsVisible;
            
         }
+        private async void signUp_Clicked(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new signUp());
+
+        }
         public void helped_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;

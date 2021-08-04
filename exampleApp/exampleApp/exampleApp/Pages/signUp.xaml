@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="exampleApp.Pages.signUp">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout Orientation="Vertical" Padding="30" Spacing="40">
+                <BoxView HeightRequest="10"/>
+
+                <Frame BackgroundColor="#BF043055" HasShadow="False">
+                    <StackLayout Orientation="Vertical" Spacing="10">
+                        <Label Text="Please fill in the following lines the appropriate info"
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        FontSize="20"
+                        TextColor="White"
+                        HorizontalTextAlignment="Center"/>
+                        <Entry x:Name="ID" Text="{Binding ID}" Placeholder="ID"   
+                               PlaceholderColor="White" HeightRequest="40"     
+                               TextColor="White"/>
+                        <Entry x:Name="Name" Text="{Binding Name}" Placeholder="Name"   
+                               PlaceholderColor="White" HeightRequest="40"     
+                               TextColor="White"/>
+                        <Entry x:Name="Age" Text="{Binding Age}" Placeholder="Age"   
+                               PlaceholderColor="White" HeightRequest="40"   
+                               TextColor="White"/>
+                        <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Email"   
+                               PlaceholderColor="White" HeightRequest="40"   
+                               TextColor="White"/>
+                        <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password"   
+                               IsPassword="true" PlaceholderColor="White" HeightRequest="40"   
+                               TextColor="White"/>
+                        <Picker x:Name="genderPicker" TextColor="White"  TitleColor="White" Title="Select Gender"  SelectedIndexChanged="pickerDate_SelectedGender" >
+                            <Picker.Items>
+                                <x:String>male</x:String>
+                                <x:String>female</x:String>
+                            </Picker.Items>
+                        </Picker>
+                        <Picker x:Name="userType" TextColor="White" TitleColor="White" Title="Select User Type"  SelectedIndexChanged="userType_SelectedType">
+                            <Picker.Items>
+                                <x:String>trainee</x:String>
+                                <x:String>trainer</x:String>
+                                <x:String>owner</x:String>
+                            </Picker.Items>
+                        </Picker>
+                        <Picker x:Name="picker_Trainer" 
+                    Title="Select trainer " IsVisible="false"                    
+                    TextColor="White" SelectedIndexChanged="trainer_selected" TitleColor="White" ItemsSource="{Binding List_trainer_bind}"></Picker>
+                    </StackLayout>
+                </Frame>
+                <Button Text="Sign Up"  Clicked="SubmitButton_Clicked" TextColor="White"  
+                        FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
+                        BackgroundColor="#088da5" />
+                <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -63,12 +63,74 @@ namespace EventHubFunction
 
                     }
                 }
+                string responseMessage = rowCount.ToString();
+
+
+                return new OkObjectResult(responseMessage);
             }
-            
-            string responseMessage = rowCount.ToString();
+            if(query == "insert_new_user")
+            {
+                int id = Int32.Parse(req.Query["id"]);
+                string name = req.Query["name"];
+                int age= Int32.Parse(req.Query["age"]);
+                string email = req.Query["email"];
+                string password = req.Query["password"];
+                string gender = req.Query["gender"];
+                int type = Int32.Parse(req.Query["type"]);
+                int trainer = Int32.Parse(req.Query["trainer"]);
+                bool isduplicate=false;
+                log.LogInformation($"C# Event Hub trigger function processed a message: {id} {name} {age} {email} {password} {gender} {type} {trainer}");
+
+                using (var conn = new MySqlConnection(builder.ConnectionString))
+                {
+                    conn.Open();
+
+                    using (MySqlCommand command = conn.CreateCommand())
+                    {
+                        command.CommandText = @"SELECT * FROM members WHERE idmember=@id;";
+                        command.Parameters.AddWithValue("@id", id);
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+
+                            {
+                                if (!reader.IsDBNull(0))
+
+                                    isduplicate = true;
+
+                            }
+                        }
+                    }
+                    if (!isduplicate)
+                    {
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
 
 
-            return new OkObjectResult(responseMessage);
+                            command.CommandText = @"INSERT INTO members(idmember,name,age,email,password,gender,type,trainer) VALUES(@idmember,@name,@age,@email,@password,@gender,@type,@trainer);";
+                            command.Parameters.AddWithValue("@idmember", id);
+                            command.Parameters.AddWithValue("@name", name);
+                            command.Parameters.AddWithValue("@age", age);
+                            command.Parameters.AddWithValue("@email", email);
+                            command.Parameters.AddWithValue("@password", password);
+                            command.Parameters.AddWithValue("@gender", gender);
+                            command.Parameters.AddWithValue("@type", type);
+                            command.Parameters.AddWithValue("@trainer", trainer);
+                            rowCount = command.ExecuteNonQuery();
+
+
+
+                        }
+
+                        return new OkObjectResult(id);
+                    }
+                    else return new OkObjectResult("isDuplicate");
+                }
+
+            }
+            return new OkObjectResult(-1);
+
+
         }
     }
 }
