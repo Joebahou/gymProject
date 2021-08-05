@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Drawing;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Text.RegularExpressions;
+using Android.Graphics;
 
 namespace exampleApp.Pages
 {
@@ -165,8 +168,10 @@ namespace exampleApp.Pages
                 {
                     if(result != "isDuplicate")
                     {
-                        string catching_msg = "sign up succesfully";
+                        
+                        string catching_msg = "sign up succesfully, click ok to see the qr of the user";
                         await App.Current.MainPage.DisplayAlert("Success", catching_msg, "OK");
+
                         await App.Current.MainPage.Navigation.PopAsync();
                     }
                     else
@@ -197,6 +202,15 @@ namespace exampleApp.Pages
             vm.Trainer = id_Trainer;
 
 
+        }
+        public void Base64ToImage(string base64String)
+        {
+            var bytes = Convert.FromBase64String(base64String);
+            using (var imageFile = new FileStream("C:\\Users\\ad\\Pictures", FileMode.Create))
+            {
+                imageFile.Write(bytes, 0, bytes.Length);
+                imageFile.Flush();
+            }
         }
         public void Init_list_trainers()
         {

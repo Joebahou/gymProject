@@ -54,8 +54,12 @@
                     Text="Go to Available Machines Page "
                     Clicked="editMachineButton_Clicked" VerticalOptions="CenterAndExpand"  IsVisible="{Binding IsOwner}" WidthRequest="250" HeightRequest="70">
                 </Button>
+                <Button x:Name="seeQRbutton"
+                    Text="See your QR"
+                    Clicked="seeQRbutton_Clicked" VerticalOptions="CenterAndExpand" IsVisible="false"  WidthRequest="250" HeightRequest="70">
+                </Button>
 
-                <Button x:Name="scheduleForTrainerButton"
+                    <Button x:Name="scheduleForTrainerButton"
                     Text="See Schedule of yours trainees Page"
                     Clicked="schedule_for_trainerButton_Clicked" VerticalOptions="CenterAndExpand" WidthRequest="250" HeightRequest="70"></Button>
                     <Button x:Name="scheduleForTraineeButton"

@@ -56,6 +56,7 @@ namespace exampleApp.Pages
             if (Models.User.Type == 0)
             {
                 Set_signalR_to_Trainee();
+                seeQRbutton.IsVisible = true;
                 editMachineButton.IsVisible = false;
                 scheduleForTrainerButton.IsVisible = false;
                
@@ -768,6 +769,14 @@ namespace exampleApp.Pages
             await App.Current.MainPage.Navigation.PopAsync();
             
         }
+
+        private async void seeQRbutton_Clicked(object sender, EventArgs e)
+        {
+
+            await Navigation.PushAsync(new QrImage());
+
+        }
+
         private void notification_clicked(object sender, EventArgs e)
         {
            
