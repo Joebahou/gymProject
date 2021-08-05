@@ -37,80 +37,127 @@ namespace EventHubFunction
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             query = query ?? data?.query;
-
-
-            if (query == "select_name_member")
+            DateTime nearest_schedule = new DateTime(2021, 7, 19, 0, 0, 0);
+            int id_member_of_the_nearest_schedule = -1;
+            int id_machine_of_member_fromDB = -1;
+            int id_member;
+            int id_machine;
+            string strdate ;
+            DateTime scanning_time;
+            switch (query)
             {
+                case "select_name_member":
+                    id_member = Int32.Parse(req.Query["id_member"]);
+                    string result = "";
 
-                int id_member = Int32.Parse(req.Query["id_member"]);
-                string result = "";
-
-                using (var conn = new MySqlConnection(builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
+                    using (var conn = new MySqlConnection(builder.ConnectionString))
                     {
-                        command.CommandText = @"SELECT name FROM members  WHERE idmember=@id_member;";
-                        command.Parameters.AddWithValue("@id_member", id_member);
-                        using (var reader = await command.ExecuteReaderAsync())
+                        conn.Open();
+                        using (MySqlCommand command = conn.CreateCommand())
                         {
-                            while (await reader.ReadAsync())
+                            command.CommandText = @"SELECT name FROM members  WHERE idmember=@id_member;";
+                            command.Parameters.AddWithValue("@id_member", id_member);
+                            using (var reader = await command.ExecuteReaderAsync())
                             {
+                                while (await reader.ReadAsync())
+                                {
 
-                                result = reader.GetString(0);
+                                    result = reader.GetString(0);
 
+                                }
                             }
+
                         }
 
+
                     }
-
-
-                }
-                return new OkObjectResult(result);
-
-            }
-        
-            else
-            {
-                if (query == "ready_to_choose_trainee")
-                {
-                    bool ready_to_choose_trainee = true;
-                    int id_machine = Int32.Parse(req.Query["id_machine"]);
-                    string strdate = req.Query["time_to_schedule"];
-                    DateTime time_to_schedule = Convert.ToDateTime(strdate);
-
+                    return new OkObjectResult(result);
+                
+                case "id_machine_of_member_fromDB":
+                    id_member = Int32.Parse(req.Query["id_member"]);
                     using (var conn = new MySqlConnection(builder.ConnectionString))
                     {
 
                         conn.Open();
-                        using (MySqlCommand command = conn.CreateCommand())
+                        using (var command = conn.CreateCommand())
                         {
-
-                            command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
-                            command.Parameters.AddWithValue("@id_machine", id_machine);
-                            command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                            using (MySqlDataReader reader = command.ExecuteReader())
+                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE idmember = @id_member;";
+                            command.Parameters.AddWithValue("@id_member", id_member);
+                            using (var reader = await command.ExecuteReaderAsync())
                             {
-                                if (reader.HasRows)
+                                while (await reader.ReadAsync())
+
                                 {
-                                    ready_to_choose_trainee = false;
+                                    if (reader != null)
+                                        id_machine_of_member_fromDB = reader.GetInt32(0);
+
+                                }
+                            }
+                        }
+                      
+                    }
+                    return new OkObjectResult(id_machine_of_member_fromDB);
+                case "nearest_schedule":
+                    id_machine = Int32.Parse(req.Query["id_machine"]);
+                    strdate = req.Query["scanning_time"];
+                    scanning_time = Convert.ToDateTime(strdate);
+                    using (var conn = new MySqlConnection(builder.ConnectionString))
+                    {
+
+                        conn.Open();
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"select MAX(start_time) as nearestSchedule from gym_schema.future_schedule_machines where start_time< @scanning_time and id_machine=@id_machine;";
+                            command.Parameters.AddWithValue("@id_machine", id_machine);
+                            command.Parameters.AddWithValue("@scanning_time", scanning_time);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+
+                                {
+                                    if (!reader.IsDBNull(0))
+
+                                        nearest_schedule = reader.GetDateTime(0);
+
                                 }
                             }
 
+                        }
+
+                    }
+                    return new OkObjectResult(nearest_schedule.ToString());
+                case "id_member_of_the_nearest_schedule":
+                    id_machine = Int32.Parse(req.Query["id_machine"]);
+                    strdate = req.Query["nearest_schedule"];
+                    scanning_time = Convert.ToDateTime(strdate);
+                    using (var conn = new MySqlConnection(builder.ConnectionString))
+                    {
+
+                        conn.Open();
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"select id_member from gym_schema.future_schedule_machines where start_time=@nearest_schedule and id_machine=@id_machine;";
+                            command.Parameters.AddWithValue("@id_machine", id_machine);
+                            command.Parameters.AddWithValue("@nearest_schedule", scanning_time);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+
+                                {
+                                    if (reader != null)
+                                        id_member_of_the_nearest_schedule = reader.GetInt32(0);
+
+                                }
+                            }
 
                         }
+
                     }
-                    return new OkObjectResult(ready_to_choose_trainee);
-                }
-                return new OkObjectResult(0);
+                    return new OkObjectResult(id_member_of_the_nearest_schedule);
+                default:
+                    return new OkObjectResult(0);
             }
-
-
-
-
-
-
+       
         }
     }
 }
