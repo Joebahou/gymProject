@@ -89,12 +89,30 @@ namespace QRscanner
                         App.member_from_table = msgupdate[2];
                         App.name_of_member = member_name;
                         App.taken = 1;
+                        foreach (Models.Machine m in checkboxmachinePage.machines_list)
+                        {
+                            if (m.Id_machine == msgupdate[0])
+                            {
+                                m.Taken = 1;
+                                m.Id_member = msgupdate[2];
+                                break;
+                            }
+                        }
                     }
 
                     else
                     { 
                         resultusage = member_name + " finished using the " + machine_name + " machine";
                         App.taken = 0;
+                        foreach (Models.Machine m in checkboxmachinePage.machines_list)
+                        {
+                            if (m.Id_machine == msgupdate[0])
+                            {
+                                m.Taken = 0;
+                                m.Id_member = -1;
+                                break;
+                            }
+                        }
                     }
                     await App.Current.MainPage.DisplayAlert("Scanned Barcode", resultusage, "OK");
 

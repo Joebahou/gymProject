@@ -64,117 +64,66 @@ namespace QRscanner
                 broken_machine_Button_set_by_owner.IsVisible = true;
             Name_log = name_machine;
             BindingContext = this;
-            //Set_signalR();
+            
         }
 
-        /*public async void Set_signalR()
-        {
-            string member_name="";
-            string machine_name="";
-            connection = new HubConnectionBuilder()
-                .WithUrl("https://gymfuctions.azurewebsites.net/api")
-                .Build();
-            connection.Closed += async (error) =>
-            {
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await connection.StartAsync();
-            };
-
-            connection.On<int[]>("newMessage", (msgupdate) =>
-            {
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-
-                    using (var conn = new MySqlConnection(builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT name FROM gym_schema.members WHERE idmember = @id_machine;";
-                            command.Parameters.AddWithValue("@id_machine", msgupdate[2]);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-                                {
-                                    member_name = reader.GetString(0);
-                                }
-                            }
-
-                        }
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT name FROM gym_schema.machines WHERE idmachine = @id_machine;";
-                            command.Parameters.AddWithValue("@id_machine", msgupdate[0]);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-                                {
-                                    machine_name = reader.GetString(0);
-                                }
-                            }
-
-                        }
-
-
-                    }
-                    String resultusage = "";
-                    int usage = msgupdate[1];
-                    if (usage == 1)
-                        resultusage = member_name + " started using the "+ machine_name + " machine";
-                    else
-                        resultusage = member_name + " finished using the " + machine_name + " machine";
-                    await App.Current.MainPage.DisplayAlert("Scanned Barcode", resultusage, "OK");
-
-
-                });
-            });
-            await connection.StartAsync();
-        }
-        */
+        
         private async void scanButton_Clicked(object sender, EventArgs e)
         {
-            using (var conn = new MySqlConnection(builder.ConnectionString))
+
+            
+            
+            App.member_from_table = this_machine.Id_member;
+            App.taken = this_machine.Taken;
+            if (App.member_from_table != -1)
             {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = @"SELECT idmember,taken FROM machines  WHERE idmachine = @id_machine;";
-                    command.Parameters.AddWithValue("@id_machine", id_machine);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
+                string req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=select_name_member&id_member="+ App.member_from_table;
+                App.name_of_member = Models.Connection.get_result_from_http(req, false);
+            }
 
-                            App.member_from_table = reader.GetInt32(0);
-                            App.taken = reader.GetInt32(1);
-                            
-                        }
-                    }
-
-                }
-                if (App.member_from_table != -1)
+                /*
+                using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
+                    conn.Open();
                     using (var command = conn.CreateCommand())
                     {
-                        command.CommandText = @"SELECT name FROM members  WHERE idmember=@id_member;";
-                        command.Parameters.AddWithValue("@id_member", App.member_from_table);
+                        command.CommandText = @"SELECT idmember,taken FROM machines  WHERE idmachine = @id_machine;";
+                        command.Parameters.AddWithValue("@id_machine", id_machine);
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
 
-                                App.name_of_member = reader.GetString(0);
+                                App.member_from_table = reader.GetInt32(0);
+                                App.taken = reader.GetInt32(1);
 
                             }
                         }
 
                     }
-                }
+                    if (App.member_from_table != -1)
+                    {
+                        using (var command = conn.CreateCommand())
+                        {
+                            command.CommandText = @"SELECT name FROM members  WHERE idmember=@id_member;";
+                            command.Parameters.AddWithValue("@id_member", App.member_from_table);
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+
+                                    App.name_of_member = reader.GetString(0);
+
+                                }
+                            }
+
+                        }
+                    }
 
 
-            }
+                }*/
 
-            await Navigation.PushAsync(new StartScanPage());
+                await Navigation.PushAsync(new StartScanPage());
 
         }
         public async void helpButton_Clicked(object sender, EventArgs e)
@@ -224,14 +173,18 @@ namespace QRscanner
 
         public async void click_button_ignore(Object sender, System.EventArgs e)
         {
-            bool isOwner = false;
+
+            string req = "https://gymfuctions.azurewebsites.net/api/check_isOwner?query=check_isOwner&username=" +Email.Text+"&password="+Password.Text;
+            string isOwner = Models.Connection.get_result_from_http(req, false);
+
+            /*bool isOwner = false;
             
             using (var conn = new MySqlConnection(builder.ConnectionString))
             {
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = @"SELECT type FROM gym_schema.members WHERE email = @email and password=@password;";
+                    command.CommandText = @"SELECT type FROM gym_schema.members WHERE username = @email and password=@password;";
                     command.Parameters.AddWithValue("@email", Email.Text);
                     command.Parameters.AddWithValue("@password", Password.Text);
                     using (var reader = await command.ExecuteReaderAsync())
@@ -249,8 +202,9 @@ namespace QRscanner
                     }
 
                 }
-
-                if (isOwner)
+            }
+            */
+            if (isOwner=="true"|| isOwner == "True")
                 {
 
                     popupLogin.IsVisible = false;
@@ -273,13 +227,18 @@ namespace QRscanner
                     string msg = "you are not the owner, you can't change this property";
                     await Application.Current.MainPage.DisplayAlert("Not An Owner", msg, "OK");
                 }
-            }
+            
 
 
         }
         public async void click_button_change(Object sender, System.EventArgs e)
         {
-            bool isOwner=false;
+
+            string req = "https://gymfuctions.azurewebsites.net/api/check_isOwner?query=check_isOwner&username=" + Email.Text + "&password=" + Password.Text;
+            string isOwner = Models.Connection.get_result_from_http(req, false);
+            int new_working;
+
+            /*bool isOwner=false;
             int new_working;
             using (var conn = new MySqlConnection(builder.ConnectionString))
             {
@@ -303,10 +262,10 @@ namespace QRscanner
                         }
                     }
 
-                }
+                }*/
 
-                if (isOwner)
-                {
+            if (isOwner == "true" || isOwner == "True")
+            {
                     
                     popupLogin.IsVisible = false;
                     is_working = !is_working;
@@ -350,6 +309,6 @@ namespace QRscanner
             }
             
 
-        }
+        
     }
 }

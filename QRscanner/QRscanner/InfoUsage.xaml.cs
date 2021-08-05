@@ -40,6 +40,12 @@ namespace QRscanner
             
             activityIndicator.IsVisible = true;
             await Task.Delay(10);
+
+            string req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=select_nearest_future_schdule&id_machine=" + MainPage.id_machine + "&id_member=" + StartScanPage.id_member+ "&submiting_time="+submiting_time.ToString();
+            string answer = Models.Connection.get_result_from_http(req, false);
+            nearest_future_schedule = Convert.ToDateTime(answer);
+
+            /*
             using (var conn = new MySqlConnection(builder.ConnectionString))
             {
                 conn.Open();
@@ -63,7 +69,8 @@ namespace QRscanner
 
                 }
             }
-            if((nearest_future_schedule-submiting_time)<hour_1)
+            */
+            if ((nearest_future_schedule-submiting_time)<hour_1)
             {
                 catching_msg = "This machine has been booked by another trainer in about "+ (nearest_future_schedule - submiting_time).Minutes+" minutes";
                 await App.Current.MainPage.DisplayAlert("Reminder", catching_msg, "I'll finish in time");

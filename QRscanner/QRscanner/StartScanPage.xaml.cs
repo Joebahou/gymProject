@@ -62,6 +62,7 @@ namespace QRscanner
                 scanPage.IsScanning = false;
                 //Do something with result
                 id_member = int.Parse(res);
+                // check that id_member is from the members table
                 if (App.taken == 1)
                 {
                    
@@ -99,7 +100,7 @@ namespace QRscanner
                 }
                 else
                 {
-                    using (var conn = new MySqlConnection(builder.ConnectionString))
+                    /*using (var conn = new MySqlConnection(builder.ConnectionString))
                     {
                         conn.Open();
                         using (var command = conn.CreateCommand())
@@ -157,6 +158,20 @@ namespace QRscanner
 
 
                     }
+                    */
+                    string answer;
+                    string req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=id_machine_of_member_fromDB&id_member=" + id_member;
+                    answer = Models.Connection.get_result_from_http(req, false);
+                    id_machine_of_member_fromDB = Int32.Parse(answer);
+
+                    req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=nearest_schedule&id_machine=" + MainPage.id_machine + "&scanning_time="+ scanning_time.ToString();
+                    answer = Models.Connection.get_result_from_http(req, false);
+                    nearest_schedule = Convert.ToDateTime(answer);
+
+                    req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=id_member_of_the_nearest_schedule&id_machine=" + MainPage.id_machine + "&nearest_schedule=" + nearest_schedule.ToString();
+                    answer = Models.Connection.get_result_from_http(req, false);
+                    id_member_of_the_nearest_schedule = Int32.Parse(answer);
+
                     time_has_passed = scanning_time - nearest_schedule;
                     Console.WriteLine(time_has_passed.ToString());
                     Console.WriteLine(nearest_schedule.ToString());

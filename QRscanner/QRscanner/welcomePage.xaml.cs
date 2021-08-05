@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,8 @@ namespace QRscanner
             activityIndicatorLabel.IsVisible = true;
             await Task.Delay(20);
             checkboxmachinePage.machines_list = new List<Models.Machine>();
+
+            /*
             var builder = new MySqlConnectionStringBuilder
             {
                 Server = "gymservernew.mysql.database.azure.com",
@@ -100,7 +103,25 @@ namespace QRscanner
 
                 }
             }
-          
+          */
+
+            List<Models.Machine> list_for_used = new List<Models.Machine>();
+            string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
+            string result = Models.Connection.get_result_from_http(req, true);
+            checkboxmachinePage.machines_list = JsonConvert.DeserializeObject<List<Models.Machine>>(result);
+            /*
+            foreach (Models.Machine m in list_for_used)
+            {
+                int id_machine = m.Id_machine;
+                int available = m.Available;
+                string name = m.Name;
+                int alert_broken = m.Alert_broken;
+                Models.Machine temp;
+                temp = new Models.Machine(name, id_machine, available, alert_broken);
+                checkboxmachinePage.machines_list.Add(temp);
+            }
+            */
+
             await Navigation.PushAsync(new checkboxmachinePage());
             activityIndicator.IsVisible = false;
             activityIndicatorLabel.IsVisible = false;
