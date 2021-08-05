@@ -30,14 +30,14 @@ namespace exampleApp.ViewModels
 
 
 
-        private string email;
-        public string Email
+        private string username;
+        public string Username
         {
-            get { return email; }
+            get { return username; }
             set
             {
-                email = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+                username = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Username"));
             }
         }
         private string password;
@@ -79,7 +79,7 @@ namespace exampleApp.ViewModels
         
             
 
-            string parameters = "email=" + email +
+            string parameters = "username=" + username +
                 "&password=" + password;
             string req = "https://gymfuctions.azurewebsites.net/api/login_select?query=check_login&" + parameters;
             string result = Models.Connection.get_result_from_http(req, true);

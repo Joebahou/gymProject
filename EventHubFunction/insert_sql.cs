@@ -73,13 +73,13 @@ namespace EventHubFunction
                 int id = Int32.Parse(req.Query["id"]);
                 string name = req.Query["name"];
                 int age= Int32.Parse(req.Query["age"]);
-                string email = req.Query["email"];
+                string username = req.Query["username"];
                 string password = req.Query["password"];
                 string gender = req.Query["gender"];
                 int type = Int32.Parse(req.Query["type"]);
                 int trainer = Int32.Parse(req.Query["trainer"]);
                 bool isduplicate=false;
-                log.LogInformation($"C# Event Hub trigger function processed a message: {id} {name} {age} {email} {password} {gender} {type} {trainer}");
+                log.LogInformation($"C# Event Hub trigger function processed a message: {id} {name} {age} {username} {password} {gender} {type} {trainer}");
 
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
@@ -107,11 +107,11 @@ namespace EventHubFunction
                         {
 
 
-                            command.CommandText = @"INSERT INTO members(idmember,name,age,email,password,gender,type,trainer) VALUES(@idmember,@name,@age,@email,@password,@gender,@type,@trainer);";
+                            command.CommandText = @"INSERT INTO members(idmember,name,age,username,password,gender,type,trainer) VALUES(@idmember,@name,@age,@username,@password,@gender,@type,@trainer);";
                             command.Parameters.AddWithValue("@idmember", id);
                             command.Parameters.AddWithValue("@name", name);
                             command.Parameters.AddWithValue("@age", age);
-                            command.Parameters.AddWithValue("@email", email);
+                            command.Parameters.AddWithValue("@username", username);
                             command.Parameters.AddWithValue("@password", password);
                             command.Parameters.AddWithValue("@gender", gender);
                             command.Parameters.AddWithValue("@type", type);

@@ -21,7 +21,7 @@ namespace exampleApp.Pages
             vm.DisplayInvalidLoginPrompt += () => DisplayAlert("Error", "Invalid Login, try again", "OK");
             
 
-            Email.Completed += (object sender, EventArgs e) =>
+            Username.Completed += (object sender, EventArgs e) =>
             {
                 Password.Focus();
             };

@@ -61,7 +61,7 @@ namespace EventHubFunction
             {
 
                 User user=new User { Id_member=-1};
-                string email = req.Query["email"];
+                string username = req.Query["username"];
                 string password = req.Query["password"];
                 
 
@@ -70,14 +70,14 @@ namespace EventHubFunction
                     conn.Open();
                     using (var command = conn.CreateCommand())
                     {
-                        command.CommandText = @"SELECT email,password,idmember,name,type,age,gender FROM gym_schema.members;";
+                        command.CommandText = @"SELECT username,password,idmember,name,type,age,gender FROM gym_schema.members;";
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
-                                string email_DB = reader.GetString(0);
+                                string username_DB = reader.GetString(0);
                                 string password_DB = reader.GetString(1);
-                                if (email == email_DB && password == password_DB)
+                                if (username == username_DB && password == password_DB)
                                 {
 
                                     int id_member_login = reader.GetInt32(2);

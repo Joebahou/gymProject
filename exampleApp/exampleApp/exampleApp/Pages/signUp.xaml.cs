@@ -11,7 +11,7 @@ using System.Drawing;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Text.RegularExpressions;
-using Android.Graphics;
+
 
 namespace exampleApp.Pages
 {
@@ -41,14 +41,14 @@ namespace exampleApp.Pages
                 }
             }
 
-            private string email;
-            public string Email
+            private string username;
+            public string Username
             {
-                get { return email; }
+                get { return username; }
                 set
                 {
-                    email = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+                    username = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Username"));
                 }
             }
             private string gender;
@@ -144,7 +144,7 @@ namespace exampleApp.Pages
         }
         private async void SubmitButton_Clicked(object sender, EventArgs e)
         {
-            if (vm.Name == null || vm.Password == null || vm.Email == null
+            if (vm.Name == null || vm.Password == null || vm.Username == null
                 || vm.Gender == null || vm.Age == null || vm.Trainer == null
                 || vm.Type == null)
             {
@@ -156,7 +156,7 @@ namespace exampleApp.Pages
             {
                 //call function app to update DB
                 string parameters = "id=" + vm.ID + "&name=" + vm.Name +
-                   "&email=" + vm.Email +
+                   "&username=" + vm.Username +
                    "&password=" + vm.Password + 
                    "&gender=" + vm.Gender + 
                    "&type=" + vm.Type+ 
@@ -169,7 +169,7 @@ namespace exampleApp.Pages
                     if(result != "isDuplicate")
                     {
                         
-                        string catching_msg = "sign up succesfully, click ok to see the qr of the user";
+                        string catching_msg = "sign up succesfully";
                         await App.Current.MainPage.DisplayAlert("Success", catching_msg, "OK");
 
                         await App.Current.MainPage.Navigation.PopAsync();

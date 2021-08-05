@@ -9,9 +9,9 @@
             <Frame BackgroundColor="#BF043055" HasShadow="False">
                 <StackLayout Orientation="Vertical" Spacing="10">
                     <Label Text="Welcome to Our GymApp!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-                    <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Email"   
+                    <Entry x:Name="Username" Text="{Binding Username}" Placeholder="Username"   
                            PlaceholderColor="White" HeightRequest="40"   
-                           Keyboard="Email"  
+                           Keyboard="Text"  
                            TextColor="White"/>
                     <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password"   
                            PlaceholderColor="White" HeightRequest="40"   
