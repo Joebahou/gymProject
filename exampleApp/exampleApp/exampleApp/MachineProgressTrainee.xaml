@@ -22,7 +22,8 @@
                         DateSelected="DatePickerEnd_DateSelected"></DatePicker>
             <Button x:Name="ButtonShowProgress"  HorizontalOptions="Center" Text="Show Progress" 
                     Clicked="ButtonShowProgress_Clicked" Margin="0"></Button>
-            <microcharts:ChartView x:Name="chartViewBar" HeightRequest="300" />
+            <microcharts:ChartView x:Name="chartViewBar" HeightRequest="250" />
+            <Label x:Name="explainLable" FontSize="14" TextColor="Orange" IsVisible="false" Text="In the chart above you can see your progress during the selected time span. The score takes into account both weight\speed, reps and sets or the time the machine has been used."></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

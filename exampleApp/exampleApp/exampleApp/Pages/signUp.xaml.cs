@@ -144,11 +144,14 @@ namespace exampleApp.Pages
         }
         private async void SubmitButton_Clicked(object sender, EventArgs e)
         {
+            int age,id;
+            bool isAge_number = Int32.TryParse(vm.Age, out age);
+            bool isID_number = Int32.TryParse(vm.ID, out id);
             if (vm.Name == null || vm.Password == null || vm.Username == null
                 || vm.Gender == null || vm.Age == null || vm.Trainer == null
-                || vm.Type == null)
+                || vm.Type == null || !isAge_number || !isID_number)
             {
-                string catching_msg = "please fill in all the entries";
+                string catching_msg = "please fill in all the entries correctly";
                 await App.Current.MainPage.DisplayAlert("Missing Info", catching_msg, "OK");
 
             }

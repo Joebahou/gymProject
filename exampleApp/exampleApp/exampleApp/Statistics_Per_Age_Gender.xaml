@@ -17,6 +17,7 @@
             <Button x:Name="ButtonShowProgress"  HorizontalOptions="Center" Text="Show Progress" 
                     Clicked="ButtonShowProgress_Clicked" Margin="0"></Button>
             <microcharts:ChartView x:Name="chartViewBar" HeightRequest="300" />
+            <Label x:Name="explainLable"  IsVisible="false" FontSize="16" TextColor="Orange" Text="in the chart above you can see a compersson between other trainees at the same age and gender as you, your avrage normalized score is colored in yellow"></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

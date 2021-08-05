@@ -117,6 +117,7 @@ namespace exampleApp
                 DisplayAlert("Alert", "Select Machine", "OK");
                 return;
             }
+            
             UploadGlobalProgress(machineName);
         }
         public class usage_same_age_gender
@@ -256,7 +257,7 @@ namespace exampleApp
                 {
                     scala_current_member = (int)final_score_Per_member[IdMember]/10;
                     scala_current_member = scala_current_member * 10;
-                    if (scala_current_member == 10)
+                    if (scala_current_member == 100)
                     {
                         scala_current_member = 90;
                     }
@@ -297,13 +298,14 @@ namespace exampleApp
                     LabelTextSize = 40,
                     BackgroundColor = SKColor.Parse("#00ffffff")
                 };
-
+                explainLable.IsVisible = true;
             }
            
 
         }
         private void No_Progress_to_show()
         {
+            explainLable.IsVisible = false;
             DisplayAlert("Alert", "No Progress to show. All with score 0", "OK");
             return;
         }

@@ -228,6 +228,7 @@ namespace exampleApp
                 DisplayAlert("Alert", "Select Machine, Start And End Date", "OK");
                 return;
             }
+            explainLable.IsVisible = true;
             MachineUploadProgress(machineName);
         }
 
