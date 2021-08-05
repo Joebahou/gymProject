@@ -47,7 +47,10 @@ namespace EventHubFunction
             firstcheck.isTrue = true;
             Result secondcheck = new Result();
             secondcheck.isTrue = false;
-            Result[] results = { firstcheck, secondcheck };
+            Result machine_exists = new Result();
+            machine_exists.isTrue = false;
+           
+            Result[] results = { firstcheck, secondcheck,machine_exists };
 
             if (query == "check_schedule_for_trainee")
             {
@@ -59,40 +62,56 @@ namespace EventHubFunction
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
                     conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
+                    using (var command = conn.CreateCommand())
                     {
-                        
-                        command.CommandText = @"SELECT gym_schema.future_schedule_machines.id_machine from gym_schema.future_schedule_machines,gym_schema.machines WHERE gym_schema.future_schedule_machines.id_member=@id_member and gym_schema.future_schedule_machines.start_time=@time_to_schedule and gym_schema.machines.idmachine=gym_schema.future_schedule_machines.id_machine and gym_schema.machines.working=1;";
-                        command.Parameters.AddWithValue("@id_member", id_member);
-                        command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        command.CommandText = @"SELECT * FROM gym_schema.machines WHERE idmachine=@idmachine;";
+                        command.Parameters.AddWithValue("@idmachine", id_machine);
+                        using (var reader = await command.ExecuteReaderAsync())
                         {
                             if (reader.HasRows)
                             {
-                                firstcheck.isTrue = false;
+                                machine_exists.isTrue = true;
                             }
                         }
-
-
                     }
-                    using (MySqlCommand command = conn.CreateCommand())
+                    if (machine_exists.isTrue)
                     {
-
-                        command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
-                        command.Parameters.AddWithValue("@id_machine", id_machine);
-                        command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        using (MySqlCommand command = conn.CreateCommand())
                         {
-                            if (reader.HasRows)
+
+                            command.CommandText = @"SELECT gym_schema.future_schedule_machines.id_machine from gym_schema.future_schedule_machines,gym_schema.machines WHERE gym_schema.future_schedule_machines.id_member=@id_member and gym_schema.future_schedule_machines.start_time=@time_to_schedule and gym_schema.machines.idmachine=gym_schema.future_schedule_machines.id_machine and gym_schema.machines.working=1;";
+                            command.Parameters.AddWithValue("@id_member", id_member);
+                            command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
+
+                            using (MySqlDataReader reader = command.ExecuteReader())
                             {
-                                secondcheck.isTrue = true;
+                                if (reader.HasRows)
+                                {
+                                    firstcheck.isTrue = false;
+                                }
                             }
+
+
                         }
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
+
+                            command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
+                            command.Parameters.AddWithValue("@id_machine", id_machine);
+                            command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
+
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    secondcheck.isTrue = true;
+                                }
+                            }
 
 
+                        }
                     }
+                   
 
                 }
                 return new OkObjectResult(JsonConvert.SerializeObject(results));
@@ -107,30 +126,58 @@ namespace EventHubFunction
                     int id_machine = Int32.Parse(req.Query["id_machine"]);
                     string strdate = req.Query["time_to_schedule"];
                     DateTime time_to_schedule = Convert.ToDateTime(strdate);
+                    bool m_exists = false;
+                    string response = "";
 
                     using (var conn = new MySqlConnection(builder.ConnectionString))
                     {
                         
                         conn.Open();
-                        using (MySqlCommand command = conn.CreateCommand())
+                        using (var command = conn.CreateCommand())
                         {
-
-                            command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
-                            command.Parameters.AddWithValue("@id_machine", id_machine);
-                            command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                            using (MySqlDataReader reader = command.ExecuteReader())
+                            command.CommandText = @"SELECT * FROM gym_schema.machines WHERE idmachine=@idmachine;";
+                            command.Parameters.AddWithValue("@idmachine", id_machine);
+                            using (var reader = await command.ExecuteReaderAsync())
                             {
                                 if (reader.HasRows)
                                 {
-                                    ready_to_choose_trainee = false;
+                                    
+                                    m_exists = true;
+                                    
                                 }
                             }
-
-
                         }
+                        if (m_exists)
+                        {
+                            using (MySqlCommand command = conn.CreateCommand())
+                            {
+
+                                command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
+                                command.Parameters.AddWithValue("@id_machine", id_machine);
+                                command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
+
+                                using (MySqlDataReader reader = command.ExecuteReader())
+                                {
+                                    if (reader.HasRows)
+                                    {
+                                       response = "false";
+                                    }
+                                    else
+                                    {
+                                        response = "true";
+                                    }
+                                }
+
+
+                            }
+                        }
+                        else
+                        {
+                            response = "machine_not_exists";
+                        }
+                    
                     }
-                    return new OkObjectResult(ready_to_choose_trainee);
+                    return new OkObjectResult(response);
                 }
                 return new OkObjectResult(0);
             }

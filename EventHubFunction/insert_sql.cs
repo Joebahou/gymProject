@@ -53,7 +53,7 @@ namespace EventHubFunction
                     using (var command = conn.CreateCommand())
                     {
                         command.CommandText = @"SELECT * FROM gym_schema.machines WHERE idmachine=@idmachine;";
-                        command.Parameters.AddWithValue("@id", id_machine);
+                        command.Parameters.AddWithValue("@idmachine", id_machine);
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             if (reader.HasRows)

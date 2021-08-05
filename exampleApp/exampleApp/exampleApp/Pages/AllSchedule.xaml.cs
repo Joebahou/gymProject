@@ -299,10 +299,32 @@ namespace exampleApp.Pages
                "&time_to_schedule=" + time_and_date.ToString();
             string req = "https://gymfuctions.azurewebsites.net/api/check_schedule?query=ready_to_choose_trainee&" + parameters;
             string result = Models.Connection.get_result_from_http(req, false);
-            if (result == "false")
+            if(result== "machine_not_exists")
             {
-                ready_to_choose_trainee = false;
+                await App.Current.MainPage.DisplayAlert("Error", "The machine id deleted", "OK");
+                await App.Current.MainPage.Navigation.PopAsync();
             }
+            else
+            {
+                if (result == "false")
+                {
+                    ready_to_choose_trainee = false;
+                }
+                if (ready_to_choose_trainee)
+                {
+                    await Navigation.PushAsync(new Add_to_schedule());
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "The schedule already taken. pleae refresh the page", "OK");
+
+                }
+
+
+                popuploading.IsVisible = false;
+                popuploading2.IsVisible = false;
+            }
+          
           
             /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
@@ -326,19 +348,7 @@ namespace exampleApp.Pages
 
                 }
             }*/
-            if (ready_to_choose_trainee)
-            {
-                await Navigation.PushAsync(new Add_to_schedule());
-            }
-            else
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "The schedule already taken. pleae refresh the page", "OK");
-
-            }
-
-
-            popuploading.IsVisible = false;
-            popuploading2.IsVisible = false;
+          
         }
         public class Temp
         {
