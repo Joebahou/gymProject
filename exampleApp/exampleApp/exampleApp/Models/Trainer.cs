@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 namespace exampleApp.Models
 {
+    /* class of proporties of Trainer */
     class Trainer
     {
         private string name;

@@ -13,6 +13,9 @@ using Xamarin.Forms.Xaml;
 namespace exampleApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+
+    /*page with the available machines.
+     * The owner cand delete and add machines*/
     
     public partial class availableMachines_owner : ContentPage
     {
@@ -67,6 +70,8 @@ namespace exampleApp.Pages
                 Console.WriteLine(ex.ToString());
             }
         }*/
+
+        //Inits the grid with the machines
         public void InitList()
         {
             foreach (Models.Machine m in machines_list)
@@ -122,6 +127,7 @@ namespace exampleApp.Pages
 
           
         }
+
         public void addMachineButton_Clicked(Object sender, System.EventArgs e)
         {
             popupAdd.IsVisible = true;
@@ -133,6 +139,8 @@ namespace exampleApp.Pages
             popupAdd.IsVisible = false;
 
         }
+
+        //Adds new machine with the name that the owner entred.
         public async void click_button_save(Object sender, System.EventArgs e)
         {
             string msg;

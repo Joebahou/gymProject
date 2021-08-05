@@ -18,6 +18,7 @@ namespace exampleApp.Models
             Password = "gym1Admin",
             SslMode = MySqlSslMode.Required,
         };
+        //make an http request and returns the response as string
         public static string get_result_from_http(string req,bool json)
         {
             System.Net.WebRequest request = System.Net.WebRequest.Create(req);

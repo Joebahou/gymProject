@@ -24,8 +24,8 @@ namespace exampleApp.Pages
         }
 
         List<Models.Machine> machines;
-        Dictionary<int, Models.Machine> dict_machines;
-        Dictionary<string, int> times = new Dictionary<string, int>();
+        Dictionary<int, Models.Machine> dict_machines; // dicitionary with id_machine(key):object of the machine(value)
+        Dictionary<string, int> times = new Dictionary<string, int>(); //dicitionary of time as a string(key) : index of the column from the grid(value)
         //MySqlConnection conn;
         string selected_date_string;
         public  AllSchedule()
@@ -39,12 +39,12 @@ namespace exampleApp.Pages
             dict_machines = new Dictionary<int, Models.Machine>();
             get_machines();
             Init_times();
-            Init_schedule_Table();
+            Init_schedule_Table(); 
             
       
         }
         
-
+        //Inits the row with the hours of the schedule
         public void Init_schedule_Table()
         {
             scheduleTable.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });//hours
@@ -111,12 +111,16 @@ namespace exampleApp.Pages
             }
             times["20:00"] = index;
         }
+
+        //class for json object from the http request
         public class Machine_from_sql
         {
             public string name { get; set; }
             public int id_machine { get; set; }
             public int working { get; set; }
         }
+
+        //init dict_machines
         private  void get_machines()
         {
             dict_machines = new Dictionary<int, Models.Machine>();
@@ -161,6 +165,8 @@ namespace exampleApp.Pages
 
 
         }
+
+        //Inits the date picker.
         private void pickerDateInit()
         {
             DateTime date_now = DateTime.Now.Date;
@@ -209,6 +215,7 @@ namespace exampleApp.Pages
         }*/
    
        
+        /*
         public void handle_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
@@ -244,6 +251,10 @@ namespace exampleApp.Pages
             Navigation.PushAsync(new Add_to_schedule());
 
         }
+        */
+        //The trainer clicke on the button to add schedule.
+        // if the schedule is free to choose - the function navigate to the Add_to_schedule page and saves the picked information.
+        // if not - there is an alert.
         public async void handle_clicked_image(Object sender, System.EventArgs e)
         {
             popuploading2.IsVisible = true;
@@ -338,6 +349,8 @@ namespace exampleApp.Pages
             public Boolean text_visble_broken { get; set; }
             public Color color_row { get; set; }
         }
+
+        // class for json object from the http request
         public class future_schedule
         {
             public string name_member { get; set; }
@@ -354,6 +367,8 @@ namespace exampleApp.Pages
                 this.id_member = id_member;
             }
         }
+        //The trainer picked a date to see its schedule.
+        // the function loads the grit wit the schedule of that date.
         private async void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
             popuploading2.IsVisible = true;

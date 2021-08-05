@@ -5,6 +5,7 @@ using System.Text;
 
 namespace exampleApp.Models
 {
+    /* class of proporties of Trainee */
     class Trainee
     {
         private  string name;

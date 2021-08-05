@@ -44,26 +44,50 @@ namespace EventHubFunction
                 int id_Trainee = Int32.Parse(req.Query["id_Trainee"]);
                 string strdate = req.Query["time_to_schedule"];
                 DateTime time_to_schedule = Convert.ToDateTime(strdate);
+                bool machine_exists = false;
+                string responseMessage = "";
                 string name_trainee = req.Query["name_trainee"];
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
                     conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
+                    using (var command = conn.CreateCommand())
                     {
+                        command.CommandText = @"SELECT * FROM gym_schema.machines WHERE idmachine=@idmachine;";
+                        command.Parameters.AddWithValue("@id", id_machine);
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (reader.HasRows)
+                            {
+                                machine_exists = true;
+                            }
+                        }
+                    }
+                    if (machine_exists)
+                    {
+                        using (MySqlCommand command = conn.CreateCommand())
+                        {
 
 
-                        command.CommandText = @"INSERT INTO future_schedule_machines(id_machine,id_member,start_time,name_member) VALUES(@id_machine,@id_member,@start_time,@name_member);";
-                        command.Parameters.AddWithValue("@id_machine", id_machine);
-                        command.Parameters.AddWithValue("@id_member", id_Trainee);
-                        command.Parameters.AddWithValue("@start_time", time_to_schedule);
-                        command.Parameters.AddWithValue("@name_member", name_trainee);
-                        rowCount = command.ExecuteNonQuery();
+                            command.CommandText = @"INSERT INTO future_schedule_machines(id_machine,id_member,start_time,name_member) VALUES(@id_machine,@id_member,@start_time,@name_member);";
+                            command.Parameters.AddWithValue("@id_machine", id_machine);
+                            command.Parameters.AddWithValue("@id_member", id_Trainee);
+                            command.Parameters.AddWithValue("@start_time", time_to_schedule);
+                            command.Parameters.AddWithValue("@name_member", name_trainee);
+                            rowCount = command.ExecuteNonQuery();
+                            responseMessage = rowCount.ToString();
 
 
+
+                        }
+                    }
+                    else
+                    {
+                        responseMessage = "machine_not_exists";
 
                     }
+                 
                 }
-                string responseMessage = rowCount.ToString();
+               
 
 
                 return new OkObjectResult(responseMessage);

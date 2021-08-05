@@ -46,50 +46,70 @@ namespace EventHubFunction
                 int old_id_member = Int32.Parse(req.Query["old_id_member"]);
                 DateTime start_time = Convert.ToDateTime(req.Query["start_time"]);
                 string new_name_member = req.Query["new_name_member"];
+                bool machine_exists = false;
 
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
                     conn.Open();
-
-                    using (MySqlCommand command = conn.CreateCommand())
+                    using (var command = conn.CreateCommand())
                     {
-
-                        command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
-                        command.Parameters.AddWithValue("@id_member", new_id_member);
-                        command.Parameters.AddWithValue("@time_to_schedule", start_time);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        command.CommandText = @"SELECT * FROM gym_schema.machines WHERE idmachine=@idmachine;";
+                        command.Parameters.AddWithValue("@id", id_machine);
+                        using (var reader = await command.ExecuteReaderAsync())
                         {
                             if (reader.HasRows)
                             {
-                                ready_to_add = false;
+                                machine_exists = true;
                             }
                         }
-
-
                     }
-                    if (ready_to_add)
+                    if (machine_exists)
                     {
-
                         using (MySqlCommand command = conn.CreateCommand())
                         {
 
-                            command.CommandText = @"UPDATE future_schedule_machines SET id_member=@new_id_member,name_member=@new_name_member WHERE id_member=@old_id_member and id_machine=@id_machine and start_time=@start_time;";
-                            command.Parameters.AddWithValue("@id_machine", id_machine);
-                            command.Parameters.AddWithValue("@new_id_member", new_id_member);
-                            command.Parameters.AddWithValue("@old_id_member", old_id_member);
-                            command.Parameters.AddWithValue("@start_time", start_time);
-                            command.Parameters.AddWithValue("@new_name_member", new_name_member);
-                            rowCount = command.ExecuteNonQuery();
-                            responseMessage = rowCount.ToString();
+                            command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
+                            command.Parameters.AddWithValue("@id_member", new_id_member);
+                            command.Parameters.AddWithValue("@time_to_schedule", start_time);
+
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    ready_to_add = false;
+                                }
+                            }
 
 
+                        }
+                        if (ready_to_add)
+                        {
+
+                            using (MySqlCommand command = conn.CreateCommand())
+                            {
+
+                                command.CommandText = @"UPDATE future_schedule_machines SET id_member=@new_id_member,name_member=@new_name_member WHERE id_member=@old_id_member and id_machine=@id_machine and start_time=@start_time;";
+                                command.Parameters.AddWithValue("@id_machine", id_machine);
+                                command.Parameters.AddWithValue("@new_id_member", new_id_member);
+                                command.Parameters.AddWithValue("@old_id_member", old_id_member);
+                                command.Parameters.AddWithValue("@start_time", start_time);
+                                command.Parameters.AddWithValue("@new_name_member", new_name_member);
+                                rowCount = command.ExecuteNonQuery();
+                                responseMessage = rowCount.ToString();
+
+
+                            }
+                        }
+                        else
+                        {
+                            responseMessage = "trainee is not free";
                         }
                     }
                     else
                     {
-                        responseMessage = "trainee is not free";
+                        responseMessage = "machine_not_exists";
                     }
+                   
                 }
 
             }

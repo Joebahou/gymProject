@@ -19,6 +19,7 @@ namespace exampleApp.Pages
         public string chosen_date { get; set; }
         public string chosen_machine { get; set; }
 
+        
         public Add_to_schedule()
         {
             InitializeComponent();
@@ -39,6 +40,7 @@ namespace exampleApp.Pages
         {
            public Result[] results { get; set; }
         }
+        //the trainer picked a trainee to add schedule for him
         private async void picker_Trainee_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected_Trainee = picker_Trainee.SelectedItem.ToString();
@@ -59,8 +61,8 @@ namespace exampleApp.Pages
             String result = Models.Connection.get_result_from_http(req, true);
             Result[] reshima = JsonConvert.DeserializeObject<Result[]>(result);
 
-            ready_to_add = reshima[0].isTrue;
-            other_already_taken = reshima[1].isTrue;
+            ready_to_add = reshima[0].isTrue; // if the picked trainee has othe schedule on the same time
+            other_already_taken = reshima[1].isTrue; // if the machine is already taken on that time
 
 
             /*
@@ -127,6 +129,8 @@ namespace exampleApp.Pages
 
 
         }
+
+        // insert new schedule to the sql table with http request to function app
         private async Task add_new_schedule(int id_Trainee, string name_trainee )
         {
             string parameters = "id_machine=" + id_machine.ToString() + "&id_Trainee=" + id_Trainee + "&time_to_schedule=" + time_to_schedule.ToString() + "&name_trainee=" + name_trainee;
@@ -138,13 +142,28 @@ namespace exampleApp.Pages
             string result = reader.ReadToEnd();
             response.Close();
             reader.Close();
-            if (result == "1")
+            if(result== "machine_not_exists")
             {
-                string caching_msg = "you succesfully added in date " + time_to_schedule.ToString() + ",machine " + id_machine + " with trainee " + name_trainee;
-                await App.Current.MainPage.DisplayAlert("Update Schedule", caching_msg, "OK");
+                string caching_msg = "The machine has been deleted,please choose again";
+                await App.Current.MainPage.DisplayAlert("Error", caching_msg, "OK");
                 await App.Current.MainPage.Navigation.PopAsync();
                 await App.Current.MainPage.Navigation.PopAsync();
             }
+            else
+            {
+                if (result == "1")
+                {
+                    string caching_msg = "you succesfully added in date " + time_to_schedule.ToString() + ",machine " + id_machine + " with trainee " + name_trainee;
+                    await App.Current.MainPage.DisplayAlert("Update Schedule", caching_msg, "OK");
+                    await App.Current.MainPage.Navigation.PopAsync();
+                    await App.Current.MainPage.Navigation.PopAsync();
+                }
+                else
+                {
+                    Console.WriteLine("the insert didnt went well");
+                }
+            }
+         
             /*
             using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
             {
@@ -163,10 +182,7 @@ namespace exampleApp.Pages
 
                 }
             }*/
-            else
-            {
-                Console.WriteLine("the insert didnt went well");
-            }
+           
             
             
 

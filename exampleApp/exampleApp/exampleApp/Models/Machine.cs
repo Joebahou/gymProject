@@ -7,16 +7,17 @@ using Xamarin.Forms;
 
 namespace exampleApp.Models
 {
+    /*class with machine properties*/
     public class Machine : INotifyPropertyChanged
     {  
-        private Color f_Color;
-        private string name_;
+        private Color f_Color; //color for the box view in "UsedMachines"
+        private string name_;  
         private int id_machine_;
         private int available;
         private int taken;
         private int id_member;
         private int alert_broken;
-        public string[] schedule_machine;
+        public string[] schedule_machine; //array of schedule on some day to machine
         public event PropertyChangedEventHandler PropertyChanged;
         public Machine(string name, Color fColor, int id_machine)
         {

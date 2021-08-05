@@ -4,6 +4,7 @@ using System.Text;
 
 namespace exampleApp.Models
 {
+    /* Proporities for the signed in user */
     class User
     {
         private static string name;

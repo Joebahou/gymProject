@@ -430,28 +430,40 @@ namespace exampleApp.Pages
                     "&new_name_member=" + trainee_name;
                 string req = "https://gymfuctions.azurewebsites.net/api/update_schedule_of_trainer?query=update_new_schedule&" + parameters;
                 string result = Models.Connection.get_result_from_http(req, true);
-                if (result == "trainee is not free")
+                if(result== "machine_not_exists")
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "The trainee has different schedult on that time, try again", "OK");
+                    string caching_msg = "The machine has been deleted,please choose again";
+                    await App.Current.MainPage.DisplayAlert("Error", caching_msg, "OK");
+                    await App.Current.MainPage.Navigation.PopAsync();
+                   
                 }
                 else
                 {
-                    if (result == "1")
+                    if (result == "trainee is not free")
                     {
-                        list_bind.Remove(selected_schedue_edit);
-                        selected_schedue_edit.id_trainee = id_Trainee.ToString();
-                        selected_schedue_edit.name_trainee = trainee_name;
-                        list_bind.Add(selected_schedue_edit);
-                        Schedule_view.ItemsSource = list_bind;
-                        popupEdit.IsVisible = false;
-
+                        await App.Current.MainPage.DisplayAlert("Error", "The trainee has different schedult on that time, try again", "OK");
                     }
                     else
                     {
-                        Console.WriteLine("update schedule didnt went well");
+                        if (result == "1")
+                        {
+                            list_bind.Remove(selected_schedue_edit);
+                            selected_schedue_edit.id_trainee = id_Trainee.ToString();
+                            selected_schedue_edit.name_trainee = trainee_name;
+                            list_bind.Add(selected_schedue_edit);
+                            Schedule_view.ItemsSource = list_bind;
+                            popupEdit.IsVisible = false;
 
+                        }
+                        else
+                        {
+                            Console.WriteLine("update schedule didnt went well");
+
+                        }
                     }
+
                 }
+                
 
 
          

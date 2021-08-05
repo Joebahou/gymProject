@@ -17,6 +17,8 @@ using Newtonsoft.Json;
 namespace exampleApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+
+    /* Home page to every user */
     public partial class homePage : ContentPage
     {
         public   HubConnection connection;
@@ -53,6 +55,8 @@ namespace exampleApp.Pages
             InitializeComponent();
             Name_log ="Hello "+ Models.User.Name;
             Init_alert_list();
+
+            //set the home page to a trainee
             if (Models.User.Type == 0)
             {
                 Set_signalR_to_Trainee();
@@ -61,7 +65,7 @@ namespace exampleApp.Pages
                 scheduleForTrainerButton.IsVisible = false;
                
             }
-
+            //set the home page to a trainer
             if (Models.User.Type == 1)
             {
                 Set_signalR_to_trainer();
@@ -69,6 +73,7 @@ namespace exampleApp.Pages
                 scheduleForTraineeButton.IsVisible = false;
                 //ConnectDataBase();
             }
+            //set the home page to the owner
             if (Models.User.Type == 2)
             {
                 //ConnectDataBase();
@@ -86,12 +91,18 @@ namespace exampleApp.Pages
            
            
         }
+
+        //Init the alert list according to the type of user.
+        //Traine and trainee : broken machines.
+        //Owner : alerts on broken machines
         private void Init_alert_list()
         {
             List<Models.Machine> list_for_notification = new List<Models.Machine>();
             string req = "https://gymfuctions.azurewebsites.net/api/initListMachines?query=select_machines";
             string result = Models.Connection.get_result_from_http(req, true);
             list_for_notification = JsonConvert.DeserializeObject<List<Models.Machine>>(result);
+
+            //alerts for owner
             if (Models.User.Type == 2)
             {
                foreach(Models.Machine m in list_for_notification)
@@ -153,6 +164,7 @@ namespace exampleApp.Pages
                 notification_view.ItemsSource = list_bind;
 
             }
+            //alerts for trainer and trainee
             else
             {
                 foreach(Models.Machine m in list_for_notification)
@@ -241,6 +253,7 @@ namespace exampleApp.Pages
                 Console.WriteLine(ex.ToString());
             }
         }*/
+
         public async void Set_signalR_to_Trainee()
         {
             this.connection = new HubConnectionBuilder()
@@ -673,6 +686,7 @@ namespace exampleApp.Pages
             activityIndicator.IsVisible = false;
         }
 
+        //avalibale machines button for owner
         private async void machinesButton_Clicked(object sender, EventArgs e)
         {
             UsedMachines.machines_list = new List<Models.Machine>();
@@ -754,6 +768,7 @@ namespace exampleApp.Pages
             await  Navigation.PushAsync(new UsedMachines());
         }
 
+        //logout from the app
         private async void OnLogout_Clicked(object sender, EventArgs e)
         {
             if ( connection.State==HubConnectionState.Connected)
@@ -770,6 +785,7 @@ namespace exampleApp.Pages
             
         }
 
+        //see the qr code of a trainee
         private async void seeQRbutton_Clicked(object sender, EventArgs e)
         {
 
