@@ -77,6 +77,7 @@ namespace QRscanner
             }
             await Task.Delay(2000);
             activityIndicator.IsVisible = false;
+            
             await App.Current.MainPage.Navigation.PopAsync();
             await App.Current.MainPage.Navigation.PopAsync();
             

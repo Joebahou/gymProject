@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MySqlConnector;
 using Xamarin.Essentials;
+using System.Linq;
 
 namespace QRscanner
 {
@@ -119,6 +120,30 @@ namespace QRscanner
 
                 });
             });
+            connection.On<object[]>("deleteMachine", (result) =>
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+
+                    
+                    String resultusage = "";
+
+                    resultusage = result[1] + " machine is deleted. please refresh your app";
+                    await App.Current.MainPage.DisplayAlert("Scanned Barcode", resultusage, "OK");
+                    
+                    await App.Current.MainPage.Navigation.PopToRootAsync();
+                    
+                    /*while (App.Current.MainPage.Navigation.NavigationStack.Last() != App.Current.MainPage)
+                    {
+                        App.Current.MainPage.Navigation.PopToRootAsync();
+                    }*/
+
+
+                });
+            });
+
+
+
             await connection.StartAsync();
         }
 

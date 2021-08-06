@@ -66,7 +66,7 @@ namespace QRscanner
             BindingContext = this;
             
         }
-
+     
         
         private async void scanButton_Clicked(object sender, EventArgs e)
         {
@@ -208,7 +208,8 @@ namespace QRscanner
                 {
 
                     popupLogin.IsVisible = false;
-                    broken_machine_Button_set_by_owner.IsVisible = false;
+                    if(is_working)
+                        broken_machine_Button_set_by_owner.IsVisible = false;
                     //update
                     this_machine.Alert_broken = 0;
                     dataBrokenMachine[0] = id_machine;
