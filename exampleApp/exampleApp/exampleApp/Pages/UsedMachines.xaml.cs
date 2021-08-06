@@ -221,6 +221,7 @@ namespace exampleApp.Pages
             {
                 
                 HeightRequest=200,
+                BackgroundColor=Color.LightSteelBlue,
                 Orientation = StackOrientation.Vertical,
                 Children =
                 {

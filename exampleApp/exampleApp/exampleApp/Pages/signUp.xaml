@@ -50,11 +50,6 @@
                     TextColor="White" SelectedIndexChanged="trainer_selected" TitleColor="White" ItemsSource="{Binding List_trainer_bind}"></Picker>
                     </StackLayout>
                 </Frame>
-                <zxing:ZXingBarcodeImageView x:Name="barcode" BarcodeValue="2" WidthRequest="400" HeightRequest="400" IsVisible="true">
-                    <zxing:ZXingBarcodeImageView.BarcodeOptions>
-                        <zxincommon:EncodingOptions Width="400" Height="400"></zxincommon:EncodingOptions>
-                    </zxing:ZXingBarcodeImageView.BarcodeOptions>
-                </zxing:ZXingBarcodeImageView>
                 <Button Text="Sign Up"  Clicked="SubmitButton_Clicked" TextColor="White"  
                         FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                         BackgroundColor="#088da5" />
