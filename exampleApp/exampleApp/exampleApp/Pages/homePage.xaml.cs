@@ -618,7 +618,7 @@ namespace exampleApp.Pages
                         OnPropertyChanged("notifications_count");
 
                         await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
-                       
+                        await App.Current.MainPage.Navigation.PopToRootAsync();
                     }
 
 
