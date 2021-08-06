@@ -26,7 +26,7 @@
                                TextColor="White"/>
                     </StackLayout>
                 </Frame>
-                <Button Command="{Binding SubmitCommand}" Text="Submit"  Clicked="SubmitButton_Clicked" TextColor="White"  
+                <Button  Text="Submit"  Clicked="SubmitButton_Clicked" TextColor="White"  
                         FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                         BackgroundColor="#088da5" />
                 <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="false" Color="Blue" IsRunning="True" WidthRequest="100" HeightRequest="100" ></ActivityIndicator>
