@@ -75,7 +75,7 @@
                                             <Label Grid.Row="0" Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding date_time_string}"></Label>
                                            
                                             
-                                            <Button Grid.Row="0" Grid.Column="5" Text="delete" Clicked="delete_clicked" IsVisible="false" ></Button>
+                                            
                                             <Image Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Source="delete">
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="delete_clicked_image" NumberOfTapsRequired="1" />

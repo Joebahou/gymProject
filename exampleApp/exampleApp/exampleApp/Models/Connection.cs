@@ -10,6 +10,7 @@ namespace exampleApp.Models
     class Connection
     {  
         public static MySqlConnection conn;
+        /*
         public static MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
         {
             Server = "gymservernew.mysql.database.azure.com",
@@ -17,7 +18,7 @@ namespace exampleApp.Models
             UserID = "gymAdmin",
             Password = "gym1Admin",
             SslMode = MySqlSslMode.Required,
-        };
+        };*/
         //make an http request and returns the response as string
         public static string get_result_from_http(string req,bool json)
         {

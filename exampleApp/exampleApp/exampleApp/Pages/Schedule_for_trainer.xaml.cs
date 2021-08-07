@@ -215,6 +215,7 @@ namespace exampleApp.Pages
         }*/
         
         //need to delete
+        /*
         public void delete_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
@@ -238,7 +239,7 @@ namespace exampleApp.Pages
 
             list_bind.Remove(schedule);
             Schedule_view.ItemsSource = list_bind;
-        }
+        }*/
         public void delete_clicked_image(Object sender, System.EventArgs e)
         {
             Image image_delete = (Image)sender;

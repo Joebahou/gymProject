@@ -30,15 +30,17 @@ namespace exampleApp.Pages
                 await connection.StartAsync();
             };
 
-            this.connection.On<int[]>("newMessage", (msgupdate) =>
+            this.connection.On<object[]>("newMessage", (msgupdate) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
+                    string id_machine_string = msgupdate[0].ToString();
+                    string taken_string = msgupdate[1].ToString();
 
-                    int id_machine = msgupdate[0];
-                    int taken = msgupdate[1];
-                    
-                    foreach(Models.Machine temp in machines_list)
+                    int id_machine = Int32.Parse(id_machine_string);
+                    int taken = Int32.Parse(taken_string);
+
+                    foreach (Models.Machine temp in machines_list)
                     {
                         if(temp.Id_machine == id_machine)
                         {
