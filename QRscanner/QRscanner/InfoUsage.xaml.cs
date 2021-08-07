@@ -70,11 +70,13 @@ namespace QRscanner
             dataUsage[2] = additional_info(vm.Weight_Or_Speed);
             dataUsage[3] = additional_info(vm.Reps);
             dataUsage[4] = additional_info(vm.Sets);
-            if (dataUsage[2] == -1 || dataUsage[3] == -1 || dataUsage[4] == -1)
+            if (dataUsage[2] == -1 || dataUsage[3] == -1 || dataUsage[4] == -1||!((dataUsage[2] != 0 && dataUsage[3] != 0 & dataUsage[4] != 0)|| (dataUsage[2] != 0 && dataUsage[3] == 0 & dataUsage[4] == 0)))
+
             {
-                catching_msg = "All information must be numbers";
+                catching_msg = "All information must be numbers lager than 0";
                 await App.Current.MainPage.DisplayAlert("Error", catching_msg, "ok");
                 activityIndicator.IsVisible = false;
+
             }
             else
             {

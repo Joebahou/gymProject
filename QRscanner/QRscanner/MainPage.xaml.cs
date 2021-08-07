@@ -39,6 +39,7 @@ namespace QRscanner
         private int alert = 1;
         public static Models.Machine this_machine;
         public static bool is_working;
+        int [] dataClose = new int[5];
         public bool Is_working { get; set; }
         int[] dataHelp = new int[1];
         int[] dataBrokenMachine = new int[2];
@@ -287,19 +288,36 @@ namespace QRscanner
                         dataBrokenMachine[1] = 2;
                         this_machine.Available = 1;
                         
-                    }
+
+                }
                     else
                     {
                         dataBrokenMachine[1] = 1;
                         this_machine.Available = 0;
+                    if (this_machine.Id_member != -1)
+                    {
+                        dataClose[0] = this_machine.Id_member;
+                        dataClose[1] = this_machine.Id_machine;
+                        dataClose[2] = 0;
+                        dataClose[3] = 0;
+                        dataClose[4] = 0;
+                        string messageJson1 = JsonConvert.SerializeObject(dataClose);
+                        Message message1 = new Message(Encoding.ASCII.GetBytes(messageJson1)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                        await Client.SendEventAsync(message1);
+
+                        activityIndicator.IsVisible = true;
+                        await Task.Delay(2500);
+                        activityIndicator.IsVisible = false;
                     }
+
+                }
                     string messageJson = JsonConvert.SerializeObject(dataBrokenMachine);
                     Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                     await Client.SendEventAsync(message);
                     String resultusage;
                     if (this_machine.Available==1)
                             resultusage = "Now the machine is set as working";
-                    else resultusage = "Now the machine is set as not working";
+                    else resultusage = "Now the machine is set as not working. stopping the usage of this machine";
                     await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
                 }
                 else

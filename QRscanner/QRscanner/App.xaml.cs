@@ -137,7 +137,7 @@ namespace QRscanner
                     {
                         App.Current.MainPage.Navigation.PopToRootAsync();
                     }*/
-
+                    
 
                 });
             });

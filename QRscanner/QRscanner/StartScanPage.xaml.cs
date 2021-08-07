@@ -95,6 +95,8 @@ namespace QRscanner
                             
                             catching_msg = App.name_of_member + " is already using this machine ";
                             await App.Current.MainPage.DisplayAlert("Scanned Barcode", catching_msg, "OK");
+                            await App.Current.MainPage.Navigation.PopModalAsync();
+                            await Navigation.PopAsync();
                         });
                     }
                 }
