@@ -49,7 +49,7 @@ namespace QRscanner.Models
             }
         }
       
-        /*public ICommand SubmitCommand { set; get; }*/
+        
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public Usage()
         {
@@ -74,29 +74,7 @@ namespace QRscanner.Models
                 return 0;
 
         }
-        /*public async void OnSubmit()
-        {
-
-            dataUsage[0] = StartScanPage.id_member;
-            dataUsage[1] = MainPage.id_machine;
-            dataUsage[2] = additional_info(weight_or_speed);
-            dataUsage[3] = additional_info(reps);
-            dataUsage[4] = additional_info(sets);
-            if (dataUsage[2] == -1 || dataUsage[3] == -1 || dataUsage[4] == -1)
-            {
-
-            }
-            else
-            {
-                string messageJson = JsonConvert.SerializeObject(dataUsage);
-                Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
-                await Client.SendEventAsync(message);
-            }
-            
-
-
-
-        }*/
+        
 
     }
 }

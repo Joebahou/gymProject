@@ -398,10 +398,48 @@ namespace EventHubFunction
 
                             }
 
-                            int[] msgupdate = new int[3];
+                            object[] msgupdate = new object [5];
+                            string machine_name="",member_name="";
                             msgupdate[0] = id_machine;
                             msgupdate[1] = 1 - num_usage;
                             msgupdate[2] = id_member;
+                            using (var conn = new MySqlConnection(builder.ConnectionString))
+                            {
+                                conn.Open();
+                                using (var command = conn.CreateCommand())
+                                {
+                                    command.CommandText = @"SELECT name FROM gym_schema.members WHERE idmember = @id_member;";
+                                    command.Parameters.AddWithValue("@id_member", msgupdate[2]);
+                                    using (var reader = await command.ExecuteReaderAsync())
+                                    {
+                                        while (await reader.ReadAsync())
+                                        {
+                                            member_name = reader.GetString(0);
+                                        }
+                                    }
+
+                                }
+                                using (var command = conn.CreateCommand())
+                                {
+                                    command.CommandText = @"SELECT name FROM gym_schema.machines WHERE idmachine = @id_machine;";
+                                    command.Parameters.AddWithValue("@id_machine", msgupdate[0]);
+                                    using (var reader = await command.ExecuteReaderAsync())
+                                    {
+                                        while (await reader.ReadAsync())
+                                        {
+                                            machine_name = reader.GetString(0);
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+
+
+
+                            msgupdate[3] = machine_name;
+                            msgupdate[4] = member_name;
 
                             await signalRMessages.AddAsync(
                             new SignalRMessage

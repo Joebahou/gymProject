@@ -34,14 +34,7 @@ namespace QRscanner
         //id machine of the member who has been scanned, if none eaquals to -1
         int id_machine_of_member_fromDB=-1;
 
-        MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
-        {
-            Server = "gymservernew.mysql.database.azure.com",
-            Database = "gym_schema",
-            UserID = "gymAdmin",
-            Password = "gym1Admin",
-            SslMode = MySqlSslMode.Required,
-        };
+       
         public  StartScanPage()
         {
             InitializeComponent();
@@ -102,65 +95,7 @@ namespace QRscanner
                 }
                 else
                 {
-                    /*using (var conn = new MySqlConnection(builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE idmember = @id_member;";
-                            command.Parameters.AddWithValue("@id_member", id_member);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-
-                                {
-                                    if (reader != null)
-                                        id_machine_of_member_fromDB = reader.GetInt32(0);
-
-                                }
-                            }
-
-                        }
-                        
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"select MAX(start_time) as nearestSchedule from gym_schema.future_schedule_machines where start_time< @scanning_time and id_machine=@id_machine;";
-                            command.Parameters.AddWithValue("@id_machine",MainPage.id_machine);
-                            command.Parameters.AddWithValue("@scanning_time", scanning_time);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-
-                                {
-                                    if (!reader.IsDBNull(0))
-                                        
-                                        nearest_schedule = reader.GetDateTime(0);
-
-                                }
-                            }
-
-                        }
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"select id_member from gym_schema.future_schedule_machines where start_time=@nearest_schedule and id_machine=@id_machine;";
-                            command.Parameters.AddWithValue("@id_machine", MainPage.id_machine);
-                            command.Parameters.AddWithValue("@nearest_schedule", nearest_schedule);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-
-                                {
-                                    if (reader != null)
-                                        id_member_of_the_nearest_schedule = reader.GetInt32(0);
-
-                                }
-                            }
-
-                        }
-
-
-                    }
-                    */
+                    
                     string answer;
                     string req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=id_machine_of_member_fromDB&id_member=" + id_member;
                     answer = Models.Connection.get_result_from_http(req, false);
@@ -243,11 +178,6 @@ namespace QRscanner
 
             };
 
-
-
-            //need to add check if the machine is taken
-            //need to add navigation to submit button
-            //what happens when finish usage
 
            App.Current.MainPage.Navigation.PushModalAsync(scanPage);
             

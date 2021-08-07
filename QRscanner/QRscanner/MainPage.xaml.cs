@@ -43,14 +43,7 @@ namespace QRscanner
         public bool Is_working { get; set; }
         int[] dataHelp = new int[1];
         int[] dataBrokenMachine = new int[2];
-        MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
-        {
-            Server = "gymservernew.mysql.database.azure.com",
-            Database = "gym_schema",
-            UserID = "gymAdmin",
-            Password = "gym1Admin",
-            SslMode = MySqlSslMode.Required,
-        };
+       
         public MainPage()
         {
             Is_working = is_working;
@@ -82,47 +75,6 @@ namespace QRscanner
                 App.name_of_member = Models.Connection.get_result_from_http(req, false);
             }
 
-                /*
-                using (var conn = new MySqlConnection(builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (var command = conn.CreateCommand())
-                    {
-                        command.CommandText = @"SELECT idmember,taken FROM machines  WHERE idmachine = @id_machine;";
-                        command.Parameters.AddWithValue("@id_machine", id_machine);
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-
-                                App.member_from_table = reader.GetInt32(0);
-                                App.taken = reader.GetInt32(1);
-
-                            }
-                        }
-
-                    }
-                    if (App.member_from_table != -1)
-                    {
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT name FROM members  WHERE idmember=@id_member;";
-                            command.Parameters.AddWithValue("@id_member", App.member_from_table);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-                                {
-
-                                    App.name_of_member = reader.GetString(0);
-
-                                }
-                            }
-
-                        }
-                    }
-
-
-                }*/
 
                 await Navigation.PushAsync(new StartScanPage());
 
@@ -178,33 +130,7 @@ namespace QRscanner
             string req = "https://gymfuctions.azurewebsites.net/api/check_isOwner?query=check_isOwner&username=" +Email.Text+"&password="+Password.Text;
             string isOwner = Models.Connection.get_result_from_http(req, false);
 
-            /*bool isOwner = false;
             
-            using (var conn = new MySqlConnection(builder.ConnectionString))
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = @"SELECT type FROM gym_schema.members WHERE username = @email and password=@password;";
-                    command.Parameters.AddWithValue("@email", Email.Text);
-                    command.Parameters.AddWithValue("@password", Password.Text);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            if (!reader.IsDBNull(0))
-                            {
-                                if (reader.GetInt32(0) == 2)
-                                    isOwner = true;
-                            }
-
-
-                        }
-                    }
-
-                }
-            }
-            */
             if (isOwner=="true"|| isOwner == "True")
                 {
 
@@ -240,31 +166,6 @@ namespace QRscanner
             string isOwner = Models.Connection.get_result_from_http(req, false);
             int new_working;
 
-            /*bool isOwner=false;
-            int new_working;
-            using (var conn = new MySqlConnection(builder.ConnectionString))
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = @"SELECT type FROM gym_schema.members WHERE email = @email and password=@password;";
-                    command.Parameters.AddWithValue("@email", Email.Text);
-                    command.Parameters.AddWithValue("@password", Password.Text);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            if (!reader.IsDBNull(0))
-                            {
-                                if (reader.GetInt32(0) == 2)
-                                    isOwner = true;
-                            }
-
-                                
-                        }
-                    }
-
-                }*/
 
             if (isOwner == "true" || isOwner == "True")
             {

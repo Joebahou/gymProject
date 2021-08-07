@@ -34,8 +34,7 @@ namespace QRscanner
 
         protected override async void OnStart()
         {
-            string member_name = "";
-            string machine_name = "";
+            
             connection = new HubConnectionBuilder()
                 .WithUrl("https://gymfuctions.azurewebsites.net/api")
                 .Build();
@@ -45,57 +44,27 @@ namespace QRscanner
                 await connection.StartAsync();
             };
 
-            connection.On<int[]>("newMessage", (msgupdate) =>
+            connection.On<object[]>("newMessage", (msgupdate) =>
             {
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
 
-                    using (var conn = new MySqlConnection(builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT name FROM gym_schema.members WHERE idmember = @id_member;";
-                            command.Parameters.AddWithValue("@id_member", msgupdate[2]);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-                                {
-                                    member_name = reader.GetString(0);
-                                }
-                            }
-
-                        }
-                        using (var command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT name FROM gym_schema.machines WHERE idmachine = @id_machine;";
-                            command.Parameters.AddWithValue("@id_machine", msgupdate[0]);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-                                {
-                                    machine_name = reader.GetString(0);
-                                }
-                            }
-
-                        }
-
-
-                    }
+                    string member_name = msgupdate[4].ToString();
+                    string machine_name =msgupdate[3].ToString() ;
                     String resultusage = "";
-                    int usage = msgupdate[1];
+                    int usage = Int32.Parse(msgupdate[1].ToString()); 
                     if (usage == 1)
                     {
                         resultusage = member_name + " started using the " + machine_name + " machine";
-                        App.member_from_table = msgupdate[2];
+                        App.member_from_table = Int32.Parse(msgupdate[2].ToString());
                         App.name_of_member = member_name;
                         App.taken = 1;
                         foreach (Models.Machine m in checkboxmachinePage.machines_list)
                         {
-                            if (m.Id_machine == msgupdate[0])
+                            if (m.Id_machine == Int32.Parse(msgupdate[0].ToString()))
                             {
                                 m.Taken = 1;
-                                m.Id_member = msgupdate[2];
+                                m.Id_member = Int32.Parse(msgupdate[2].ToString());
                                 break;
                             }
                         }
@@ -107,7 +76,7 @@ namespace QRscanner
                         App.taken = 0;
                         foreach (Models.Machine m in checkboxmachinePage.machines_list)
                         {
-                            if (m.Id_machine == msgupdate[0])
+                            if (m.Id_machine == Int32.Parse(msgupdate[0].ToString()))
                             {
                                 m.Taken = 0;
                                 m.Id_member = -1;

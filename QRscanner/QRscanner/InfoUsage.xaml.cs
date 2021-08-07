@@ -23,14 +23,7 @@ namespace QRscanner
         public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
         private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
 
-        MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
-        {
-            Server = "gymservernew.mysql.database.azure.com",
-            Database = "gym_schema",
-            UserID = "gymAdmin",
-            Password = "gym1Admin",
-            SslMode = MySqlSslMode.Required,
-        };
+       
         Models.Usage vm;
         public InfoUsage()
         {
