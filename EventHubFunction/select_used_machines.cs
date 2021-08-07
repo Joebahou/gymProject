@@ -101,7 +101,7 @@ namespace EventHubFunction
                             WeightOrSpeed = speedOrWeight,
                             Start = dateStart.ToString("HH:mm:ss"),
                             End = dateEnd.ToString("HH:mm:ss"),
-                            Date = dateStart.ToString("dd/MM/yy")
+                            Date = dateStart.ToString("MM/dd/yy")
                         };
                         usedMachines.Add(temp);
 
