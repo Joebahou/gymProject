@@ -164,7 +164,7 @@ namespace exampleApp
                         /*DATES*/
                         ChartEntry ce = new ChartEntry((float)entry.Item1)
                         {
-                            Label = entry.Item2.ToString("d/M/yy"),
+                            Label = entry.Item2.ToString("M/dd/yy"),
                             ValueLabel = entry.Item1.ToString(),
                             Color = SKColor.Parse("#eb5b34")
                         };

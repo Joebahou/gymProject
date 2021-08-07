@@ -112,7 +112,7 @@ namespace exampleApp.Pages
                         int id_machine = m.Id_machine;
                         string name_machine = m.Name;
                         int alert_broken = m.Alert_broken;
-                        string msg = "someone alerted that " + " machine, id " + id_machine + " isn't working";
+                        string msg = "someone alerted that " +name_machine+ " machine isn't working";
                         Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = false };
                         list_bind.Add(temp);
                         notification_view.ItemsSource = list_bind;
