@@ -149,8 +149,9 @@ namespace exampleApp
             {
                 double score = u.score;
                 int id_member = u.id_member;
+                /*
                 if (score > 0)
-                {
+                {*/
                     if (Avg_Per_member.ContainsKey(id_member))
                     {
                         Avg_Per_member[id_member] += score;
@@ -163,7 +164,7 @@ namespace exampleApp
 
                     }
 
-                }
+               //}
             }
             /*
             string cmd_text = $"select usage_gym.score, members.idmember " +
@@ -252,7 +253,7 @@ namespace exampleApp
                     }
                 
                 }
-                int scala_current_member = -1;
+                int scala_current_member = 0;
                 if (final_score_Per_member.ContainsKey(IdMember))
                 {
                     scala_current_member = (int)final_score_Per_member[IdMember]/10;
