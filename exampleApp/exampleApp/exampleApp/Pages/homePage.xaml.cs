@@ -27,7 +27,7 @@ namespace exampleApp.Pages
 
         public static ObservableCollection<Msg> List_bind { get { return list_bind; } }
         private string name_log;
-        public string Name_log
+        public string Name_log //name of the user loged in
         {
             get { return name_log; }
             set
@@ -37,9 +37,10 @@ namespace exampleApp.Pages
 
             }
         }
-        public string notifications_count { get; set; }
+        public string notifications_count { get; set; } 
         
         public Boolean IsOwner { get; set; }
+        //class for the msg in the notification
         public class Msg
         {
             public string msg { get; set; }
@@ -293,6 +294,7 @@ namespace exampleApp.Pages
                         OnPropertyChanged("notifications_count");
 
                         await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                        //if the user not in the used_machines page - go back to the home page
                         if (App.Current.MainPage.Navigation.NavigationStack.Last() is  UsedMachines)
                         {
                            
@@ -311,7 +313,7 @@ namespace exampleApp.Pages
 
             });
             //message that machine is now fixed.
-            // alert is shown to the trainer if the machine is in h
+          
             this.connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
             {
 
@@ -338,6 +340,7 @@ namespace exampleApp.Pages
                         OnPropertyChanged("notifications_count");
 
                         await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                        //if the user not in the used_machines page - go back to the home page
                         if (App.Current.MainPage.Navigation.NavigationStack.Last() is UsedMachines)
                         {
 
@@ -407,6 +410,7 @@ namespace exampleApp.Pages
                 
             };
 
+            //help message
             this.connection.On<object[]>("helpMessage", (help_msg) =>
             {
                 
@@ -463,6 +467,7 @@ namespace exampleApp.Pages
                             OnPropertyChanged("notifications_count");
 
                             await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                          //if the user not in the used_machines page - go back to the home page
                             if (App.Current.MainPage.Navigation.NavigationStack.Last() is UsedMachines)
                             {
 
@@ -507,6 +512,7 @@ namespace exampleApp.Pages
                             OnPropertyChanged("notifications_count");
 
                             await App.Current.MainPage.DisplayAlert("Alert", resultusage, "OK");
+                            //if the user not in the used_machines page - go back to the home page
                             if (App.Current.MainPage.Navigation.NavigationStack.Last() is UsedMachines)
                             {
 
@@ -656,6 +662,7 @@ namespace exampleApp.Pages
             });
 
             //there was an alert on machine but the machine is ok.
+            //athe message of the alert is deleted
             this.connection.On<object[]>("BrokenMachine_ignore", (broken_msg) =>
             {
 
@@ -722,7 +729,7 @@ namespace exampleApp.Pages
             activityIndicator.IsVisible = false;
         }
 
-        //avalibale machines button for owner
+        //clicked to see the real_time page (UsedMachines)
         private async void machinesButton_Clicked(object sender, EventArgs e)
         {
             UsedMachines.machines_list = new List<Models.Machine>();
@@ -842,13 +849,15 @@ namespace exampleApp.Pages
             await Navigation.PushAsync(new signUp());
 
         }
+       
         public void helped_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
             Msg msg = thebutton.BindingContext as Msg;
             list_bind.Remove(msg);
             notification_view.ItemsSource = list_bind;
-        }
+        } 
+        //clicked on the "vi" to delete notification
         public void clear_clicked_image(Object sender, System.EventArgs e)
         {
            Image clear_image = (Image)sender;
@@ -861,6 +870,7 @@ namespace exampleApp.Pages
             OnPropertyChanged("notifications_count");
         }
 
+        //clicked to see avaliable machine to the owner
         private async void editMachineButton_Clicked(object sender, EventArgs e)
         {
             availableMachines_owner.machines_list = new List<Models.Machine>();

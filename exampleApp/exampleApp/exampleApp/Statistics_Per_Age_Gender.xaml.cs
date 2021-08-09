@@ -39,10 +39,11 @@ namespace exampleApp
                 gender = Models.User.Gender;
                 age = Models.User.Age;
             }
-            ConnectDataBase();
+            //ConnectDataBase();
             pickerMachineInit();
         }
       
+        /*
         private void ConnectDataBase()
         {
             try
@@ -69,7 +70,8 @@ namespace exampleApp
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }*/
+        //loads the machines the trainee used to the picker
         private void pickerMachineInit()
         {
             List<string> MachineNames = new List<string>();
@@ -132,6 +134,8 @@ namespace exampleApp
                 this.id_member = id_member;
             }
         }
+        //loads the info to the microchart.
+        //there is calculation of the avg score of all trainees with the sae age and gender.
         private void UploadGlobalProgress(string machineName)
         {
             Dictionary<int, double> Avg_Per_member = new Dictionary<int, double>();
@@ -240,6 +244,7 @@ namespace exampleApp
                     NumberPerScala.Add(i, 0);
 
                 }
+                //normalize the avg score and count how many traiees in each scala
                 foreach (double final_score in final_score_Per_member.Values)
                 {
                     int scala = (int)final_score / 10;
@@ -254,6 +259,7 @@ namespace exampleApp
                 
                 }
                 int scala_current_member = 0;
+                //define the scala of the loged in trainee
                 if (final_score_Per_member.ContainsKey(IdMember))
                 {
                     scala_current_member = (int)final_score_Per_member[IdMember]/10;

@@ -11,6 +11,7 @@ namespace exampleApp.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
+        /*model for the login */
         public Action DisplayInvalidLoginPrompt;
         public event PropertyChangedEventHandler PropertyChanged;
         public static int id_member_login=0;
@@ -74,6 +75,7 @@ namespace exampleApp.ViewModels
             }
 
         }
+        //clicked submit in the login page
         public async void OnSubmit()
         {
         
@@ -84,6 +86,7 @@ namespace exampleApp.ViewModels
             string req = "https://gymfuctions.azurewebsites.net/api/login_select?query=check_login&" + parameters;
             string result = Models.Connection.get_result_from_http(req, true);
             User_from_sql user = JsonConvert.DeserializeObject<User_from_sql>(result);
+            //check if the user is in the sql table
             if (user.id_member == -1)
             {
                 DisplayInvalidLoginPrompt();
@@ -129,6 +132,7 @@ namespace exampleApp.ViewModels
             }*/
             else
             {
+                //saves the loged user's info
                 id_member_login = user.id_member;
                 name_login = user.name;
                 Ttype = user.type;

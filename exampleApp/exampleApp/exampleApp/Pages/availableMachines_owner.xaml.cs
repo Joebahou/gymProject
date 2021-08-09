@@ -15,7 +15,7 @@ namespace exampleApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
 
     /*page with the available machines.
-     * The owner cand delete and add machines*/
+     * The owner can delete and add machines*/
     
     public partial class availableMachines_owner : ContentPage
     {
@@ -91,6 +91,7 @@ namespace exampleApp.Pages
             available_machines.ItemsSource = list_bind;
 
         }
+        //the owner clicked to delete a machine
         public void delete_clicked(Object sender, System.EventArgs e)
         {
             Button thebutton = (Button)sender;
@@ -128,12 +129,15 @@ namespace exampleApp.Pages
           
         }
 
+        //the owner clicked to add a new machine.
+        // there is pop up to fill the name.
         public void addMachineButton_Clicked(Object sender, System.EventArgs e)
         {
             popupAdd.IsVisible = true;
 
 
         }
+        //clicked cancel from adding new machine
         public void click_button_cancel(Object sender, System.EventArgs e)
         {
             popupAdd.IsVisible = false;
@@ -178,6 +182,7 @@ namespace exampleApp.Pages
                 string parameters = "machine_name=" + machine_name.ToString();
                     string req = "https://gymfuctions.azurewebsites.net/api/insert_new_machine?query=insert_new_machine&" + parameters;
                 string result = Models.Connection.get_result_from_http(req, false);
+                //checks if there is already a machine
                 if (result == "isDuplicate")
                 {
                     

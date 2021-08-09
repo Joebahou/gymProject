@@ -14,6 +14,7 @@ namespace exampleApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AllSchedule : ContentPage
+        /*page to see all schedule */
     {
         ObservableCollection<Temp> list_bind = new ObservableCollection<Temp>();
         public ObservableCollection<Temp> List_bind { get { return list_bind; } }
@@ -252,7 +253,7 @@ namespace exampleApp.Pages
 
         }
         */
-        //The trainer clicke on the button to add schedule.
+        //The trainer clicked on the button to add schedule.
         // if the schedule is free to choose - the function navigate to the Add_to_schedule page and saves the picked information.
         // if not - there is an alert.
         public async void handle_clicked_image(Object sender, System.EventArgs e)
@@ -350,10 +351,11 @@ namespace exampleApp.Pages
             }*/
           
         }
+        /*class for the list to bind the grid */
         public class Temp
         {
             public string[] Li { get; set; }
-            public bool[] button_arr { get; set; }
+            public bool[] button_arr { get; set; } //viability of the buttons in the schedule
             public int id_machine { get; set; }
             public Color name_color { get; set; }
             public Boolean text_visble_broken { get; set; }
@@ -378,7 +380,7 @@ namespace exampleApp.Pages
             }
         }
         //The trainer picked a date to see its schedule.
-        // the function loads the grit wit the schedule of that date.
+        // the function loads the grid wit the schedule of that date.
         private async void pickerDate_SelectedIndexChanged(object sender, EventArgs e)
         {
             popuploading2.IsVisible = true;

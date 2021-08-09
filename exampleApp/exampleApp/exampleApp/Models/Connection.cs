@@ -19,6 +19,7 @@ namespace exampleApp.Models
             Password = "gym1Admin",
             SslMode = MySqlSslMode.Required,
         };*/
+
         //make an http request and returns the response as string
         public static string get_result_from_http(string req,bool json)
         {
@@ -35,6 +36,7 @@ namespace exampleApp.Models
             reader.Close();
             return result;
         }
+        /*
         public static void ConnectDataBase()
         {
             try
@@ -61,7 +63,7 @@ namespace exampleApp.Models
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }*/
 
     }
 }

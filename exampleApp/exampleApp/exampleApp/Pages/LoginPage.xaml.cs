@@ -13,6 +13,7 @@ namespace exampleApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        /* page to login */
         public LoginPage()
         {
             InitializeComponent();
@@ -20,7 +21,7 @@ namespace exampleApp.Pages
             this.BindingContext = vm;
             vm.DisplayInvalidLoginPrompt += () => DisplayAlert("Error", "Invalid Login, try again", "OK");
             
-
+            //filling the username and passwords -> loginviewmodel
             Username.Completed += (object sender, EventArgs e) =>
             {
                 Password.Focus();

@@ -15,7 +15,7 @@ namespace exampleApp.Pages
         public QrImage()
         {
             InitializeComponent();
-            barcode.BarcodeValue = Models.User.Id.ToString();
+            barcode.BarcodeValue = Models.User.Id.ToString();//set the id_member loged in the be the value of the qr.
         }
     }
 }

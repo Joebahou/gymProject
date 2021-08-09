@@ -15,6 +15,7 @@ namespace exampleApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Schedule_for_trainer : ContentPage
+        /*page for the schedule of the trainer's trainees for the loged in trainer */
     {
         ObservableCollection<Schedule> list_bind = new ObservableCollection<Schedule>();
         public ObservableCollection<Schedule> List_bind { get { return list_bind; } }
@@ -23,7 +24,7 @@ namespace exampleApp.Pages
         public ObservableCollection<string> List_trainee_bind { get { return list_trainee_bind; } }
        
         public ObservableCollection<string> List_trainee_filter_bind { get { return list_trainee_filter_bind; } } 
-        ObservableCollection<string> list_trainee_filter_bind = new ObservableCollection<string>();
+        ObservableCollection<string> list_trainee_filter_bind = new ObservableCollection<string>();//list for the picker to filter.
         //MySqlConnection conn;
 
 
@@ -39,6 +40,7 @@ namespace exampleApp.Pages
             Init_list_trainee();
             
         }
+        //Inits the list of trainer's trainees to the filter picker and to the edit picker.
         public void Init_list_trainee()
         {
             foreach (Models.Trainee t in Models.User.Trainees)
@@ -52,6 +54,7 @@ namespace exampleApp.Pages
             picker_Trainee_Filter.ItemsSource = list_trainee_filter_bind;
          
         }
+        //Loads the schedule of the trainer's trainees to the grid.
         public void Init_Table_Schedule()
         {
             list_bind= new ObservableCollection<Schedule>();
@@ -240,6 +243,7 @@ namespace exampleApp.Pages
             list_bind.Remove(schedule);
             Schedule_view.ItemsSource = list_bind;
         }*/
+        //clicked to delete a schedule
         public void delete_clicked_image(Object sender, System.EventArgs e)
         {
             Image image_delete = (Image)sender;
@@ -277,6 +281,7 @@ namespace exampleApp.Pages
 
         
         }
+        
         public void edit_clicked(Object sender, System.EventArgs e)
         {
             popupEdit.IsVisible = true;
@@ -287,6 +292,8 @@ namespace exampleApp.Pages
             selected_schedue_edit = schedule;
             picker_Trainee.SelectedItem = Selected_trainee;
         }
+        //clicked to edit the trainee of the schedule.
+        // a pop up for the edit will be visble.
         public void edit_clicked_image(Object sender, System.EventArgs e)
         {
             popupEdit.IsVisible = true;
@@ -297,11 +304,13 @@ namespace exampleApp.Pages
             selected_schedue_edit = schedule;
             picker_Trainee.SelectedItem = Selected_trainee;
         }
+        //clicked to cancle the edit window.
         public void click_button_cancel(Object sender, System.EventArgs e)
         {
             popupEdit.IsVisible = false;
         
         }
+        //clicked to filter the shown schedule with a trainee
         public async void click_button_filter(Object sender, System.EventArgs e)
         {
             if (picker_Trainee_Filter.SelectedIndex == -1)
@@ -405,6 +414,8 @@ namespace exampleApp.Pages
             }
 
         }
+        //clicked to save the edit.
+        //the function checks if the new trainee has other schedule on the same time.
         public async void click_button_save(Object sender, System.EventArgs e)
         {
             string selected_Trainee = picker_Trainee.SelectedItem.ToString();

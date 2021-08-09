@@ -15,10 +15,15 @@ namespace exampleApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UsedMachines : ContentPage
     {
+        /* page to see the status of the machine in real time
+         * red - the machine is in use
+         * green - the machine is available
+         * yellow - the machine is broken */
         public static List<Models.Machine> machines_list;
         public HubConnection connection;
       
     
+        //signalR to change the color of the machine box in the page.
         public async void Set_signalR()
         {
             this.connection = new HubConnectionBuilder()
@@ -30,6 +35,7 @@ namespace exampleApp.Pages
                 await connection.StartAsync();
             };
 
+            //someone started or stoped using the machine
             this.connection.On<object[]>("newMessage", (msgupdate) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
@@ -65,8 +71,7 @@ namespace exampleApp.Pages
                 });
             });
 
-            //need to check if working
-            // need to check if needed new connection
+          //the machine is really broken
             this.connection.On<object[]>("BrokenMachine_real", (broken_msg) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
@@ -87,6 +92,7 @@ namespace exampleApp.Pages
 
                 });
             });
+            //the machine is fixed
             this.connection.On<object[]>("BrokenMachine_fixed", (broken_msg) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>

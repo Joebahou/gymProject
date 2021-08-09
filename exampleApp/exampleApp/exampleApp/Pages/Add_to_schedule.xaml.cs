@@ -12,6 +12,7 @@ namespace exampleApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Add_to_schedule : ContentPage
     {
+        /*page for the trainer to pick trainee for a new schedule */
         //MySqlConnection conn;
         public static DateTime time_to_schedule;
         public static int id_machine;
@@ -200,6 +201,7 @@ namespace exampleApp.Pages
             
 
         }
+        //Init the picker of the trainees
         private void Init_picker_trainee()
         {
             foreach(Models.Trainee t in Models.User.Trainees)

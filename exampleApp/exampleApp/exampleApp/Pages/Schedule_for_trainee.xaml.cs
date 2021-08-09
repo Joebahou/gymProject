@@ -15,9 +15,11 @@ namespace exampleApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Schedule_for_trainee : ContentPage
+        /*page of the schedule of the trainee that loged in */
     {
         ObservableCollection<Schedule> list_bind = new ObservableCollection<Schedule>();
         public ObservableCollection<Schedule> List_bind { get { return list_bind; } }
+        /*class for the list to bind the gris schedule */
         public class Schedule
         {
 
@@ -49,6 +51,8 @@ namespace exampleApp.Pages
             InitializeComponent();
             Init_Table_Schedule();
         }
+        //Inits the schedule of the trainee.
+        //the data is loaded to the grid
         public void Init_Table_Schedule()
         {
             list_bind = new ObservableCollection<Schedule>();

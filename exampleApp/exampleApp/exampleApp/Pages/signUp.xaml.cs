@@ -18,6 +18,7 @@ namespace exampleApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class signUp : ContentPage
     {
+        /*page to add new member */
         class User : INotifyPropertyChanged
         {
             private string id;
