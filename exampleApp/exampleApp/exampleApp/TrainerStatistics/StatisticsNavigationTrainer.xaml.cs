@@ -88,6 +88,7 @@ namespace exampleApp.TrainerStatistics
                 TraineesListIds.Add(id);
                 TraineesListNames.Add(name);
                 TraineesListGenders.Add(gender);
+
                 TraineesListAges.Add(age);
             }
             /*

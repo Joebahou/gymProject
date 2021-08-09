@@ -37,7 +37,7 @@ namespace exampleApp.TrainerStatistics
                 TextColor = SKColor.Parse("#f542ad"),
                 Color = SKColor.Parse("#f542ad")
             };
-            ChartEntry maleEntry = new ChartEntry(femaleCount)
+            ChartEntry maleEntry = new ChartEntry(maleCount)
             {
                 Label = "Male",
                 TextColor = SKColor.Parse("#429ef5"),
