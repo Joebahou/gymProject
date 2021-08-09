@@ -15,12 +15,9 @@ namespace QRscanner
     public partial class welcomePage : ContentPage
     {
        
-        
-        
         public welcomePage()
         {
 
-            
             InitializeComponent();
            
         }

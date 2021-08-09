@@ -69,6 +69,7 @@ namespace QRscanner
                             App.finished = true;
                             string messageJson = JsonConvert.SerializeObject(dataUsage);
                             Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                            ////an usage event handled by eventhub function
                             await Client.SendEventAsync(message);
                             await App.Current.MainPage.Navigation.PopModalAsync();
                             activityIndicator.IsVisible = true;
@@ -95,7 +96,7 @@ namespace QRscanner
                 }
                 else
                 {
-                    
+                    //http requests to get info from the DB
                     string answer;
                     string req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=id_machine_of_member_fromDB&id_member=" + id_member;
                     answer = Models.Connection.get_result_from_http(req, false);
@@ -116,7 +117,7 @@ namespace QRscanner
                     //the machine is free to use. need to cheack that member is not using other machine at the same time
                     if (id_machine_of_member_fromDB == -1)
                     {
-                        // check if the same meber scheduled the machine and it's still relevent
+                        // check if the same member scheduled the machine and it's still relevent
                         if (id_member_of_the_nearest_schedule == id_member)
                         {
 
@@ -125,7 +126,7 @@ namespace QRscanner
 
                                
                                 await App.Current.MainPage.Navigation.PopModalAsync();
-                            
+                                    
                                 await App.Current.MainPage.Navigation.PushAsync(new InfoUsage());
 
 
