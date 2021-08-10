@@ -179,6 +179,7 @@ namespace EventHubFunction
                     log.LogInformation(len.ToString());
                     if (strID.Length < 4)
                     {
+                        //its a help alert that needs to be sent to trainers
                         object[] help_msg = new object[2];
                         int id_machine = Int32.Parse(strID[1]);
                         help_msg[0] = id_machine;
@@ -216,11 +217,12 @@ namespace EventHubFunction
                     {
                         if (strID.Length <= 6)
                         {
+                            //its a broken machine alert thats need to be sent to the owner
                             object[] broken_msg = new object[2];
                             int id_machine = Int32.Parse(strID[1]);
                             broken_msg[0] = id_machine;
                             
-                             //extracting from table the machine name
+                            //extracting from table the machine name
                             using (var conn = new MySqlConnection(builder.ConnectionString))
                             {
 
@@ -271,7 +273,8 @@ namespace EventHubFunction
                                 });
                             }
                             else
-                            {
+                            {   
+                                //owner has set the machine as broken
                                 if(filter==1)
                                 {
                                     using (var conn = new MySqlConnection(builder.ConnectionString))
@@ -308,7 +311,7 @@ namespace EventHubFunction
                                 }
                                 else
                                 {
-                                   
+                                   //owner has fixed the machine
                                     if (filter == 2)
                                     {
                                         using (var conn = new MySqlConnection(builder.ConnectionString))
@@ -336,7 +339,7 @@ namespace EventHubFunction
                                     }
                                     else
                                     {
-                                        //filter=3
+                                        //filter=3: owner has ignored the alert
                                         using (var conn = new MySqlConnection(builder.ConnectionString))
                                         {
                                             conn.Open();
@@ -366,6 +369,7 @@ namespace EventHubFunction
                         }
                         else
                         {
+                            //this is a usege massege with the detailed information 
                             log.LogInformation(strID[1] + " its an usage data not help " + strID[2]);
                             int id_member = Int32.Parse(strID[1]);
                             int id_machine = Int32.Parse(strID[2]);

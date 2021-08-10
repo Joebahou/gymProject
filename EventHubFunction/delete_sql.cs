@@ -38,6 +38,7 @@ namespace EventHubFunction
             int rowCount = 0;
             if (query == "delete_machine")
             {
+                //deleting the machine and all its usages
                 int id_machine = Int32.Parse(req.Query["id_machine"]);
                 string machine_name = req.Query["machine_name"];
                 Object[] result = new object[2];
@@ -79,6 +80,8 @@ namespace EventHubFunction
             {
                 if (query == "delete_schedule")
                 {
+                    
+                    //deleting a booking
                     int id_machine = Int32.Parse(req.Query["id_machine"]);
                     int id_member = Int32.Parse(req.Query["id_member"]);
                     string strdate = req.Query["start_time"];

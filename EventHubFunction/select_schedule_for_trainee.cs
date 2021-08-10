@@ -57,7 +57,7 @@ namespace EventHubFunction
                     conn.Open();
                     using (MySqlCommand command = conn.CreateCommand())
                     {
-
+                        //selecting all the bookings for the given member and day
                         command.CommandText = @"SELECT future_schedule_machines.id_machine,future_schedule_machines.start_time,machines.working,machines.name " +
                         "FROM future_schedule_machines,machines " +
                         "WHERE future_schedule_machines.id_machine=machines.idmachine and future_schedule_machines.id_member=@id_member and future_schedule_machines.start_time>=@today " +

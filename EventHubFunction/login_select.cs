@@ -111,6 +111,7 @@ namespace EventHubFunction
             {
                 if (query == "select_trainees_for_trainer")
                 {
+                    //selecting all trainees that has the same trainer
                     List<Trainee> Trainees = new List<Trainee>();
                     
                     int id_member = Int32.Parse(req.Query["id_member"]);

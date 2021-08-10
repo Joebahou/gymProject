@@ -46,6 +46,8 @@ namespace EventHubFunction
             query = query ?? data?.query;
 
             List<MachineData> usedMachines = new List<MachineData>();
+            
+            //select all usage rows where idmember and machine name is given
             if (query == "select_used_machines")
             {
                 conn = new MySqlConnection(builder.ConnectionString);

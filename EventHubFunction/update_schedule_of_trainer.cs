@@ -47,7 +47,7 @@ namespace EventHubFunction
                 DateTime start_time = Convert.ToDateTime(req.Query["start_time"]);
                 string new_name_member = req.Query["new_name_member"];
                 bool machine_exists = false;
-
+                //chcking if a trainee can be selected for another future schedule
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
                     conn.Open();
@@ -84,7 +84,7 @@ namespace EventHubFunction
                         }
                         if (ready_to_add)
                         {
-
+                            //updating DB
                             using (MySqlCommand command = conn.CreateCommand())
                             {
 

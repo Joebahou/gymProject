@@ -54,6 +54,7 @@ namespace EventHubFunction
 
             if (query == "check_schedule_for_trainee")
             {
+                //checking if the given machine id exist in the DB
                 int id_machine = Int32.Parse(req.Query["id_machine"]);
                 int id_member = Int32.Parse(req.Query["id_member"]);
                 string strdate = req.Query["time_to_schedule"];
@@ -78,7 +79,7 @@ namespace EventHubFunction
                     {
                         using (MySqlCommand command = conn.CreateCommand())
                         {
-
+                            //checking the user schedules for the given machine from a certain date time
                             command.CommandText = @"SELECT gym_schema.future_schedule_machines.id_machine from gym_schema.future_schedule_machines,gym_schema.machines WHERE gym_schema.future_schedule_machines.id_member=@id_member and gym_schema.future_schedule_machines.start_time=@time_to_schedule and gym_schema.machines.idmachine=gym_schema.future_schedule_machines.id_machine and gym_schema.machines.working=1;";
                             command.Parameters.AddWithValue("@id_member", id_member);
                             command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
@@ -95,7 +96,7 @@ namespace EventHubFunction
                         }
                         using (MySqlCommand command = conn.CreateCommand())
                         {
-
+                            //checking all schedules for the given machine and a date time
                             command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
                             command.Parameters.AddWithValue("@id_machine", id_machine);
                             command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
@@ -122,7 +123,7 @@ namespace EventHubFunction
             {
                 if(query== "ready_to_choose_trainee")
                 {
-                    bool ready_to_choose_trainee=true;
+                    //chcking if a trainee can be selected for another future schedule
                     int id_machine = Int32.Parse(req.Query["id_machine"]);
                     string strdate = req.Query["time_to_schedule"];
                     DateTime time_to_schedule = Convert.ToDateTime(strdate);

@@ -37,7 +37,7 @@ namespace EventHubFunction
 
         [FunctionName("initListMachines")]
 
-        
+        //selecting all the machines from DB
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)

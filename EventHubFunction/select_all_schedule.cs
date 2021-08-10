@@ -50,6 +50,7 @@ namespace EventHubFunction
             List<Future_schedule> schedules = new List<Future_schedule>();
             if (query == "select_schedule_for_date")
             {
+                //selecting all the bookings for the given day
                 DateTime start_time = Convert.ToDateTime(req.Query["start_time"]);
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {

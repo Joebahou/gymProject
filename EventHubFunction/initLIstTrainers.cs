@@ -45,7 +45,8 @@ namespace EventHubFunction
             List<Trainer> trainers = new List<Trainer>();
             if (query == "select_trainers")
             {
-                
+                //selecting all the trainers from DB
+               
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
                     conn.Open();
@@ -80,32 +81,7 @@ namespace EventHubFunction
 
             else
             {
-                if(query == "get_newId")
-                {
-                    string input = req.Query["name"];
-
-                    using (var conn = new MySqlConnection(builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (MySqlCommand command = conn.CreateCommand())
-                        {
-
-                            command.CommandText = @"SELECT max(idmember) as lastSignUp FROM members where name=@mame;";
-                            command.Parameters.AddWithValue("@name", input);
-                            using (MySqlDataReader reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    int id_member = reader.GetInt32(0);
-                                    return new OkObjectResult(id_member);
-
-
-                                }
-                            }
-
-                        }
-                    }
-                }
+                
                 return new OkObjectResult(0);
             }
 
