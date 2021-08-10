@@ -75,12 +75,13 @@ namespace QRscanner
             {
                 string messageJson = JsonConvert.SerializeObject(dataUsage);
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
+                //an usage event handled by eventhub function
                 await Client.SendEventAsync(message);
                 string req = "https://gymfuctions.azurewebsites.net/api/selecet_QRscanner?query=select_nearest_future_schdule&id_machine=" + MainPage.id_machine + "&id_member=" + StartScanPage.id_member + "&submiting_time=" + submiting_time.ToString();
                 string answer = Models.Connection.get_result_from_http(req, false);
                 nearest_future_schedule = Convert.ToDateTime(answer);
 
-
+                // display alert of the nearest future schedule for the machine being used now
                 if ((nearest_future_schedule - submiting_time) < hour_1)
                 {
                     catching_msg = "This machine has been booked by another trainer in about " + (nearest_future_schedule - submiting_time).Minutes + " minutes";

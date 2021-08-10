@@ -45,10 +45,12 @@ namespace QRscanner
         int[] dataBrokenMachine = new int[2];
        
         public MainPage()
-        {
+        {   
+            //changing availablilty status button binding
             Is_working = is_working;
             OnPropertyChanged("Is_working");
             InitializeComponent();
+            //buttons visibilty init
             if (!is_working)
             {
                 not_working_label.IsVisible = true;
@@ -65,8 +67,6 @@ namespace QRscanner
         private async void scanButton_Clicked(object sender, EventArgs e)
         {
 
-            
-            
             App.member_from_table = this_machine.Id_member;
             App.taken = this_machine.Taken;
             if (App.member_from_table != -1)
@@ -86,6 +86,7 @@ namespace QRscanner
                 activityIndicator.IsVisible = true;
                 dataHelp[0] = id_machine;
                 string messageJson = JsonConvert.SerializeObject(dataHelp);
+                //an help event handled by eventhub function
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                 
                 await Client.SendEventAsync(message);
@@ -102,7 +103,7 @@ namespace QRscanner
                 activityIndicator.IsVisible = true;
                 dataBrokenMachine[0] = id_machine;
                 dataBrokenMachine[1] = 0;
-                //update
+                //a broken machine event handled by eventhub function
                 string messageJson = JsonConvert.SerializeObject(dataBrokenMachine);
                 Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                 await Client.SendEventAsync(message);
@@ -205,7 +206,7 @@ namespace QRscanner
                         string messageJson1 = JsonConvert.SerializeObject(dataClose);
                         Message message1 = new Message(Encoding.ASCII.GetBytes(messageJson1)) { ContentType = "application/json", ContentEncoding = "utf-8" };
                         await Client.SendEventAsync(message1);
-
+                        //a broken machine event handled by eventhub function
                         activityIndicator.IsVisible = true;
                         await Task.Delay(2500);
                         activityIndicator.IsVisible = false;

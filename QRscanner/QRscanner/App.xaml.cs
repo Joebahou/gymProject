@@ -102,10 +102,7 @@ namespace QRscanner
                     
                     await App.Current.MainPage.Navigation.PopToRootAsync();
                     
-                    /*while (App.Current.MainPage.Navigation.NavigationStack.Last() != App.Current.MainPage)
-                    {
-                        App.Current.MainPage.Navigation.PopToRootAsync();
-                    }*/
+                    
                     
 
                 });
