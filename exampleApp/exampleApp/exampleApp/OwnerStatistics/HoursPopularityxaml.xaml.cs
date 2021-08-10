@@ -26,37 +26,10 @@ namespace exampleApp.OwnerStatistics
         public HoursPopularityxaml()
         {
             InitializeComponent();
-            //ConnectDataBase();
-            //HoursPop();
+          
         }
         private MySqlConnection conn;
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
+      
         public class popularityHours_from_sql{
             public string date { get; set; }
             public long count { get; set; }
@@ -87,37 +60,7 @@ namespace exampleApp.OwnerStatistics
                 string date = h.date; ;
                 HourNumUses.Add(Tuple.Create(date, count));
             }
-            /*
-            string cmd_text = $"SELECT hour(usage_gym.start) as h, count(*) " +
-                $"from usage_gym " +
-                $"where date(usage_gym.start) >= '{start_date}' " +
-                $"and date(usage_gym.start) <= '{end_date}' " +
-                $"group by h ";
-            List<Tuple<string, long>> HourNumUses = new List<Tuple<string, long>>();
-            MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    long count = -1;
-                    string date = "";
-                    if (rdr[0] != DBNull.Value)
-                    {                        
-                        date = rdr.GetInt32(0).ToString();
-                    }
-                    else { continue; }
-                    if (rdr[1] != DBNull.Value)
-                    {                        
-                        count = rdr.GetInt32(1);
-                    }
-                    else { continue; }
-                    HourNumUses.Add(Tuple.Create(date, count));
-
-                }
-            }
-            rdr.Close();
-            */
+          
             List<ChartEntry> entries = new List<ChartEntry>();
             int cnt = 0;            
             foreach (Tuple<string, long> tuple in HourNumUses)

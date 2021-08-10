@@ -35,39 +35,10 @@ namespace exampleApp
             Console.WriteLine("id trainee: " + IdMember);
             
             
-
-            //ConnectDataBase();
             pickerMachineInit();
         }
-        /*connect to data base*/
-        MySqlConnection conn;
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
+     
+      
 
         /*load machine to picker*/
         private void pickerMachineInit()
@@ -77,27 +48,7 @@ namespace exampleApp
             string req = "https://gymfuctions.azurewebsites.net/api/machine_used_by_trainee?query=machine_used_by_trainee&" + parameters;
             string result = Models.Connection.get_result_from_http(req, true);
             MachineNames = JsonConvert.DeserializeObject<List<string>>(result);
-            /*
-            string cmd_text = $"select distinct machines.name " +
-                $"from members, machines, usage_gym " +
-                $"where members.idmember = usage_gym.idmember " +
-                $"and machines.idmachine = usage_gym.idmachine " +
-                $"and members.idmember = {IdMember} ";
-            List<string> MachineNames = new List<string>();
-            MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    if (rdr[0] != DBNull.Value)
-                    {
-                        MachineNames.Add(rdr[0].ToString());
-                    }
-                }
-            }
-            rdr.Close();
-            */
+       
             pickerMachines.Items.Clear();
             foreach (string name in MachineNames)
             {
@@ -183,39 +134,7 @@ namespace exampleApp
                     PointMode = PointMode.Square
                 };
             }
-            /*
-            string cmd_text = $"select weight_or_speed, usage_gym.start " +
-                $"from members, machines, usage_gym " +
-                $"where members.idmember = usage_gym.idmember " +
-                $"and machines.idmachine = usage_gym.idmachine " +
-                $"and members.idmember = {IdMember} " +
-                $"and machines.name = '{machineName}' " +
-                $"limit 20";
-            List<ChartEntry> entries = new List<ChartEntry>();
-            List<Tuple<long, DateTime>> MachineNumUses = new List<Tuple<long, DateTime>>();
-            MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    long speedOrWeight = -1;
-                    DateTime date = DateTime.Now;
-                    if (rdr[0] != DBNull.Value)
-                    {
-                        speedOrWeight = rdr.GetInt32(0);
-                    }
-                    if (rdr[1] != DBNull.Value)
-                    {
-                        date = (DateTime)rdr[1];
-                    }
-
-
-                    MachineNumUses.Add(Tuple.Create(speedOrWeight, date));
-
-                }
-                rdr.Close();*/
+           
            
             
         }

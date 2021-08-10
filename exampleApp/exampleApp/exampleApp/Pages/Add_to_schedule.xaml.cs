@@ -13,7 +13,7 @@ namespace exampleApp.Pages
     public partial class Add_to_schedule : ContentPage
     {
         /*page for the trainer to pick trainee for a new schedule */
-        //MySqlConnection conn;
+      
         public static DateTime time_to_schedule;
         public static int id_machine;
         public static string name_machine_chosen;
@@ -24,7 +24,7 @@ namespace exampleApp.Pages
         public Add_to_schedule()
         {
             InitializeComponent();
-            //ConnectDataBase();
+            
             Init_picker_trainee();
             chosen_date = "the date you chose: " + time_to_schedule.ToString();
             chosen_machine = "the machine you chose: " + name_machine_chosen;
@@ -67,47 +67,6 @@ namespace exampleApp.Pages
             other_already_taken = reshima[1].isTrue; // if the machine is already taken on that time
             machine_exists = reshima[2].isTrue;
 
-
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_member=@id_member and start_time=@time_to_schedule;";
-                    command.Parameters.AddWithValue("@id_member", id_Trainee);
-                    command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            ready_to_add = false;
-                        }
-                    }
-
-
-                }
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
-                    command.Parameters.AddWithValue("@id_machine", id_machine);
-                    command.Parameters.AddWithValue("@time_to_schedule", time_to_schedule);
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            other_already_taken = true;
-                        }
-                    }
-
-
-                }
-
-            }*/
             if (machine_exists)
             {
                 if (ready_to_add)
@@ -178,24 +137,7 @@ namespace exampleApp.Pages
                 }
             }
          
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"INSERT INTO future_schedule_machines(id_machine,id_member,start_time,name_member) VALUES(@id_machine,@id_member,@start_time,@name_member);";
-                    command.Parameters.AddWithValue("@id_machine", id_machine);
-                    command.Parameters.AddWithValue("@id_member", id_Trainee);
-                    command.Parameters.AddWithValue("@start_time", time_to_schedule);
-                    command.Parameters.AddWithValue("@name_member", name_trainee);
-                    command.ExecuteNonQuery();
-
-
-
-                }
-            }*/
+          
            
             
             
@@ -210,35 +152,7 @@ namespace exampleApp.Pages
             }
         }
         
-        /*
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-        */
+      
 
     }
 }

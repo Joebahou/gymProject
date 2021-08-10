@@ -25,7 +25,7 @@ namespace exampleApp.Pages
        
         public ObservableCollection<string> List_trainee_filter_bind { get { return list_trainee_filter_bind; } } 
         ObservableCollection<string> list_trainee_filter_bind = new ObservableCollection<string>();//list for the picker to filter.
-        //MySqlConnection conn;
+   
 
 
         public Schedule selected_schedue_edit;
@@ -34,8 +34,7 @@ namespace exampleApp.Pages
         public Schedule_for_trainer()
         {
             InitializeComponent();
-            //ConnectDataBase();
-            //get_machines();
+           
             Init_Table_Schedule();
             Init_list_trainee();
             
@@ -86,82 +85,14 @@ namespace exampleApp.Pages
 
                     list_bind.Add(current);
                 }
-                /*
-                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"SELECT future_schedule_machines.id_machine,future_schedule_machines.id_member,future_schedule_machines.start_time,machines.working,machines.name " +
-                        "FROM future_schedule_machines,machines " +
-                        "WHERE future_schedule_machines.id_machine=machines.idmachine and future_schedule_machines.id_member=@id_member and future_schedule_machines.start_time>=@today;";
-                        command.Parameters.AddWithValue("@id_member", t.Id);
-                        command.Parameters.AddWithValue("@today", today);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int id_machine = reader.GetInt32(0);
-                                int id_member = reader.GetInt32(1);
-                                DateTime start_time = reader.GetDateTime(2);
-                                int working = reader.GetInt32(3);
-                                string name_machine = reader.GetString(4);
-                                Schedule current;
-                                if (working == 0)
-                                {
-                                    current = new Schedule { color_row = Color.Yellow, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = name_machine + "- broken" };
-                                }
-                                else
-                                {
-                                    current = new Schedule { color_row = Color.White, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = t.Name, date_time = start_time, name_machine = name_machine };
-
-                                }
-
-                                list_bind.Add(current);
-
-
-                            }
-                        }
-
-
-                    }
-                }*/
+               
 
 
             }
             Schedule_view.ItemsSource = list_bind;
         }
 
-        /*
-        private void get_machines()
-        {
-            dict_machines = new Dictionary<int, Models.Machine>();
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"SELECT * FROM machines;";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int id_machine = reader.GetInt32(0);
-                            string name = reader.GetString(1);
-                            Models.Machine temp = new Models.Machine(name, id_machine);
-                            dict_machines[id_machine] = temp;
-
-
-                        }
-                    }
-                }
-            }
- 
-
-        }*/
+       
     
         public class Schedule
         {
@@ -188,61 +119,9 @@ namespace exampleApp.Pages
 
             }
         }
-        /*
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }*/
+      
         
-        //need to delete
-        /*
-        public void delete_clicked(Object sender, System.EventArgs e)
-        {
-            Button thebutton = (Button)sender;
-            Schedule schedule = thebutton.BindingContext as Schedule;
-            int i = 0;
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"DELETE FROM future_schedule_machines WHERE id_machine=@id_machine and id_member=@id_member and start_time=@start_time;";
-                    command.Parameters.AddWithValue("@id_machine", Int32.Parse(schedule.id_machine));
-                    command.Parameters.AddWithValue("@id_member", Int32.Parse(schedule.id_trainee));
-                    command.Parameters.AddWithValue("@start_time", schedule.date_time);
-                    command.ExecuteNonQuery();
-
-
-                }
-            }
-
-            list_bind.Remove(schedule);
-            Schedule_view.ItemsSource = list_bind;
-        }*/
+      
         //clicked to delete a schedule
         public void delete_clicked_image(Object sender, System.EventArgs e)
         {
@@ -262,22 +141,7 @@ namespace exampleApp.Pages
             {
                 Console.WriteLine("delte machine didnt wen well");
             }
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"DELETE FROM future_schedule_machines WHERE id_machine=@id_machine and id_member=@id_member and start_time=@start_time;";
-                    command.Parameters.AddWithValue("@id_machine", Int32.Parse(schedule.id_machine));
-                    command.Parameters.AddWithValue("@id_member", Int32.Parse(schedule.id_trainee));
-                    command.Parameters.AddWithValue("@start_time", schedule.date_time);
-                    command.ExecuteNonQuery();
-
-
-                }
-            }*/
+           
 
         
         }
@@ -363,48 +227,7 @@ namespace exampleApp.Pages
 
                         list_bind.Add(current);
                     }
-                    /*
-                    using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (MySqlCommand command = conn.CreateCommand())
-                        {
-
-                            command.CommandText = @"SELECT future_schedule_machines.id_machine,future_schedule_machines.id_member,future_schedule_machines.start_time,machines.working,machines.name " +
-                            "FROM future_schedule_machines,machines " +
-                            "WHERE future_schedule_machines.id_machine=machines.idmachine and future_schedule_machines.id_member=@id_member and future_schedule_machines.start_time>=@today;";
-                            command.Parameters.AddWithValue("@id_member", id_Trainee);
-                            command.Parameters.AddWithValue("@today", today);
-
-                            using (MySqlDataReader reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    int id_machine = reader.GetInt32(0);
-                                    int id_member = reader.GetInt32(1);
-                                    DateTime start_time = reader.GetDateTime(2);
-                                    int working = reader.GetInt32(3);
-                                    string name_machine = reader.GetString(4);
-                                    Schedule current;
-                                    if (working == 0)
-                                    {
-                                        current = new Schedule { color_row = Color.Yellow, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = trainee_name, date_time = start_time, name_machine = name_machine + "- broken" };
-                                    }
-                                    else
-                                    {
-                                        current = new Schedule { color_row = Color.White, id_machine = id_machine.ToString(), id_trainee = id_member.ToString(), date_time_string = start_time.ToString(), name_trainee = trainee_name, date_time = start_time, name_machine = name_machine };
-
-                                    }
-
-                                    list_bind.Add(current);
-
-
-                                }
-                            }
-
-
-                        }
-                    }*/
+                   
 
 
                     Schedule_view.ItemsSource = list_bind;
