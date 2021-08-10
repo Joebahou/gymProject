@@ -11,8 +11,7 @@ namespace exampleApp
 {
     public partial class App : Application
     {
-        public const string DeviceConnectionString = @"HostName=GymIotHub.azure-devices.net;DeviceId=MyAndroidDevice;SharedAccessKey=+AOL7RsMUcFFwF+tCUzGS3+8IuPD27FfyUegMvKEtHo=";
-        private static readonly DeviceClient Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
+      
 
        public App()
         {
@@ -23,15 +22,9 @@ namespace exampleApp
             //MainPage = new Page1();
         }
 
-        protected override async void OnStart()
+        protected override  void OnStart()
         {
-           /* int[] data=new int[2];
-            data[0] = 5;
-            data[1] = 7;
-            string messageJson = JsonConvert.SerializeObject(data);
-            Message message = new Message(Encoding.ASCII.GetBytes(messageJson)) { ContentType = "application/json", ContentEncoding = "utf-8" };
-            await Client.SendEventAsync(message);*/
-            //await exampleApp.Page1.connection.StartAsync();
+        
           
 
 

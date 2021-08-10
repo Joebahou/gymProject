@@ -82,7 +82,7 @@
                          WidthRequest="200"
                          HeightRequest="200" BackgroundColor="White" Padding="20" >
 
-                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}"  RowHeight="125"   >
+                    <ListView  x:Name="notification_view" ItemsSource="{Binding List_bind}"  RowHeight="130"   >
                         <ListView.ItemTemplate >
                             <DataTemplate >
                                 <ViewCell>

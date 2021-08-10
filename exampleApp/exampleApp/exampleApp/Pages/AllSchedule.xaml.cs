@@ -27,14 +27,14 @@ namespace exampleApp.Pages
         List<Models.Machine> machines;
         Dictionary<int, Models.Machine> dict_machines; // dicitionary with id_machine(key):object of the machine(value)
         Dictionary<string, int> times = new Dictionary<string, int>(); //dicitionary of time as a string(key) : index of the column from the grid(value)
-        //MySqlConnection conn;
+
         string selected_date_string;
         public  AllSchedule()
         {
             InitializeComponent();
 
             Peopleview.ItemsSource = list_bind;
-            //ConnectDataBase();
+     
             pickerDateInit();
             machines = new List<Models.Machine>();
             dict_machines = new Dictionary<int, Models.Machine>();
@@ -134,35 +134,7 @@ namespace exampleApp.Pages
                 int id_machine = m.Id_machine;
                 dict_machines[id_machine] = m;
             }
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"SELECT * FROM machines;";
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int id_machine = reader.GetInt32(0);
-                            string name = reader.GetString(1);
-                            int working = reader.GetInt32(4);
-                            Models.Machine temp = new Models.Machine(id_machine, name, working);
-                            machines.Add(temp);
-                            dict_machines[id_machine] = temp;
-
-
-                        }
-                    }
-
-
-
-
-
-                }
-            }*/
+          
 
 
         }
@@ -186,73 +158,7 @@ namespace exampleApp.Pages
             }
         }
 
-        /*
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }*/
-   
-       
-        /*
-        public void handle_clicked(Object sender, System.EventArgs e)
-        {
-            Button thebutton = (Button)sender;
-            int col = Grid.GetColumn(thebutton) - 1;
-            int hour=(col*20)/60 +8;
-            int minutes = (col * 20) % 60;
-            string time = "";
-            if (hour< 10)
-            {
-                if (minutes==0)
-                {
-                    time = "0" + hour + ":00";
-                }
-                else
-                {
-                    time = "0" + hour + ":" + minutes;
-                }
-            }
-            else
-            {
-                if (minutes==0)
-                {
-                    time = hour + ":00";
-                }
-                else
-                {
-                    time = hour.ToString() + ":" + minutes.ToString();
-                }
-            }
-            DateTime time_and_date = Convert.ToDateTime(selected_date_string +" "+ time);
-            Add_to_schedule.time_to_schedule = time_and_date;
-            Add_to_schedule.id_machine = (int)thebutton.CommandParameter;
-            Navigation.PushAsync(new Add_to_schedule());
-
-        }
-        */
+    
         //The trainer clicked on the button to add schedule.
         // if the schedule is free to choose - the function navigate to the Add_to_schedule page and saves the picked information.
         // if not - there is an alert.
@@ -327,35 +233,13 @@ namespace exampleApp.Pages
             }
           
           
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"SELECT * FROM future_schedule_machines WHERE id_machine=@id_machine and start_time=@time_to_schedule;";
-                    command.Parameters.AddWithValue("@id_machine", row.id_machine);
-                    command.Parameters.AddWithValue("@time_to_schedule", time_and_date);
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                           ready_to_choose_trainee = false;
-                        }
-                    }
-
-
-                }
-            }*/
           
         }
         /*class for the list to bind the grid */
         public class Temp
         {
             public string[] Li { get; set; }
-            public bool[] button_arr { get; set; } //viability of the buttons in the schedule
+            public bool[] button_arr { get; set; } //visability of the buttons in the schedule
             public int id_machine { get; set; }
             public Color name_color { get; set; }
             public Boolean text_visble_broken { get; set; }
@@ -413,39 +297,7 @@ namespace exampleApp.Pages
                 int index = times[hour];
                 dict_machines[id_machine].schedule_machine[index] = name_member;
             }
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"SELECT id_machine,id_member,start_time,name_member FROM future_schedule_machines WHERE start_time>=@selected_date AND start_time<=@tomorrow;";
-                    command.Parameters.AddWithValue("@selected_date", selected_date);
-                    command.Parameters.AddWithValue("@tomorrow", selected_date.AddDays(1.0));
-
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int id_machine = reader.GetInt32(0);
-                            int id_member = reader.GetInt32(1);
-                            DateTime start_time = reader.GetDateTime(2);
-                            string name_member = reader.GetString(3);
-                            string hour = start_time.ToString("HH:mm");
-                            int index = times[hour];
-                            dict_machines[id_machine].schedule_machine[index] = name_member;
-
-
-
-                        }
-                    }
-
-
-
-                }
-            }*/
+     
 
 
 

@@ -22,7 +22,7 @@ namespace exampleApp.Pages
     public partial class homePage : ContentPage
     {
         public   HubConnection connection;
-        //MySqlConnection conn;
+       
         public static ObservableCollection<Msg> list_bind = new ObservableCollection<Msg>();
 
         public static ObservableCollection<Msg> List_bind { get { return list_bind; } }
@@ -123,43 +123,7 @@ namespace exampleApp.Pages
                     }
                 }
 
-                
-                /*
-                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"SELECT idmachine,name,alert_broken " +
-                        "FROM machines " +
-                        "WHERE alert_broken=1;";
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int id_machine = reader.GetInt32(0);
-                                string name_machine = reader.GetString(1);
-                                int alert_broken = reader.GetInt32(2);
-                                string msg = "someone alerted that " + " machine, id " + id_machine + " isn't working";
-                                Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = false };
-                                list_bind.Add(temp);
-                                notification_view.ItemsSource = list_bind;
-                                int current_count = Int32.Parse(notifications_count);
-                                current_count++;
-                                notifications_count = current_count.ToString();
-
-
-
-
-
-                            }
-                        }
-
-
-                    }
-                }*/
+              
 
                 OnPropertyChanged("notifications_count");
                 notification_view.ItemsSource = list_bind;
@@ -184,76 +148,14 @@ namespace exampleApp.Pages
                         notifications_count = current_count.ToString();
                     }
                 }
-                /*
-                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-
-                        command.CommandText = @"SELECT idmachine,name,working " +
-                        "FROM machines " +
-                        "WHERE working=0;";
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int id_machine = reader.GetInt32(0);
-                                string name_machine = reader.GetString(1);
-                                int working = reader.GetInt32(2);
-                                string msg = name_machine + " machine, id " + id_machine + " isn't working, check your schedule";
-                                Msg temp = new Msg { msg = msg, type = "alert", id_machine = id_machine, clear_msg_icon = true };
-                                list_bind.Add(temp);
-                                notification_view.ItemsSource = list_bind;
-                                int current_count = Int32.Parse(notifications_count);
-                                current_count++;
-                                notifications_count = current_count.ToString();
-
-
-
-
-
-                            }
-                        }
-
-
-                    }
-                }*/
+               
 
                 OnPropertyChanged("notifications_count");
                 notification_view.ItemsSource = list_bind;
             }
             
         }
-        /*
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }*/
+        
 
         public async void Set_signalR_to_Trainee()
         {
@@ -766,47 +668,7 @@ namespace exampleApp.Pages
 
             }
 
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = @"SELECT idmachine,taken,name,working FROM gym_schema.machines;";
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            int id_machine = reader.GetInt32(0);
-                            int taken = reader.GetInt32(1);
-                            string name = reader.GetString(2);
-                            int available= reader.GetInt32(3);
-                            Models.Machine temp;
-                            if (available == 1)
-                            {
-                                if (taken == 0)
-                                {
-                                    temp = new Models.Machine(name, Color.Green, id_machine);
-
-                                }
-                                else
-                                {
-                                    temp = new Models.Machine(name, Color.Red, id_machine);
-                                }
-
-                            }
-                            else
-                            {
-                                temp = new Models.Machine(name, Color.Yellow, id_machine);
-                            }
-                            UsedMachines.machines_list.Add(temp);
-
-                        }
-                    }
-
-
-                }
-            }*/
+          
 
             await  Navigation.PushAsync(new UsedMachines());
         }
@@ -888,29 +750,6 @@ namespace exampleApp.Pages
 
             }
 
-
-                /*
-                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (var command = conn.CreateCommand())
-                    {
-                        command.CommandText = @"SELECT idmachine,name,working FROM gym_schema.machines;";
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                int id_machine = reader.GetInt32(0);
-                                string name = reader.GetString(1);
-                                int available = reader.GetInt32(2);
-                                Models.Machine temp = new Models.Machine(id_machine,name,available);
-                                availableMachines_owner.machines_list.Add(temp);
-                            }
-                        }
-
-
-                    }
-                }*/
 
                 await Navigation.PushAsync(new availableMachines_owner());
         }

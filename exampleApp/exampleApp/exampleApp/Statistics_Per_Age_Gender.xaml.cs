@@ -20,8 +20,7 @@ namespace exampleApp
         private string gender;
         private int age;
         private string machineName;
-        /*connect to data base*/
-        MySqlConnection conn;
+      
         public Statistics_Per_Age_Gender()
         {
             InitializeComponent();
@@ -39,38 +38,11 @@ namespace exampleApp
                 gender = Models.User.Gender;
                 age = Models.User.Age;
             }
-            //ConnectDataBase();
+          
             pickerMachineInit();
         }
       
-        /*
-        private void ConnectDataBase()
-        {
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }*/
+     
         //loads the machines the trainee used to the picker
         private void pickerMachineInit()
         {
@@ -80,26 +52,7 @@ namespace exampleApp
             string req = "https://gymfuctions.azurewebsites.net/api/machine_used_by_trainee?query=machine_used_by_trainee&" + parameters;
             string result = Models.Connection.get_result_from_http(req, true);
             MachineNames = JsonConvert.DeserializeObject<List<string>>(result);
-            /*
-            string cmd_text = $"select distinct machines.name " +
-                $"from members, machines, usage_gym " +
-                $"where members.idmember = usage_gym.idmember " +
-                $"and machines.idmachine = usage_gym.idmachine " +
-                $"and members.idmember = {IdMember} ";
-            List<string> MachineNames = new List<string>();
-            MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    if (rdr[0] != DBNull.Value)
-                    {
-                        MachineNames.Add(rdr[0].ToString());
-                    }
-                }
-            }
-            rdr.Close();*/
+        
             pickerMachines.Items.Clear();
             foreach (string name in MachineNames)
             {
@@ -153,9 +106,7 @@ namespace exampleApp
             {
                 double score = u.score;
                 int id_member = u.id_member;
-                /*
-                if (score > 0)
-                {*/
+               
                     if (Avg_Per_member.ContainsKey(id_member))
                     {
                         Avg_Per_member[id_member] += score;
@@ -168,47 +119,9 @@ namespace exampleApp
 
                     }
 
-               //}
+               
             }
-            /*
-            string cmd_text = $"select usage_gym.score, members.idmember " +
-                $"from members, machines, usage_gym " +
-                $"where members.idmember = usage_gym.idmember " +
-                $"and machines.idmachine = usage_gym.idmachine " +
-                $"and members.age = '{age}' " +
-                 $"and members.gender = '{gender}' " +
-                $"and machines.name = '{machineName}' " +
-                $"limit 50";
-            Dictionary<int, double> Avg_Per_member = new Dictionary<int, double>();
-            Dictionary<int, int> Times_Usg_Per_member = new Dictionary<int, int>();
-            List<ChartEntry> entries = new List<ChartEntry>();
-            MySqlCommand cmd = new MySqlCommand(cmd_text, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    double score = rdr.GetDouble(0);
-                    int id_member = rdr.GetInt32(1);
-                    if (score > 0)
-                    {
-                        if (Avg_Per_member.ContainsKey(id_member))
-                        {
-                            Avg_Per_member[id_member] += score;
-                            Times_Usg_Per_member[id_member] += 1;
-                        }
-                        else
-                        {
-                            Avg_Per_member.Add(id_member, score);
-                            Times_Usg_Per_member.Add(id_member, 1);
-
-                        }
-
-                    }
-
-                }
-            }
-                rdr.Close();*/
+            
             if (Avg_Per_member.Count == 0)
             {
                 No_Progress_to_show();

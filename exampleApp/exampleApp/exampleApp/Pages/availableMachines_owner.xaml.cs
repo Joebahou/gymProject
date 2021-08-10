@@ -32,44 +32,16 @@ namespace exampleApp.Pages
 
         public static List<Models.Machine> machines_list;
 
-        //MySqlConnection conn;
+     
         public availableMachines_owner()
         {
             InitializeComponent();
             list_bind = new ObservableCollection<Machinebind>();
             InitList();
             isReady = true;
-            //ConnectDataBase();
+           
         }
-        /*
-        private void ConnectDataBase()
-        {
-            
-            try
-            {
-
-                Console.WriteLine("Trying to connect");
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Server = "gymservernew.mysql.database.azure.com",
-                    Database = "gym_schema",
-                    UserID = "gymAdmin",
-                    Password = "gym1Admin",
-                    SslMode = MySqlSslMode.Required,
-                };
-
-                conn = new MySqlConnection(builder.ConnectionString);
-
-                conn.Open();
-                Console.WriteLine(conn.State.ToString() + Environment.NewLine);
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }*/
+       
 
         //Inits the grid with the machines
         public void InitList()
@@ -109,22 +81,7 @@ namespace exampleApp.Pages
             {
                 Console.WriteLine("delete machine didnt went well");
             }
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand command = conn.CreateCommand())
-                {
-
-                    command.CommandText = @"DELETE FROM machines WHERE idmachine=@id_machine and name=@name;";
-                    command.Parameters.AddWithValue("@id_machine", (machine.id_machine));
-                    command.Parameters.AddWithValue("@name", machine.name);
-
-                    command.ExecuteNonQuery();
-
-
-                }
-            }*/
+           
 
           
         }
@@ -158,27 +115,7 @@ namespace exampleApp.Pages
             }
             else
             {
-                /*
-                using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                {
-                    conn.Open();
-                    using (MySqlCommand command = conn.CreateCommand())
-                    {
-                        command.CommandText = @"SELECT idmachine,name FROM gym_schema.machines WHERE name=@name;";
-                        command.Parameters.AddWithValue("@name", machine_name);
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-
-                            {
-                                if (!reader.IsDBNull(0))
-
-                                    isDUplicate = true;
-
-                            }
-                        }
-                    }
-                }*/
+                
                 string parameters = "machine_name=" + machine_name.ToString();
                     string req = "https://gymfuctions.azurewebsites.net/api/insert_new_machine?query=insert_new_machine&" + parameters;
                 string result = Models.Connection.get_result_from_http(req, false);
@@ -207,30 +144,7 @@ namespace exampleApp.Pages
                         available_machines.ItemsSource = list_bind;
                         popupAdd.IsVisible = false;
                     }
-                    /*
-                    using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-                    {
-                        conn.Open();
-                        using (MySqlCommand command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"INSERT INTO machines(name) VALUES (@name);";
-                            command.Parameters.AddWithValue("@name", machine_name);
-                            command.ExecuteNonQuery();
-                        }
-                        using (MySqlCommand command = conn.CreateCommand())
-                        {
-                            command.CommandText = @"SELECT idmachine FROM gym_schema.machines WHERE name=@name;";
-                            command.Parameters.AddWithValue("@name", machine_name);
-                            using (var reader = await command.ExecuteReaderAsync())
-                            {
-                                while (reader.Read())
-
-                                {
-                                    new_id = reader.GetInt32(0);
-                                }
-                            }
-                        }
-                    }*/
+                    
 
 
 

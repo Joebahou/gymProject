@@ -91,45 +91,7 @@ namespace exampleApp.ViewModels
             {
                 DisplayInvalidLoginPrompt();
             }
-            /*
-            using (var conn = new MySqlConnection(Models.Connection.builder.ConnectionString))
-            {
-                conn.Open();
-
-                
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = @"SELECT email,password,idmember,name,type,age,gender FROM gym_schema.members;";
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            string email_DB = reader.GetString(0);
-                            string password_DB = reader.GetString(1);
-                            if(email == email_DB && password == password_DB)
-                            {
-                                found = true;
-                                id_member_login = reader.GetInt32(2);
-                                name_login=reader.GetString(3);
-                                Ttype = reader.GetInt32(4);
-                                //need to save info on app
-                                Models.User.Name = name_login;
-                                Models.User.Id = id_member_login;
-                                Models.User.Type = Ttype;
-                                Models.User.Age= reader.GetInt32(5);
-                                Models.User.Gender= reader.GetString(6);
-                            }
-                       
-
-                        }
-                    }
-
-
-
-                }
-                
-              
-            }*/
+        
             else
             {
                 //saves the loged user's info
@@ -149,35 +111,13 @@ namespace exampleApp.ViewModels
                     req = "https://gymfuctions.azurewebsites.net/api/login_select?query=select_trainees_for_trainer&" + parameters;
                     result = Models.Connection.get_result_from_http(req, true);
                     Models.User.Trainees = JsonConvert.DeserializeObject<List<Models.Trainee>>(result);
-                    /*
-                    using (var command = conn.CreateCommand())
-                    {
-                        command.CommandText = @"SELECT idmember,name FROM members WHERE trainer=@id_member;";
-                        command.Parameters.AddWithValue("@id_member", Models.User.Id);
-
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                int id_trainee = reader.GetInt32(0);
-                                string name = reader.GetString(1);
-                                Models.Trainee temp = new Models.Trainee { Id = id_trainee, Name = name };
-                                Models.User.Trainees.Add(temp);
-
-
-                            }
-                        }
-
-
-
-                    }*/
+                 
                 }
                 
                 
                 Application.Current.MainPage = new NavigationPage(new Pages.homePage());
                 await App.Current.MainPage.Navigation.PopAsync();
 
-                //await App.Current.MainPage.Navigation.PushAsync(new Page1());
 
             }
         }
